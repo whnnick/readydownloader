@@ -1,0 +1,36 @@
+# OS and editor files
+.DS_Store
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Windows build outputs
+x64/
+Debug/
+Release/
+*.obj
+*.pdb
+*.ipdb
+*.iobj
+*.tlog
+
+# macOS and Swift build outputs
+.build/
+DerivedData/
+dist/
+*.app
+*.dmg
+
+# Downloaded toolchains and user data
+tools/
+Downloads/
+config/yt_cookies.txt
+config/*.cookies
+*.part
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.local
