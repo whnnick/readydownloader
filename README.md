@@ -31,7 +31,7 @@
 | Platform | Technology | Status |
 | --- | --- | --- |
 | Windows x64 | C++17 and Win32 | Prototype available; stabilization in progress |
-| macOS 14+ Apple Silicon | Swift 6 and SwiftUI | Planned for v0.1.0 |
+| macOS 14+ Apple Silicon | Swift 6 and SwiftUI | Foundation builds and launches; download MVP in progress |
 
 See the [v0.1.0 overview](./docs/versions/0.1.0/README.md), [requirements](./docs/versions/0.1.0/REQUIREMENTS.md), and [implementation plan](./docs/versions/0.1.0/PLAN.md).
 
@@ -61,6 +61,22 @@ Downloads/
 ```
 
 Tool binaries, cookies, downloads, and build outputs are deliberately excluded from Git.
+
+## Build the macOS Foundation
+
+Run tests:
+
+```bash
+swift test --package-path apps/macos --disable-sandbox
+```
+
+Build and launch the `.app` bundle:
+
+```bash
+./script/build_and_run.sh
+```
+
+The current foundation implements format parsing, toolchain checks, yt-dlp metadata queries, cancellation, native settings, and the format table. Download execution and release tool packaging are still in progress.
 
 ## Documentation
 

@@ -31,7 +31,7 @@
 | 平台 | 技术 | 状态 |
 | --- | --- | --- |
 | Windows x64 | C++17 与 Win32 | 已有原型，正在稳定化 |
-| macOS 14+ Apple Silicon | Swift 6 与 SwiftUI | 计划在 v0.1.0 提供 |
+| macOS 14+ Apple Silicon | Swift 6 与 SwiftUI | 工程基础已可构建启动，下载 MVP 开发中 |
 
 详细内容见 [v0.1.0 概览](./docs/versions/0.1.0/README.zh-CN.md)、[产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)和[实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)。
 
@@ -61,6 +61,22 @@ Downloads/
 ```
 
 工具二进制、Cookie、下载内容和构建产物均通过 `.gitignore` 排除。
+
+## 构建 macOS 工程基础
+
+运行测试：
+
+```bash
+swift test --package-path apps/macos --disable-sandbox
+```
+
+构建并启动 `.app` Bundle：
+
+```bash
+./script/build_and_run.sh
+```
+
+当前工程基础已经实现格式解析、工具链检查、yt-dlp 元数据查询、取消操作、原生设置窗口和格式表格。下载执行和发布工具打包仍在开发中。
 
 ## 文档
 

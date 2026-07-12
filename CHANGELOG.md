@@ -10,6 +10,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Open-source repository policies and bilingual project documentation.
 - Cross-platform v0.1.0 requirements, architecture, plan, and release checks.
+- Native SwiftUI macOS application foundation with a settings scene, toolchain resolution, cancellable yt-dlp format queries, and a format table.
+- Swift format-parser tests and a project-local macOS build-and-run entry point.
 
 ### Security
 
