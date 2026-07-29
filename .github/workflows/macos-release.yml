@@ -1,0 +1,121 @@
+name: macOS Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-14
+    env:
+      NOTARY_PROFILE: YouTubeDlpDownloader-notary
+      KEYCHAIN_PASSWORD: temporary-ci-keychain-password
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Validate tag and release metadata
+        run: ./script/check_release_consistency.sh "$GITHUB_REF_NAME"
+
+      - name: Scan repository
+        run: ./script/scan_repository.sh
+
+      - name: Require Apple release credentials
+        env:
+          CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+          SIGNING_IDENTITY: ${{ secrets.MACOS_SIGNING_IDENTITY }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        run: |
+          for value in \
+            "$CERTIFICATE" \
+            "$CERTIFICATE_PASSWORD" \
+            "$SIGNING_IDENTITY" \
+            "$APPLE_ID" \
+            "$APPLE_TEAM_ID" \
+            "$APPLE_APP_PASSWORD"; do
+            test -n "$value"
+          done
+
+      - name: Run Swift tests
+        run: |
+          swift test \
+            --package-path apps/macos \
+            --scratch-path apps/macos/.build \
+            --cache-path apps/macos/.build/swiftpm-cache \
+            --config-path apps/macos/.build/swiftpm-config \
+            --security-path apps/macos/.build/swiftpm-security \
+            --manifest-cache local \
+            --disable-sandbox
+
+      - name: Import Developer ID certificate
+        env:
+          CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: |
+          CERTIFICATE_PATH="$RUNNER_TEMP/developer-id.p12"
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+          printf '%s' "$CERTIFICATE" | /usr/bin/base64 -D > "$CERTIFICATE_PATH"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERTIFICATE_PATH" \
+            -P "$CERTIFICATE_PASSWORD" \
+            -A \
+            -t cert \
+            -f pkcs12 \
+            -k "$KEYCHAIN_PATH"
+          security set-key-partition-list \
+            -S apple-tool:,apple: \
+            -s \
+            -k "$KEYCHAIN_PASSWORD" \
+            "$KEYCHAIN_PATH"
+          security list-keychains -d user -s "$KEYCHAIN_PATH"
+
+      - name: Configure Apple notarization
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+        run: |
+          xcrun notarytool store-credentials "$NOTARY_PROFILE" \
+            --apple-id "$APPLE_ID" \
+            --team-id "$APPLE_TEAM_ID" \
+            --password "$APPLE_APP_PASSWORD"
+
+      - name: Build, sign, notarize, and package
+        env:
+          MACOS_SIGNING_IDENTITY: ${{ secrets.MACOS_SIGNING_IDENTITY }}
+          MACOS_NOTARY_PROFILE: ${{ env.NOTARY_PROFILE }}
+          REQUIRE_GATEKEEPER: "1"
+        run: ./script/package_macos.sh
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            dist/release/* \
+            --title "YouTubeDlpDownloader $GITHUB_REF_NAME" \
+            --generate-notes \
+            --verify-tag
+
+      - name: Verify public release assets and latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="$(tr -d '[:space:]' < VERSION)"
+          LATEST_TAG="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name)"
+          test "$LATEST_TAG" = "$GITHUB_REF_NAME"
+          gh release download "$GITHUB_REF_NAME" --dir "$RUNNER_TEMP/release-check"
+          cd "$RUNNER_TEMP/release-check"
+          test -s "YouTubeDlpDownloader-$VERSION-macos-arm64.zip"
+          test -s "YouTubeDlpDownloader-$VERSION-macos-arm64.dmg"
+          shasum -a 256 -c SHA256SUMS.txt

@@ -2,6 +2,7 @@
 set -euo pipefail
 
 MODE="${1:-run}"
+BUILD_CONFIGURATION="${BUILD_CONFIGURATION:-debug}"
 APP_NAME="YouTubeDlpDownloader"
 BUNDLE_ID="com.github.YouTubeDlpDownloader"
 MIN_SYSTEM_VERSION="14.0"
@@ -22,7 +23,6 @@ APP_BINARY="$APP_MACOS/$APP_NAME"
 INFO_PLIST="$APP_CONTENTS/Info.plist"
 VERSION="$(tr -d '[:space:]' < "$ROOT_DIR/VERSION")"
 
-pkill -x "$APP_NAME" >/dev/null 2>&1 || true
 mkdir -p "$SWIFTPM_CACHE_DIR" "$SWIFTPM_CONFIG_DIR" "$SWIFTPM_SECURITY_DIR" "$CLANG_MODULE_CACHE_DIR"
 export CLANG_MODULE_CACHE_PATH="$CLANG_MODULE_CACHE_DIR"
 
@@ -34,6 +34,7 @@ SWIFT_BUILD_ARGS=(
   --security-path "$SWIFTPM_SECURITY_DIR"
   --manifest-cache local
   --disable-sandbox
+  --configuration "$BUILD_CONFIGURATION"
 )
 
 swift build "${SWIFT_BUILD_ARGS[@]}" --product "$APP_NAME"
@@ -45,8 +46,18 @@ cp "$BUILD_BINARY" "$APP_BINARY"
 chmod +x "$APP_BINARY"
 if [[ -d "$LOCAL_TOOLS_DIR" ]]; then
   mkdir -p "$APP_RESOURCES/tools"
-  cp -R "$LOCAL_TOOLS_DIR/." "$APP_RESOURCES/tools/"
-  chmod +x "$APP_RESOURCES/tools/"* 2>/dev/null || true
+  for tool in yt-dlp deno ffmpeg ffprobe; do
+    if [[ -f "$LOCAL_TOOLS_DIR/$tool" ]]; then
+      cp "$LOCAL_TOOLS_DIR/$tool" "$APP_RESOURCES/tools/$tool"
+      chmod +x "$APP_RESOURCES/tools/$tool"
+    fi
+  done
+  if [[ -f "$LOCAL_TOOLS_DIR/.manifest-sha256" ]]; then
+    cp "$LOCAL_TOOLS_DIR/.manifest-sha256" "$APP_RESOURCES/tools/.manifest-sha256"
+  fi
+  if [[ -d "$LOCAL_TOOLS_DIR/licenses" ]]; then
+    cp -R "$LOCAL_TOOLS_DIR/licenses" "$APP_RESOURCES/licenses"
+  fi
 fi
 
 cat >"$INFO_PLIST" <<PLIST
@@ -70,7 +81,11 @@ PLIST
 open_app() { /usr/bin/open -n "$APP_BUNDLE"; }
 
 case "$MODE" in
-  run) open_app ;;
+  build) ;;
+  run)
+    pkill -x "$APP_NAME" >/dev/null 2>&1 || true
+    open_app
+    ;;
   --debug|debug) lldb -- "$APP_BINARY" ;;
   --logs|logs)
     open_app
@@ -81,12 +96,13 @@ case "$MODE" in
     /usr/bin/log stream --info --style compact --predicate "subsystem == \"$BUNDLE_ID\""
     ;;
   --verify|verify)
+    pkill -x "$APP_NAME" >/dev/null 2>&1 || true
     open_app
     sleep 1
     pgrep -x "$APP_NAME" >/dev/null
     ;;
   *)
-    echo "usage: $0 [run|--debug|--logs|--telemetry|--verify]" >&2
+    echo "usage: $0 [build|run|--debug|--logs|--telemetry|--verify]" >&2
     exit 2
     ;;
 esac

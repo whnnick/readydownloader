@@ -1,0 +1,96 @@
+# Release Guide
+
+macOS is the primary release line. Windows compatibility work does not block a
+Mac release unless the release is explicitly advertised as dual-platform.
+
+## Local Release Validation
+
+Requirements:
+
+- Apple Silicon Mac running macOS 14 or later;
+- Xcode command-line tools;
+- `curl`, `make`, `tar`, `ditto`, and `hdiutil`;
+- enough free space to build FFmpeg from source.
+
+Run:
+
+```bash
+./script/prepare_macos_tools.sh
+./script/package_macos.sh
+```
+
+The first command downloads pinned inputs, verifies every SHA-256, and builds
+FFmpeg 8.1.2 from official source without GPL or non-free external libraries.
+The second command creates an ad-hoc-signed development package when
+`MACOS_SIGNING_IDENTITY` is not set.
+
+Expected files:
+
+```text
+dist/release/
+├── YouTubeDlpDownloader-<version>-macos-arm64.dmg
+├── YouTubeDlpDownloader-<version>-macos-arm64.zip
+└── SHA256SUMS.txt
+```
+
+The release directory is deleted before packaging and must contain exactly
+those three current-version files.
+
+## Developer ID Signing and Notarization
+
+Store notarization credentials in the login keychain:
+
+```bash
+xcrun notarytool store-credentials YouTubeDlpDownloader-notary
+```
+
+Then run:
+
+```bash
+MACOS_SIGNING_IDENTITY="Developer ID Application: Example (TEAMID)" \
+MACOS_NOTARY_PROFILE="YouTubeDlpDownloader-notary" \
+REQUIRE_GATEKEEPER=1 \
+./script/package_macos.sh
+```
+
+The packaging script signs nested executables first, grants only the JIT runtime
+exception required by Deno, signs the app with Hardened Runtime, submits and
+staples the app, creates ZIP and DMG artifacts, notarizes and staples the DMG,
+verifies Gatekeeper, and generates checksums.
+
+## GitHub Release
+
+The tag workflow requires these repository secrets:
+
+- `MACOS_CERTIFICATE_P12_BASE64`
+- `MACOS_CERTIFICATE_PASSWORD`
+- `MACOS_SIGNING_IDENTITY`
+- `APPLE_ID`
+- `APPLE_TEAM_ID`
+- `APPLE_APP_SPECIFIC_PASSWORD`
+
+Before tagging:
+
+1. Complete the version black-box report.
+2. Change both `0.1.0` changelog headings from `Unreleased` to the release date.
+3. Confirm `VERSION` and the intended tag agree.
+4. Commit and push a clean `main`.
+5. Create and push `v<version>`.
+
+The workflow refuses an unreleased changelog entry or missing Apple
+credentials. After publishing, it downloads the public assets, verifies their
+checksums, and verifies that the tag is GitHub's latest release.
+
+## Third-Party Components
+
+The pinned manifest is `packaging/macos-arm64-tools.conf`.
+
+- yt-dlp 2026.07.04: official macOS standalone binary;
+- Deno 2.9.4: official Apple Silicon binary;
+- FFmpeg and ffprobe 8.1.2: built from official source with no GPL or non-free
+  external libraries enabled.
+
+Each package contains the project license, third-party notices, yt-dlp's
+generated third-party license collection, and the Deno and FFmpeg license
+texts. The yt-dlp standalone binary contains GPLv3+ components; its license
+terms apply to that bundled component.

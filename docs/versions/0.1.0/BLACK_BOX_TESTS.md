@@ -6,11 +6,11 @@ Status: not yet a release candidate.
 
 | Product area | Windows | macOS | Required evidence |
 | --- | --- | --- | --- |
-| Launch and toolchain check | Pending | Automated pass; clean-machine pending | Clean launch and actionable missing-tool errors |
+| Launch and toolchain check | Pending | Local ZIP/DMG build, audit, and ZIP launch pass; clean-machine pending | Clean launch and actionable missing-tool errors |
 | URL validation | Pending | Implemented | Empty URL rejected without a process launch |
 | Format query and filtering | Pending | Fixture tests pass; public real URL pending | Sanitized fixture tests and one authorized real URL |
 | Format selection | Pending | Selector tests pass | Selection remains visible and downloads the requested video stream |
-| Audio merge | Pending | Pending | Video-only selection produces a playable merged file |
+| Audio merge | Pending | Bundled FFmpeg stream-copy merge passes; yt-dlp UI acceptance pending | Video-only selection produces a playable merged file |
 | Output directory | Pending | Implemented; UI acceptance pending | File appears in the user-selected directory |
 | Progress and cancellation | Pending | Parser and local integration pass; UI acceptance pending | Responsive UI, changing progress, and terminated child process |
 | Network modes | Pending | Implemented; real-network matrix pending | Direct, system, and custom-proxy argument verification |
@@ -52,8 +52,8 @@ The release must not contain:
 
 1. A real authorized public video and a video-only audio merge still need UI acceptance on macOS.
 2. Shared fixture extraction is not implemented.
-3. Tool manifests and checksums are not defined.
-4. CI and release packaging are not implemented.
+3. The new toolchain and package flow still needs clean-machine verification.
+4. The macOS CI and release workflows have not run on a remote GitHub repository.
 5. macOS signing and notarization credentials have not been validated.
 6. GitHub public surfaces and final release assets do not yet exist.
 7. Windows compatibility work remains incomplete but does not block the Mac-first release unless the release is advertised as dual-platform.

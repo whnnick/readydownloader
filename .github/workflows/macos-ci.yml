@@ -1,0 +1,35 @@
+name: macOS CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check release metadata
+        run: ./script/check_release_consistency.sh
+
+      - name: Check shell scripts
+        run: bash -n script/*.sh
+
+      - name: Scan repository
+        run: ./script/scan_repository.sh
+
+      - name: Run Swift tests
+        run: |
+          swift test \
+            --package-path apps/macos \
+            --scratch-path apps/macos/.build \
+            --cache-path apps/macos/.build/swiftpm-cache \
+            --config-path apps/macos/.build/swiftpm-config \
+            --security-path apps/macos/.build/swiftpm-security \
+            --manifest-cache local \
+            --disable-sandbox

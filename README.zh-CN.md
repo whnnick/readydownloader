@@ -31,7 +31,7 @@
 
 | 平台 | 技术 | 状态 |
 | --- | --- | --- |
-| macOS 14+ Apple Silicon | Swift 6 与 SwiftUI | 主平台；下载 MVP 已实现，发布打包开发中 |
+| macOS 14+ Apple Silicon | Swift 6 与 SwiftUI | 主平台；下载 MVP 与可复现打包已实现 |
 | Windows x64 | C++17 与 Win32 | 兼容平台；已有原型 |
 
 详细内容见 [v0.1.0 概览](./docs/versions/0.1.0/README.zh-CN.md)、[产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)和[实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)。
@@ -77,7 +77,7 @@ swift test --package-path apps/macos --disable-sandbox
 ./script/build_and_run.sh
 ```
 
-Mac 应用已经实现格式查询、不限制分辨率的最佳画质下载、兼容 MP4、手动格式、实时进度、取消、持久保存目录选择和 Finder 定位。工具版本锁定和发布打包仍在开发中。
+Mac 应用已经实现格式查询、不限制分辨率的最佳画质下载、兼容 MP4、手动格式、实时进度、取消、持久保存目录选择和 Finder 定位。Apple Silicon 工具版本锁定以及 APP/ZIP/DMG 本地打包已实现；签名和公证的公开产物仍需要 Apple 发布凭据。
 
 ## 文档
 
@@ -86,6 +86,7 @@ Mac 应用已经实现格式查询、不限制分辨率的最佳画质下载、�
 - [技术架构](./docs/versions/0.1.0/ARCHITECTURE.zh-CN.md)
 - [实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)
 - [黑盒功能检查](./docs/versions/0.1.0/BLACK_BOX_TESTS.zh-CN.md)
+- [发布指南](./docs/RELEASE.zh-CN.md)
 - [贡献指南](./CONTRIBUTING.md)
 - [安全政策](./SECURITY.md)
 - [第三方软件说明](./THIRD_PARTY_NOTICES.md)

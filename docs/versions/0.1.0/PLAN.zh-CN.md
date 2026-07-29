@@ -36,6 +36,9 @@
 
 退出标准：在不依赖开发机 PATH 的环境中通过干净机器检查。
 
+实施状态：固定版本输入、FFmpeg 官方源码构建、许可证收集、APP/ZIP/DMG
+生成、校验文件和产物审计脚本已经实现；仍需完成干净机器验证。
+
 ## 里程碑 4：macOS GitHub Release
 
 - 添加 push 和 PR 的 macOS CI。
@@ -46,6 +49,9 @@
 - 发布资产，并分别验证仓库 About、远端 `main`、Release 资产、latest 和下载链接。
 
 退出标准：macOS `v0.1.0` 黑盒报告没有发布阻塞项，GitHub 公开页面全部验证完成。
+
+实施状态：Pull Request CI 和需要发布凭据的 Tag 工作流已经在本地实现；
+Developer ID 凭据、公证、远程工作流运行和 GitHub 公开入口验证仍待完成。
 
 ## 里程碑 5：Windows 兼容维护
 

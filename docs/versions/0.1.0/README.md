@@ -17,10 +17,11 @@ Both clients must implement the same core workflow: query a single media URL, in
 - [Architecture](./ARCHITECTURE.md)
 - [Implementation plan](./PLAN.md)
 - [Black-box release checks](./BLACK_BOX_TESTS.md)
+- [Release guide](../../RELEASE.md)
 - [简体中文](./README.zh-CN.md)
 
 ## Release State
 
-Status: planning and implementation.
+Status: macOS implementation and release preparation.
 
-The current Windows code is a prototype and is not yet a v0.1.0 release candidate. The macOS client has not yet reached MVP status.
+The macOS download MVP and reproducible local packaging are implemented, but signed and notarized public artifacts still require real-environment acceptance and Apple release credentials. The Windows code remains a compatibility prototype and does not block a Mac-only v0.1.0 release.

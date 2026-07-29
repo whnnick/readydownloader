@@ -15,6 +15,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Mac-first download workflow with unrestricted best quality, compatible MP4, and manual format modes.
 - Real-time progress, cancellation, persistent destination bookmarks, and Finder reveal.
 - Local integration verification using a generated test video and the real yt-dlp process.
+- Pinned macOS arm64 toolchain inputs with SHA-256 verification and an official-source FFmpeg build.
+- Reproducible APP, ZIP, and DMG packaging with nested-code signing, optional notarization, package auditing, and checksums.
+- macOS pull-request CI and a credential-gated, tag-driven GitHub Release workflow.
+- Repository and release-package denylist scans for private data, credentials, media, and stale artifacts.
 
 ### Security
 

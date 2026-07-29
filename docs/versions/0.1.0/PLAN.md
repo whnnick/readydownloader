@@ -36,6 +36,10 @@ Exit criteria: `swift test` and the local app launch verification pass; an autho
 
 Exit criteria: clean-machine package checks pass without relying on a developer's PATH.
 
+Implementation status: scripts, pinned inputs, official-source FFmpeg build,
+license collection, APP/ZIP/DMG generation, checksums, and package auditing are
+implemented. Clean-machine validation is still required.
+
 ## Milestone 4: macOS GitHub Release
 
 - Add macOS CI for pushes and pull requests.
@@ -46,6 +50,10 @@ Exit criteria: clean-machine package checks pass without relying on a developer'
 - Publish assets and verify repository About, remote `main`, Release assets, latest release, and download links separately.
 
 Exit criteria: the macOS v0.1.0 black-box report has no release blockers and the public GitHub surfaces are verified.
+
+Implementation status: pull-request CI and a credential-gated tag workflow are
+implemented locally. Developer ID credentials, notarization, remote workflow
+execution, and public-surface verification remain pending.
 
 ## Milestone 5: Windows Compatibility
 

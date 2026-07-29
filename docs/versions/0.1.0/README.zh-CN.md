@@ -17,10 +17,11 @@
 - [技术架构](./ARCHITECTURE.zh-CN.md)
 - [实施计划](./PLAN.zh-CN.md)
 - [黑盒功能检查](./BLACK_BOX_TESTS.zh-CN.md)
+- [发布指南](../../RELEASE.zh-CN.md)
 - [English](./README.md)
 
 ## 当前状态
 
-状态：规划和实施中。
+状态：macOS 实施与发布准备中。
 
-现有 Windows 代码仍是原型，尚未达到 `v0.1.0` 发布候选标准；macOS 客户端也尚未完成 MVP。
+macOS 下载 MVP 和可复现本地打包已经实现，但签名、公证后的公开产物仍需完成真实环境验收并配置 Apple 发布凭据。Windows 代码仍是兼容原型，不阻塞仅发布 Mac 的 `v0.1.0`。

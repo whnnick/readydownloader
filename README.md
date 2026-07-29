@@ -31,7 +31,7 @@
 
 | Platform | Technology | Status |
 | --- | --- | --- |
-| macOS 14+ Apple Silicon | Swift 6 and SwiftUI | Primary platform; download MVP implemented, packaging in progress |
+| macOS 14+ Apple Silicon | Swift 6 and SwiftUI | Primary platform; download MVP and reproducible packaging implemented |
 | Windows x64 | C++17 and Win32 | Compatibility platform; prototype available |
 
 See the [v0.1.0 overview](./docs/versions/0.1.0/README.md), [requirements](./docs/versions/0.1.0/REQUIREMENTS.md), and [implementation plan](./docs/versions/0.1.0/PLAN.md).
@@ -77,7 +77,7 @@ Build and launch the `.app` bundle:
 ./script/build_and_run.sh
 ```
 
-The Mac app now implements format queries, unrestricted best-quality download, compatible MP4 mode, manual format selection, real-time progress, cancellation, persistent destination selection, and Finder reveal. Release tool pinning and packaging are still in progress.
+The Mac app implements format queries, unrestricted best-quality download, compatible MP4 mode, manual format selection, real-time progress, cancellation, persistent destination selection, and Finder reveal. Pinned Apple Silicon tools and local APP/ZIP/DMG packaging are available; signed and notarized public artifacts still require Apple release credentials.
 
 ## Documentation
 
@@ -86,6 +86,7 @@ The Mac app now implements format queries, unrestricted best-quality download, c
 - [Architecture](./docs/versions/0.1.0/ARCHITECTURE.md)
 - [Implementation plan](./docs/versions/0.1.0/PLAN.md)
 - [Black-box release checks](./docs/versions/0.1.0/BLACK_BOX_TESTS.md)
+- [Release guide](./docs/RELEASE.md)
 - [Contributing](./CONTRIBUTING.md)
 - [Security policy](./SECURITY.md)
 - [Third-party notices](./THIRD_PARTY_NOTICES.md)
