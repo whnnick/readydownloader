@@ -44,6 +44,10 @@ mounted=1
 
 bundle_version="$(plutil -extract CFBundleShortVersionString raw "$ZIP_APP/Contents/Info.plist")"
 [[ "$bundle_version" == "$VERSION" ]]
+bundle_icon="$(plutil -extract CFBundleIconFile raw "$ZIP_APP/Contents/Info.plist")"
+[[ "$bundle_icon" == "AppIcon" ]]
+[[ -s "$ZIP_APP/Contents/Resources/AppIcon.icns" ]]
+file "$ZIP_APP/Contents/Resources/AppIcon.icns" | grep -Fq "Mac OS X icon"
 
 if find "$ZIP_APP" -type l | grep . >/dev/null; then
   echo "Release app contains symlinks." >&2

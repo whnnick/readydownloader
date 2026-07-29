@@ -21,6 +21,7 @@ APP_RESOURCES="$APP_CONTENTS/Resources"
 LOCAL_TOOLS_DIR="$ROOT_DIR/tools/macos-arm64"
 APP_BINARY="$APP_MACOS/$APP_NAME"
 INFO_PLIST="$APP_CONTENTS/Info.plist"
+APP_ICON="$BUILD_DIR/AppIcon.icns"
 VERSION="$(tr -d '[:space:]' < "$ROOT_DIR/VERSION")"
 
 mkdir -p "$SWIFTPM_CACHE_DIR" "$SWIFTPM_CONFIG_DIR" "$SWIFTPM_SECURITY_DIR" "$CLANG_MODULE_CACHE_DIR"
@@ -44,6 +45,8 @@ rm -rf "$APP_BUNDLE"
 mkdir -p "$APP_MACOS" "$APP_RESOURCES"
 cp "$BUILD_BINARY" "$APP_BINARY"
 chmod +x "$APP_BINARY"
+"$ROOT_DIR/script/generate_macos_icon.sh" "$APP_ICON"
+cp "$APP_ICON" "$APP_RESOURCES/AppIcon.icns"
 if [[ -d "$LOCAL_TOOLS_DIR" ]]; then
   mkdir -p "$APP_RESOURCES/tools"
   for tool in yt-dlp deno ffmpeg ffprobe; do
@@ -69,6 +72,7 @@ cat >"$INFO_PLIST" <<PLIST
   <key>CFBundleIdentifier</key><string>$BUNDLE_ID</string>
   <key>CFBundleName</key><string>$APP_NAME</string>
   <key>CFBundlePackageType</key><string>APPL</string>
+  <key>CFBundleIconFile</key><string>AppIcon</string>
   <key>CFBundleShortVersionString</key><string>$VERSION</string>
   <key>CFBundleVersion</key><string>1</string>
   <key>LSMinimumSystemVersion</key><string>$MIN_SYSTEM_VERSION</string>

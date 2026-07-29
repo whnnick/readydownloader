@@ -21,6 +21,7 @@ Status: not yet a release candidate.
 
 - Windows Release build.
 - macOS Swift tests and release build.
+- App icon generation, bundle resource, and Info.plist reference.
 - Shared sanitized format-fixture expectations.
 - Local real yt-dlp best-quality download and separate-stream merge.
 - Local SwiftUI query, download completion, temporary output selection, and Finder reveal.

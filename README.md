@@ -2,6 +2,10 @@
   English | <a href="./README.zh-CN.md">简体中文</a>
 </p>
 
+<p align="center">
+  <img src="./assets/branding/AppIcon.png" width="128" alt="YouTubeDlpDownloader app icon">
+</p>
+
 <h1 align="center">YouTubeDlpDownloader</h1>
 
 <p align="center">
@@ -35,6 +39,12 @@
 | Windows x64 | C++17 and Win32 | Compatibility platform; prototype available |
 
 See the [v0.1.0 overview](./docs/versions/0.1.0/README.md), [requirements](./docs/versions/0.1.0/REQUIREMENTS.md), and [implementation plan](./docs/versions/0.1.0/PLAN.md).
+
+The bundled yt-dlp build contains extractors for major services such as
+YouTube, Bilibili, TikTok, Instagram, Facebook, X/Twitter, Vimeo, Twitch,
+Reddit, AcFun, Douyu, Huya, iQIYI, Youku, and Weibo. Availability is
+URL-specific and is not guaranteed; see the
+[supported-site boundary](./docs/versions/0.1.0/SUPPORTED_SITES.md).
 
 ## Build the Current Windows Prototype
 
@@ -85,6 +95,7 @@ The Mac app implements format queries, unrestricted best-quality download, compa
 - [Requirements](./docs/versions/0.1.0/REQUIREMENTS.md)
 - [Architecture](./docs/versions/0.1.0/ARCHITECTURE.md)
 - [Implementation plan](./docs/versions/0.1.0/PLAN.md)
+- [Supported-site boundary](./docs/versions/0.1.0/SUPPORTED_SITES.md)
 - [Black-box release checks](./docs/versions/0.1.0/BLACK_BOX_TESTS.md)
 - [Release guide](./docs/RELEASE.md)
 - [Contributing](./CONTRIBUTING.md)

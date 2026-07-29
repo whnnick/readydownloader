@@ -60,6 +60,7 @@ Intel macOS, Linux, mobile platforms, and app-store distribution are outside thi
 ## Non-Functional Requirements
 
 - Native desktop UI on each supported platform.
+- Embed a consistent original project icon in distributable applications.
 - UI remains responsive while querying and downloading.
 - Background work has explicit ownership and cancellation.
 - UTF-8 output remains valid when a multibyte character crosses a pipe-read boundary.

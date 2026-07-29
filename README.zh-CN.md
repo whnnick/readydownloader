@@ -2,6 +2,10 @@
   <a href="./README.md">English</a> | 简体中文
 </p>
 
+<p align="center">
+  <img src="./assets/branding/AppIcon.png" width="128" alt="YouTubeDlpDownloader 应用图标">
+</p>
+
 <h1 align="center">YouTubeDlpDownloader</h1>
 
 <p align="center">
@@ -35,6 +39,11 @@
 | Windows x64 | C++17 与 Win32 | 兼容平台；已有原型 |
 
 详细内容见 [v0.1.0 概览](./docs/versions/0.1.0/README.zh-CN.md)、[产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)和[实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)。
+
+当前随包 yt-dlp 包含 YouTube、哔哩哔哩、TikTok、Instagram、Facebook、
+X/Twitter、Vimeo、Twitch、Reddit、AcFun、斗鱼、虎牙、爱奇艺、优酷和微博等
+主流服务的提取器。是否可用取决于具体链接，并非永久保证；详见
+[支持站点边界](./docs/versions/0.1.0/SUPPORTED_SITES.zh-CN.md)。
 
 ## 构建当前 Windows 原型
 
@@ -85,6 +94,7 @@ Mac 应用已经实现格式查询、不限制分辨率的最佳画质下载、�
 - [产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)
 - [技术架构](./docs/versions/0.1.0/ARCHITECTURE.zh-CN.md)
 - [实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)
+- [支持站点边界](./docs/versions/0.1.0/SUPPORTED_SITES.zh-CN.md)
 - [黑盒功能检查](./docs/versions/0.1.0/BLACK_BOX_TESTS.zh-CN.md)
 - [发布指南](./docs/RELEASE.zh-CN.md)
 - [贡献指南](./CONTRIBUTING.md)

@@ -20,6 +20,11 @@ jobs:
       - name: Check shell scripts
         run: bash -n script/*.sh
 
+      - name: Verify macOS icon generation
+        run: |
+          ./script/generate_macos_icon.sh "$RUNNER_TEMP/AppIcon.icns"
+          file "$RUNNER_TEMP/AppIcon.icns" | grep -F "Mac OS X icon"
+
       - name: Scan repository
         run: ./script/scan_repository.sh
 

@@ -16,6 +16,7 @@ Both clients must implement the same core workflow: query a single media URL, in
 - [Requirements](./REQUIREMENTS.md)
 - [Architecture](./ARCHITECTURE.md)
 - [Implementation plan](./PLAN.md)
+- [Supported-site boundary](./SUPPORTED_SITES.md)
 - [Black-box release checks](./BLACK_BOX_TESTS.md)
 - [Release guide](../../RELEASE.md)
 - [简体中文](./README.zh-CN.md)

@@ -27,6 +27,10 @@ generated separate DASH video/audio streams, downloads them with the pinned
 yt-dlp best-quality selector, and verifies the merged output with bundled
 FFprobe.
 
+The build generates `AppIcon.icns` from the tracked 1024×1024 branding master.
+Package verification requires both the icon resource and the matching
+`CFBundleIconFile` entry.
+
 Expected files:
 
 ```text

@@ -16,6 +16,7 @@
 - [产品需求](./REQUIREMENTS.zh-CN.md)
 - [技术架构](./ARCHITECTURE.zh-CN.md)
 - [实施计划](./PLAN.zh-CN.md)
+- [支持站点边界](./SUPPORTED_SITES.zh-CN.md)
 - [黑盒功能检查](./BLACK_BOX_TESTS.zh-CN.md)
 - [发布指南](../../RELEASE.zh-CN.md)
 - [English](./README.md)

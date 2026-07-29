@@ -21,6 +21,7 @@
 
 - Windows Release 构建。
 - macOS Swift 测试和 Release 构建。
+- 应用图标生成、Bundle 资源和 Info.plist 引用。
 - 共享脱敏格式 fixture 期望。
 - 本地真实 yt-dlp 最佳画质下载和独立流合并。
 - 本地 SwiftUI 格式查询、下载完成、临时目录选择和 Finder 定位。

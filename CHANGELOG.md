@@ -22,6 +22,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Reproducible APP, ZIP, and DMG packaging with nested-code signing, optional notarization, package auditing, and checksums.
 - macOS pull-request CI and a credential-gated, tag-driven GitHub Release workflow.
 - Repository and release-package denylist scans for private data, credentials, media, and stale artifacts.
+- Original cross-platform branding artwork and a reproducible macOS `.icns` generation pipeline.
+- A versioned supported-site boundary based on the pinned yt-dlp extractor snapshot.
 
 ### Security
 
