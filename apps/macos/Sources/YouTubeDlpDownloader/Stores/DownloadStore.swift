@@ -50,16 +50,18 @@ final class DownloadStore {
         completedFile = nil
         status = "Checking the local toolchain…"
 
+        let settings = QuerySettings.current
         let toolchain = resolver.resolve()
         let missing = resolver.missingQueryTools(in: toolchain)
         guard missing.isEmpty else {
             status = "Missing required tools: \(missing.map(\.lastPathComponent).joined(separator: ", "))."
-            detailedLog = missing.map(\.path).joined(separator: "\n")
+            detailedLog = settings.detailedLogsEnabled
+                ? missing.map(\.path).joined(separator: "\n")
+                : ""
             isWorking = false
             return
         }
 
-        let settings = QuerySettings.current
         status = "Querying formats…"
         operation = Task { [weak self] in
             guard let self else { return }
@@ -79,8 +81,11 @@ final class DownloadStore {
             } catch is CancellationError {
                 status = "Operation cancelled."
             } catch {
-                status = "Could not query formats."
-                detailedLog = error.localizedDescription
+                handleOperationFailure(
+                    status: "Could not query formats.",
+                    errorDescription: error.localizedDescription,
+                    includeDetailedLogs: settings.detailedLogsEnabled
+                )
             }
             isWorking = false
         }
@@ -97,11 +102,14 @@ final class DownloadStore {
             return
         }
 
+        let settings = QuerySettings.current
         let toolchain = resolver.resolve()
         let missing = resolver.missingDownloadTools(in: toolchain)
         guard missing.isEmpty else {
             status = "Missing required tools: \(missing.map(\.lastPathComponent).joined(separator: ", "))."
-            detailedLog = missing.map(\.path).joined(separator: "\n")
+            detailedLog = settings.detailedLogsEnabled
+                ? missing.map(\.path).joined(separator: "\n")
+                : ""
             return
         }
 
@@ -112,7 +120,6 @@ final class DownloadStore {
         detailedLog = ""
         status = "Starting download…"
 
-        let settings = QuerySettings.current
         let mode = downloadMode
         let format = selectedFormat
         let destination = downloadDirectory
@@ -134,7 +141,12 @@ final class DownloadStore {
                     proxyURL: settings.proxyURL,
                     cookiePath: settings.cookiePath,
                     onOutput: { [weak self] line in
-                        Task { @MainActor in self?.handleDownloadOutput(line) }
+                        Task { @MainActor in
+                            self?.handleDownloadOutput(
+                                line,
+                                includeDetailedLogs: settings.detailedLogsEnabled
+                            )
+                        }
                     }
                 )
                 guard !Task.isCancelled else { return }
@@ -150,8 +162,11 @@ final class DownloadStore {
             } catch is CancellationError {
                 status = "Download cancelled."
             } catch {
-                status = "Download failed."
-                appendDetailedLog(error.localizedDescription)
+                handleOperationFailure(
+                    status: "Download failed.",
+                    errorDescription: error.localizedDescription,
+                    includeDetailedLogs: settings.detailedLogsEnabled
+                )
             }
             isWorking = false
         }
@@ -175,13 +190,22 @@ final class DownloadStore {
         status = "Operation cancelled."
     }
 
-    private func handleDownloadOutput(_ line: String) {
+    func handleDownloadOutput(_ line: String, includeDetailedLogs: Bool) {
         if let parsedProgress = DownloadProgress.parse(line: line) {
             progress = parsedProgress
             status = "Downloading \(parsedProgress.percentText) · \(parsedProgress.speed) · ETA \(parsedProgress.eta)"
-        } else {
+        } else if includeDetailedLogs {
             appendDetailedLog(line)
         }
+    }
+
+    func handleOperationFailure(
+        status: String,
+        errorDescription: String,
+        includeDetailedLogs: Bool
+    ) {
+        self.status = status
+        detailedLog = includeDetailedLogs ? errorDescription : ""
     }
 
     private func appendDetailedLog(_ line: String) {
@@ -198,6 +222,7 @@ private struct QuerySettings: Sendable {
     let networkMode: NetworkMode
     let proxyURL: String
     let cookiePath: String
+    let detailedLogsEnabled: Bool
 
     static var current: QuerySettings {
         let defaults = UserDefaults.standard
@@ -205,7 +230,8 @@ private struct QuerySettings: Sendable {
         return QuerySettings(
             networkMode: NetworkMode(rawValue: rawMode) ?? .system,
             proxyURL: defaults.string(forKey: "proxyURL") ?? "",
-            cookiePath: defaults.string(forKey: "cookiePath") ?? ""
+            cookiePath: defaults.string(forKey: "cookiePath") ?? "",
+            detailedLogsEnabled: defaults.bool(forKey: "detailedLogsEnabled")
         )
     }
 }

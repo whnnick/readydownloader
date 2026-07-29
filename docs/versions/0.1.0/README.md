@@ -24,4 +24,4 @@ Both clients must implement the same core workflow: query a single media URL, in
 
 Status: macOS implementation and release preparation.
 
-The macOS download MVP and reproducible local packaging are implemented, but signed and notarized public artifacts still require real-environment acceptance and Apple release credentials. The Windows code remains a compatibility prototype and does not block a Mac-only v0.1.0 release.
+The macOS download MVP, local SwiftUI workflow acceptance, and reproducible local packaging are implemented, but an authorized public URL plus signed and notarized artifacts still require real-environment acceptance and Apple release credentials. The Windows code remains a compatibility prototype and does not block a Mac-only v0.1.0 release.

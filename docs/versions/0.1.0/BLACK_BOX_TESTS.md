@@ -8,14 +8,14 @@ Status: not yet a release candidate.
 | --- | --- | --- | --- |
 | Launch and toolchain check | Pending | Local ZIP/DMG build, audit, and ZIP launch pass; clean-machine pending | Clean launch and actionable missing-tool errors |
 | URL validation | Pending | Implemented | Empty URL rejected without a process launch |
-| Format query and filtering | Pending | Shared fixture tests pass; public real URL pending | Sanitized fixture tests and one authorized real URL |
+| Format query and filtering | Pending | Shared fixture and local App UI pass; public real URL pending | Sanitized fixture tests and one authorized real URL |
 | Format selection | Pending | Selector tests pass | Selection remains visible and downloads the requested video stream |
-| Audio merge | Pending | Local real yt-dlp separate-stream download and bundled FFmpeg merge pass; UI acceptance pending | Video-only selection produces a playable merged file |
-| Output directory | Pending | Implemented; UI acceptance pending | File appears in the user-selected directory |
+| Audio merge | Pending | Local real yt-dlp separate-stream download, App UI, and bundled FFmpeg merge pass; public real URL pending | Video-only selection produces a playable merged file |
+| Output directory | Pending | Local App UI selection/output and restart fallback tests pass; normal user folder pending | File appears in the user-selected directory |
 | Progress and cancellation | Pending | Parser and local integration pass; UI acceptance pending | Responsive UI, changing progress, and terminated child process |
 | Network modes | Pending | Implemented; real-network matrix pending | Direct, system, and custom-proxy argument verification |
 | Optional cookies | Pending | Implemented; authenticated check pending | Public URL works without cookies; private test data is never logged |
-| Diagnostics | Pending | Partial | Friendly common errors plus opt-in detailed tool output |
+| Diagnostics | Pending | Raw output is opt-in and tested; friendly common-error mapping remains partial | Friendly common errors plus opt-in detailed tool output |
 
 ## Automated Verification Required
 
@@ -23,6 +23,7 @@ Status: not yet a release candidate.
 - macOS Swift tests and release build.
 - Shared sanitized format-fixture expectations.
 - Local real yt-dlp best-quality download and separate-stream merge.
+- Local SwiftUI query, download completion, temporary output selection, and Finder reveal.
 - Sensitive-information scan over tracked files and Git history.
 - Release-package denylist scan.
 - Version consistency check across `VERSION`, applications, changelogs, tags, and archive names.

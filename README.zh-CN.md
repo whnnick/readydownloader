@@ -77,7 +77,7 @@ swift test --package-path apps/macos --disable-sandbox
 ./script/build_and_run.sh
 ```
 
-Mac 应用已经实现格式查询、不限制分辨率的最佳画质下载、兼容 MP4、手动格式、实时进度、取消、持久保存目录选择和 Finder 定位。Apple Silicon 工具版本锁定以及 APP/ZIP/DMG 本地打包已实现；签名和公证的公开产物仍需要 Apple 发布凭据。
+Mac 应用已经实现格式查询、不限制分辨率的最佳画质下载、兼容 MP4、手动格式、实时进度、取消、持久保存目录选择、Finder 定位和主动开启的 yt-dlp 详细日志。Apple Silicon 工具版本锁定以及 APP/ZIP/DMG 本地打包已实现；签名和公证的公开产物仍需要 Apple 发布凭据。
 
 ## 文档
 

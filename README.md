@@ -77,7 +77,7 @@ Build and launch the `.app` bundle:
 ./script/build_and_run.sh
 ```
 
-The Mac app implements format queries, unrestricted best-quality download, compatible MP4 mode, manual format selection, real-time progress, cancellation, persistent destination selection, and Finder reveal. Pinned Apple Silicon tools and local APP/ZIP/DMG packaging are available; signed and notarized public artifacts still require Apple release credentials.
+The Mac app implements format queries, unrestricted best-quality download, compatible MP4 mode, manual format selection, real-time progress, cancellation, persistent destination selection, Finder reveal, and opt-in detailed yt-dlp logs. Pinned Apple Silicon tools and local APP/ZIP/DMG packaging are available; signed and notarized public artifacts still require Apple release credentials.
 
 ## Documentation
 

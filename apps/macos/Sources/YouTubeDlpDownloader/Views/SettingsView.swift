@@ -4,6 +4,7 @@ struct SettingsView: View {
     @AppStorage("networkMode") private var networkMode = NetworkMode.system.rawValue
     @AppStorage("proxyURL") private var proxyURL = ""
     @AppStorage("cookiePath") private var cookiePath = ""
+    @AppStorage("detailedLogsEnabled") private var detailedLogsEnabled = false
 
     var body: some View {
         Form {
@@ -18,9 +19,10 @@ struct SettingsView: View {
             Text("Cookie files contain private login data. They stay outside the app and must never be committed or attached to an issue.")
                 .font(.caption)
                 .foregroundStyle(.secondary)
+            Toggle("Show detailed yt-dlp logs", isOn: $detailedLogsEnabled)
         }
         .formStyle(.grouped)
-        .frame(width: 520, height: 250)
+        .frame(width: 520, height: 290)
         .scenePadding()
     }
 }
