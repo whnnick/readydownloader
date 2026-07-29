@@ -15,13 +15,14 @@
 </p>
 
 > [!IMPORTANT]
-> 项目正在准备第一个双平台版本。现有 Windows 客户端属于可运行原型；macOS 客户端和自动发布流程正在开发中。
+> macOS 是项目的主产品线。Windows 客户端作为兼容实现继续维护，并按共享行为契约跟进，但不会阻塞 Mac 发布。
 
 ## 主要功能
 
 - 通过 yt-dlp JSON 输出读取视频信息和可用格式。
 - 显示分辨率、帧率、编码、预估大小和码率。
-- 下载选中的视频格式，并在需要时通过 FFmpeg 合并音频。
+- 默认下载视频可提供的最高画质，同时提供兼容 MP4 和手动格式模式。
+- 当所选视频流没有音频时，通过 FFmpeg 合并最佳音频。
 - 支持直连、系统代理和自定义代理。
 - 可选导入 Netscape 格式 Cookie，用于需要登录会话的内容。
 - 显示下载进度和可操作的错误提示。
@@ -30,8 +31,8 @@
 
 | 平台 | 技术 | 状态 |
 | --- | --- | --- |
-| Windows x64 | C++17 与 Win32 | 已有原型，正在稳定化 |
-| macOS 14+ Apple Silicon | Swift 6 与 SwiftUI | 工程基础已可构建启动，下载 MVP 开发中 |
+| macOS 14+ Apple Silicon | Swift 6 与 SwiftUI | 主平台；下载 MVP 已实现，发布打包开发中 |
+| Windows x64 | C++17 与 Win32 | 兼容平台；已有原型 |
 
 详细内容见 [v0.1.0 概览](./docs/versions/0.1.0/README.zh-CN.md)、[产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)和[实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)。
 
@@ -62,7 +63,7 @@ Downloads/
 
 工具二进制、Cookie、下载内容和构建产物均通过 `.gitignore` 排除。
 
-## 构建 macOS 工程基础
+## 构建 macOS 应用
 
 运行测试：
 
@@ -76,7 +77,7 @@ swift test --package-path apps/macos --disable-sandbox
 ./script/build_and_run.sh
 ```
 
-当前工程基础已经实现格式解析、工具链检查、yt-dlp 元数据查询、取消操作、原生设置窗口和格式表格。下载执行和发布工具打包仍在开发中。
+Mac 应用已经实现格式查询、不限制分辨率的最佳画质下载、兼容 MP4、手动格式、实时进度、取消、持久保存目录选择和 Finder 定位。工具版本锁定和发布打包仍在开发中。
 
 ## 文档
 

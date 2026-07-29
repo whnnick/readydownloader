@@ -18,6 +18,12 @@ struct YouTubeDlpDownloaderApp: App {
                 Button("Cancel Current Operation") { store.cancel() }
                     .keyboardShortcut(.escape, modifiers: [])
                     .disabled(!store.isWorking)
+                Button("Download") { store.download() }
+                    .keyboardShortcut("d", modifiers: [.command])
+                    .disabled(!store.canDownload)
+                Button("Show Download in Finder") { store.revealCompletedFile() }
+                    .keyboardShortcut("r", modifiers: [.command, .shift])
+                    .disabled(store.completedFile == nil)
             }
         }
 

@@ -17,6 +17,7 @@ APP_BUNDLE="$DIST_DIR/$APP_NAME.app"
 APP_CONTENTS="$APP_BUNDLE/Contents"
 APP_MACOS="$APP_CONTENTS/MacOS"
 APP_RESOURCES="$APP_CONTENTS/Resources"
+LOCAL_TOOLS_DIR="$ROOT_DIR/tools/macos-arm64"
 APP_BINARY="$APP_MACOS/$APP_NAME"
 INFO_PLIST="$APP_CONTENTS/Info.plist"
 VERSION="$(tr -d '[:space:]' < "$ROOT_DIR/VERSION")"
@@ -42,6 +43,11 @@ rm -rf "$APP_BUNDLE"
 mkdir -p "$APP_MACOS" "$APP_RESOURCES"
 cp "$BUILD_BINARY" "$APP_BINARY"
 chmod +x "$APP_BINARY"
+if [[ -d "$LOCAL_TOOLS_DIR" ]]; then
+  mkdir -p "$APP_RESOURCES/tools"
+  cp -R "$LOCAL_TOOLS_DIR/." "$APP_RESOURCES/tools/"
+  chmod +x "$APP_RESOURCES/tools/"* 2>/dev/null || true
+fi
 
 cat >"$INFO_PLIST" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>

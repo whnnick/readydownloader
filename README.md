@@ -15,13 +15,14 @@
 </p>
 
 > [!IMPORTANT]
-> The repository is being prepared for its first cross-platform release. The existing Windows client is a prototype; the macOS client and automated release workflow are under active development.
+> macOS is the primary product line. The Windows client remains available as a compatibility implementation and will follow the shared behavior contract without blocking Mac releases.
 
 ## What It Does
 
 - Queries video metadata and available formats through yt-dlp JSON output.
 - Shows resolution, frame rate, codecs, estimated size, and bitrate.
-- Downloads a selected video format and merges audio with FFmpeg when needed.
+- Downloads the highest available quality by default, with compatible MP4 and manual-format alternatives.
+- Merges the best audio with FFmpeg when the chosen video stream has no audio.
 - Supports direct, system-proxy, and custom-proxy network modes.
 - Supports optional Netscape-format cookie import for content that requires an authenticated session.
 - Reports download progress and actionable errors.
@@ -30,8 +31,8 @@
 
 | Platform | Technology | Status |
 | --- | --- | --- |
-| Windows x64 | C++17 and Win32 | Prototype available; stabilization in progress |
-| macOS 14+ Apple Silicon | Swift 6 and SwiftUI | Foundation builds and launches; download MVP in progress |
+| macOS 14+ Apple Silicon | Swift 6 and SwiftUI | Primary platform; download MVP implemented, packaging in progress |
+| Windows x64 | C++17 and Win32 | Compatibility platform; prototype available |
 
 See the [v0.1.0 overview](./docs/versions/0.1.0/README.md), [requirements](./docs/versions/0.1.0/REQUIREMENTS.md), and [implementation plan](./docs/versions/0.1.0/PLAN.md).
 
@@ -62,7 +63,7 @@ Downloads/
 
 Tool binaries, cookies, downloads, and build outputs are deliberately excluded from Git.
 
-## Build the macOS Foundation
+## Build the macOS App
 
 Run tests:
 
@@ -76,7 +77,7 @@ Build and launch the `.app` bundle:
 ./script/build_and_run.sh
 ```
 
-The current foundation implements format parsing, toolchain checks, yt-dlp metadata queries, cancellation, native settings, and the format table. Download execution and release tool packaging are still in progress.
+The Mac app now implements format queries, unrestricted best-quality download, compatible MP4 mode, manual format selection, real-time progress, cancellation, persistent destination selection, and Finder reveal. Release tool pinning and packaging are still in progress.
 
 ## Documentation
 

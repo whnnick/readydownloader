@@ -45,6 +45,50 @@ actor YtDlpClient {
         return try FormatParser.parse(result.stdout)
     }
 
+    func download(
+        url: String,
+        mode: DownloadMode,
+        selectedFormat: YtDlpFormat?,
+        destination: URL,
+        toolchain: Toolchain,
+        networkMode: NetworkMode,
+        proxyURL: String,
+        cookiePath: String,
+        onOutput: @escaping @Sendable (String) -> Void
+    ) async throws -> URL? {
+        var arguments = commonArguments(
+            toolchain: toolchain,
+            networkMode: networkMode,
+            proxyURL: proxyURL,
+            cookiePath: cookiePath
+        )
+        arguments.append(contentsOf: [
+            "--no-playlist",
+            "--progress",
+            "--newline",
+            "--progress-template", DownloadProgress.ytDlpTemplate,
+            "--print", "after_move:filepath",
+            "-f", try mode.formatSelector(selectedFormat: selectedFormat)
+        ])
+        if mode == .compatibleMP4 {
+            arguments.append(contentsOf: ["--merge-output-format", "mp4"])
+        }
+        arguments.append(contentsOf: ["-P", destination.path, url])
+
+        let result = try await run(
+            executable: toolchain.ytDlp,
+            arguments: arguments,
+            onStandardOutput: onOutput,
+            onStandardError: onOutput
+        )
+        guard result.exitCode == 0 else {
+            let stderr = String(decoding: result.stderr, as: UTF8.self)
+            let stdout = String(decoding: result.stdout, as: UTF8.self)
+            throw YtDlpClientError.failed(result.exitCode, stderr.isEmpty ? stdout : stderr)
+        }
+        return Self.downloadedFile(from: result.stdout)
+    }
+
     func cancel() {
         currentProcess?.terminate()
         currentProcess = nil
@@ -79,7 +123,12 @@ actor YtDlpClient {
         return arguments
     }
 
-    private func run(executable: URL, arguments: [String]) async throws -> ToolProcessResult {
+    private func run(
+        executable: URL,
+        arguments: [String],
+        onStandardOutput: (@Sendable (String) -> Void)? = nil,
+        onStandardError: (@Sendable (String) -> Void)? = nil
+    ) async throws -> ToolProcessResult {
         let process = Process()
         let outputPipe = Pipe()
         let errorPipe = Pipe()
@@ -96,8 +145,8 @@ actor YtDlpClient {
             throw YtDlpClientError.couldNotLaunch(error.localizedDescription)
         }
 
-        async let stdout = Self.readAll(outputPipe.fileHandleForReading)
-        async let stderr = Self.readAll(errorPipe.fileHandleForReading)
+        async let stdout = Self.readLines(outputPipe.fileHandleForReading, onLine: onStandardOutput)
+        async let stderr = Self.readLines(errorPipe.fileHandleForReading, onLine: onStandardError)
         await Self.waitForExit(process)
         let result = ToolProcessResult(
             exitCode: process.terminationStatus,
@@ -109,8 +158,17 @@ actor YtDlpClient {
         return result
     }
 
-    private nonisolated static func readAll(_ handle: FileHandle) async throws -> Data {
-        try await Task.detached { try handle.readToEnd() ?? Data() }.value
+    private nonisolated static func readLines(
+        _ handle: FileHandle,
+        onLine: (@Sendable (String) -> Void)?
+    ) async throws -> Data {
+        var collected = Data()
+        for try await line in handle.bytes.lines {
+            collected.append(contentsOf: line.utf8)
+            collected.append(0x0A)
+            onLine?(line)
+        }
+        return collected
     }
 
     private nonisolated static func waitForExit(_ process: Process) async {
@@ -120,5 +178,16 @@ actor YtDlpClient {
                 continuation.resume()
             }
         }
+    }
+
+    private nonisolated static func downloadedFile(from output: Data) -> URL? {
+        let lines = String(decoding: output, as: UTF8.self)
+            .split(whereSeparator: \.isNewline)
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+
+        for line in lines.reversed() where line.hasPrefix("/") {
+            return URL(filePath: line)
+        }
+        return nil
     }
 }

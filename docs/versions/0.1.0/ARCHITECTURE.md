@@ -8,6 +8,8 @@ Use native platform clients with a shared behavioral contract instead of introdu
 - macOS uses Swift 6 and SwiftUI.
 - Shared artifacts are requirements, yt-dlp argument rules, JSON fixtures, tool manifests, release version, and black-box acceptance criteria.
 
+macOS is the primary product and release platform. Windows is a compatibility implementation that follows the shared contract after Mac milestones are verified; Windows work does not block the Mac release train.
+
 This keeps the current Windows investment while allowing the macOS app to use `Process`, `Pipe`, `JSONDecoder`, Swift Concurrency, Finder integration, and security-scoped file access directly.
 
 ## Repository Shape

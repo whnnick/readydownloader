@@ -8,6 +8,8 @@
 - macOS 使用 Swift 6 和 SwiftUI。
 - 两端共享产品需求、yt-dlp 参数规则、JSON fixtures、工具清单、发布版本和黑盒验收标准。
 
+macOS 是主产品和主发布平台。Windows 是兼容实现，在 Mac 里程碑验证后按共享契约跟进；Windows 工作不阻塞 Mac 发布节奏。
+
 这样既能保留现有 Windows 投入，也能让 macOS 直接使用 `Process`、`Pipe`、`JSONDecoder`、Swift Concurrency、Finder 集成和 security-scoped 文件访问。
 
 ## 目标仓库结构

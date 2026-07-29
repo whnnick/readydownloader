@@ -6,16 +6,16 @@ Status: not yet a release candidate.
 
 | Product area | Windows | macOS | Required evidence |
 | --- | --- | --- | --- |
-| Launch and toolchain check | Pending | Pending | Clean launch and actionable missing-tool errors |
-| URL validation | Pending | Pending | Empty URL rejected without a process launch |
-| Format query and filtering | Pending | Pending | Sanitized fixture tests and one authorized real URL |
-| Format selection | Pending | Pending | Selection remains visible and downloads the requested video stream |
+| Launch and toolchain check | Pending | Automated pass; clean-machine pending | Clean launch and actionable missing-tool errors |
+| URL validation | Pending | Implemented | Empty URL rejected without a process launch |
+| Format query and filtering | Pending | Fixture tests pass; public real URL pending | Sanitized fixture tests and one authorized real URL |
+| Format selection | Pending | Selector tests pass | Selection remains visible and downloads the requested video stream |
 | Audio merge | Pending | Pending | Video-only selection produces a playable merged file |
-| Output directory | Pending | Pending | File appears in the user-selected directory |
-| Progress and cancellation | Pending | Pending | Responsive UI, changing progress, and terminated child process |
-| Network modes | Pending | Pending | Direct, system, and custom-proxy argument verification |
-| Optional cookies | Pending | Pending | Public URL works without cookies; private test data is never logged |
-| Diagnostics | Pending | Pending | Friendly common errors plus opt-in detailed tool output |
+| Output directory | Pending | Implemented; UI acceptance pending | File appears in the user-selected directory |
+| Progress and cancellation | Pending | Parser and local integration pass; UI acceptance pending | Responsive UI, changing progress, and terminated child process |
+| Network modes | Pending | Implemented; real-network matrix pending | Direct, system, and custom-proxy argument verification |
+| Optional cookies | Pending | Implemented; authenticated check pending | Public URL works without cookies; private test data is never logged |
+| Diagnostics | Pending | Partial | Friendly common errors plus opt-in detailed tool output |
 
 ## Automated Verification Required
 
@@ -50,10 +50,10 @@ The release must not contain:
 
 ## Current Release Blockers
 
-1. Windows stabilization is incomplete.
-2. macOS MVP is not implemented.
-3. Shared fixture tests are not implemented.
-4. Tool manifests and checksums are not defined.
-5. CI and release packaging are not implemented.
-6. macOS signing and notarization credentials have not been validated.
-7. GitHub public surfaces and final release assets do not yet exist.
+1. A real authorized public video and a video-only audio merge still need UI acceptance on macOS.
+2. Shared fixture extraction is not implemented.
+3. Tool manifests and checksums are not defined.
+4. CI and release packaging are not implemented.
+5. macOS signing and notarization credentials have not been validated.
+6. GitHub public surfaces and final release assets do not yet exist.
+7. Windows compatibility work remains incomplete but does not block the Mac-first release unless the release is advertised as dual-platform.

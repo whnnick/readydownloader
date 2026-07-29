@@ -19,11 +19,19 @@ struct ContentView: View {
             FormatTable(formats: store.formats, selection: $store.selectedFormatID)
             Divider()
 
+            DownloadControlsView(store: store)
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+            Divider()
+
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 8) {
                     if store.isWorking { ProgressView().controlSize(.small) }
                     Text(store.status).foregroundStyle(.secondary)
                     Spacer()
+                }
+                if let progress = store.progress, let fraction = progress.fractionCompleted {
+                    ProgressView(value: fraction)
                 }
                 if !store.detailedLog.isEmpty {
                     ScrollView {
@@ -47,6 +55,14 @@ struct ContentView: View {
                     Label("Cancel", systemImage: "xmark.circle")
                 }
                 .disabled(!store.isWorking)
+                Button { store.download() } label: {
+                    Label("Download", systemImage: "arrow.down.circle")
+                }
+                .disabled(!store.canDownload)
+                Button { store.revealCompletedFile() } label: {
+                    Label("Show in Finder", systemImage: "folder")
+                }
+                .disabled(store.completedFile == nil)
                 SettingsLink { Label("Settings", systemImage: "gearshape") }
             }
         }

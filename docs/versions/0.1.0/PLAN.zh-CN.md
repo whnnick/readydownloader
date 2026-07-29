@@ -16,50 +16,49 @@
 
 退出标准：README 链接全部有效，中英文版本范围一致。
 
-## 里程碑 2：Windows 稳定化
-
-- 在 CI 中建立可复现的 Windows Release 构建。
-- 让工具和保存目录选择真实生效，或移除误导控件。
-- 将 Cookie 改为可选。
-- 只有纯视频格式才追加音频。
-- 删除未使用的 JSON、文本表格和旧进程执行路径。
-- 将 detached 后台任务替换为可管理、可取消的操作。
-- 正确处理跨管道读取边界的 UTF-8。
-- 添加格式解析 fixture 测试。
-
-退出标准：Windows 构建、测试和适用的黑盒检查通过。
-
-## 里程碑 3：macOS MVP
+## 里程碑 2：macOS MVP
 
 - 建立多文件 SwiftPM SwiftUI 应用。
-- 实现工具检查、JSON 格式查询、选择、下载、进度、取消、保存目录和 Finder 显示。
+- 实现工具检查、JSON 格式查询、不限制分辨率的最佳画质、兼容 MP4、手动格式、进度、取消、保存目录和 Finder 显示。
 - 添加网络模式、自定义代理、可选 Cookie 和详细日志设置。
 - 添加 `script/build_and_run.sh` 和 Codex Run 动作。
 - 使用共享脱敏 fixtures 添加 Swift 测试。
 
 退出标准：`swift test` 和本地应用启动验证通过；使用已获授权的真实链接可以完成下载和合并。
 
-## 里程碑 4：工具链和打包
+## 里程碑 3：macOS 工具链和打包
 
-- 添加 Windows x64 和 macOS arm64 工具版本清单。
+- 添加 macOS arm64 工具版本清单。
 - 打包时下载并校验工具产物。
 - 复制所有要求的第三方许可证。
-- 生成 Windows ZIP 和 macOS APP ZIP/DMG。
+- 生成 macOS APP ZIP 和 DMG。
 - 验证每个包只包含当前版本产物。
 
 退出标准：在不依赖开发机 PATH 的环境中通过干净机器检查。
 
-## 里程碑 5：GitHub Release
+## 里程碑 4：macOS GitHub Release
 
-- 添加 push 和 PR 的双平台 CI。
+- 添加 push 和 PR 的 macOS CI。
 - 添加 tag 驱动的发布工作流。
 - 添加敏感信息和发布包内容扫描。
 - 生成 `SHA256SUMS.txt`。
 - 配置凭据后为 macOS 稳定版本签名并公证。
 - 发布资产，并分别验证仓库 About、远端 `main`、Release 资产、latest 和下载链接。
 
-退出标准：`v0.1.0` 黑盒报告没有发布阻塞项，GitHub 公开页面全部验证完成。
+退出标准：macOS `v0.1.0` 黑盒报告没有发布阻塞项，GitHub 公开页面全部验证完成。
+
+## 里程碑 5：Windows 兼容维护
+
+- 在 CI 中建立可复现的 Windows Release 构建。
+- 让工具和保存目录选择真实生效，或移除误导控件。
+- 将 Cookie 改为可选，并与 macOS 对齐最佳画质选择规则。
+- 只有纯视频格式才追加音频。
+- 删除未使用的 JSON、文本表格和旧进程执行路径。
+- 将 detached 后台任务替换为可管理、可取消的操作。
+- 正确处理跨管道读取边界的 UTF-8。
+
+退出标准：Windows 遵循共享行为契约，但不阻塞 Mac 发布节奏。
 
 ## 提交边界
 
-安全基线、文档、Windows 行为、macOS 行为、测试和发布自动化必须拆成独立的已验证提交。
+安全基线、文档、macOS 行为、测试、发布自动化和 Windows 兼容工作必须拆成独立的已验证提交。
