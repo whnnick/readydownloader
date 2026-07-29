@@ -45,7 +45,10 @@ jobs:
           done
 
       - name: Run Swift tests
+        env:
+          CLANG_MODULE_CACHE_PATH: ${{ github.workspace }}/apps/macos/.build/clang-module-cache
         run: |
+          mkdir -p "$CLANG_MODULE_CACHE_PATH"
           swift test \
             --package-path apps/macos \
             --scratch-path apps/macos/.build \

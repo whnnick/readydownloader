@@ -9,7 +9,7 @@ Mac 版本。
 
 - macOS 14 或更高版本的 Apple Silicon Mac；
 - Xcode 命令行工具；
-- `curl`、`make`、`tar`、`ditto` 和 `hdiutil`；
+- Python 3、`curl`、`make`、`tar`、`ditto` 和 `hdiutil`；
 - 足够的磁盘空间用于从源码构建 FFmpeg。
 
 执行：
@@ -21,7 +21,9 @@ Mac 版本。
 
 第一个命令下载固定版本输入并逐项校验 SHA-256，然后从 FFmpeg 8.1.2 官方源码
 构建不启用 GPL 或非自由外部库的工具。未设置 `MACOS_SIGNING_IDENTITY` 时，
-第二个命令生成 ad-hoc 签名的开发验证包。
+第二个命令生成 ad-hoc 签名的开发验证包。打包前还会在本机提供生成的 DASH
+独立音视频流，使用固定版本 yt-dlp 的最佳画质选择器下载，并通过内嵌 FFprobe
+验证合并结果。
 
 预期产物：
 

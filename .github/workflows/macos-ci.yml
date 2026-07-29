@@ -24,7 +24,10 @@ jobs:
         run: ./script/scan_repository.sh
 
       - name: Run Swift tests
+        env:
+          CLANG_MODULE_CACHE_PATH: ${{ github.workspace }}/apps/macos/.build/clang-module-cache
         run: |
+          mkdir -p "$CLANG_MODULE_CACHE_PATH"
           swift test \
             --package-path apps/macos \
             --scratch-path apps/macos/.build \
@@ -33,3 +36,16 @@ jobs:
             --security-path apps/macos/.build/swiftpm-security \
             --manifest-cache local \
             --disable-sandbox
+
+  download-integration:
+    if: github.event_name == 'push'
+    needs: test
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Prepare pinned macOS tools
+        run: ./script/prepare_macos_tools.sh
+
+      - name: Verify best-quality download and audio merge
+        run: ./script/test_macos_download_integration.sh

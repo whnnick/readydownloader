@@ -18,6 +18,7 @@ trap 'rm -rf "$PACKAGE_WORK_DIR"' EXIT
 
 "$ROOT_DIR/script/check_release_consistency.sh"
 "$ROOT_DIR/script/prepare_macos_tools.sh"
+"$ROOT_DIR/script/test_macos_download_integration.sh"
 
 rm -rf "$RELEASE_DIR" "$BUILT_APP_BUNDLE"
 mkdir -p "$RELEASE_DIR"

@@ -9,7 +9,7 @@ Requirements:
 
 - Apple Silicon Mac running macOS 14 or later;
 - Xcode command-line tools;
-- `curl`, `make`, `tar`, `ditto`, and `hdiutil`;
+- Python 3, `curl`, `make`, `tar`, `ditto`, and `hdiutil`;
 - enough free space to build FFmpeg from source.
 
 Run:
@@ -22,7 +22,10 @@ Run:
 The first command downloads pinned inputs, verifies every SHA-256, and builds
 FFmpeg 8.1.2 from official source without GPL or non-free external libraries.
 The second command creates an ad-hoc-signed development package when
-`MACOS_SIGNING_IDENTITY` is not set.
+`MACOS_SIGNING_IDENTITY` is not set. Before packaging, it also serves locally
+generated separate DASH video/audio streams, downloads them with the pinned
+yt-dlp best-quality selector, and verifies the merged output with bundled
+FFprobe.
 
 Expected files:
 

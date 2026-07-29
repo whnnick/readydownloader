@@ -26,6 +26,10 @@ Exit criteria: all README links resolve and English/Chinese release scope agrees
 
 Exit criteria: `swift test` and the local app launch verification pass; an authorized real URL can complete a download and merge.
 
+Implementation status: the shared fixture tests and a fully local real yt-dlp
+separate-stream download/merge test are implemented. Authorized public-URL and
+UI acceptance remain pending.
+
 ## Milestone 3: macOS Toolchain and Packaging
 
 - Add pinned manifests for macOS arm64 tools.
