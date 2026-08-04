@@ -5,34 +5,54 @@ struct FormatTable: View {
     @Binding var selection: YtDlpFormat.ID?
     let isQuerying: Bool
     let hasURL: Bool
+    @AppStorage(AppLanguage.storageKey) private var languageRawValue = AppLanguage.simplifiedChinese.rawValue
+
+    private var language: AppLanguage {
+        AppLanguage(rawValue: languageRawValue) ?? .simplifiedChinese
+    }
 
     var body: some View {
         Table(formats, selection: $selection) {
-            TableColumn("格式", value: \.id).width(min: 60, ideal: 75)
-            TableColumn("封装", value: \.ext).width(min: 50, ideal: 60)
-            TableColumn("分辨率", value: \.resolution).width(min: 90, ideal: 110)
-            TableColumn("帧率", value: \.displayFPS).width(min: 45, ideal: 55)
-            TableColumn("视频编码", value: \.videoCodec).width(min: 120, ideal: 160)
-            TableColumn("音频编码", value: \.displayAudioCodec).width(min: 90, ideal: 110)
-            TableColumn("大小", value: \.displayFileSize).width(min: 75, ideal: 90)
-            TableColumn("码率", value: \.displayBitrate).width(min: 60, ideal: 70)
+            TableColumn(language.text("格式", "Format"), value: \.id).width(min: 60, ideal: 75)
+            TableColumn(language.text("封装", "Container"), value: \.ext).width(min: 50, ideal: 60)
+            TableColumn(language.text("分辨率", "Resolution"), value: \.resolution).width(min: 90, ideal: 110)
+            TableColumn(language.text("帧率", "FPS"), value: \.displayFPS).width(min: 45, ideal: 55)
+            TableColumn(language.text("视频编码", "Video Codec"), value: \.videoCodec).width(min: 120, ideal: 160)
+            TableColumn(language.text("音频编码", "Audio Codec")) { format in
+                Text(format.displayAudioCodec(language: language))
+            }
+            .width(min: 90, ideal: 110)
+            TableColumn(language.text("大小", "Size"), value: \.displayFileSize).width(min: 75, ideal: 90)
+            TableColumn(language.text("码率", "Bitrate"), value: \.displayBitrate).width(min: 60, ideal: 70)
         }
         .overlay {
             if formats.isEmpty {
                 if isQuerying {
                     VStack(spacing: 10) {
                         ProgressView()
-                        Text("正在读取视频信息…")
+                        Text(language.text("正在读取视频信息…", "Loading video details…"))
                             .font(.callout.weight(.medium))
-                        Text("部分平台的首次解析可能需要十几秒。")
+                        Text(language.text(
+                            "部分平台的首次解析可能需要十几秒。",
+                            "The first query for some services may take several seconds."
+                        ))
                             .font(.footnote)
                             .foregroundStyle(DownloaderTheme.muted)
                     }
                 } else {
                     ContentUnavailableView(
-                        hasURL ? "等待解析" : "粘贴视频链接",
+                        hasURL
+                            ? language.text("等待解析", "Ready to Query")
+                            : language.text("粘贴视频链接", "Paste a Video URL"),
                         systemImage: hasURL ? "sparkle.magnifyingglass" : "link",
-                        description: Text(hasURL ? "点击“解析链接”查看可用画质。" : "支持 YouTube、哔哩哔哩、Instagram 等 yt-dlp 可解析的平台。")
+                        description: Text(
+                            hasURL
+                                ? language.text("点击“解析链接”查看可用画质。", "Click Query URL to view available formats.")
+                                : language.text(
+                                    "支持 YouTube、哔哩哔哩、Instagram 等 yt-dlp 可解析的平台。",
+                                    "Supports YouTube, Bilibili, Instagram, and other services handled by yt-dlp."
+                                )
+                        )
                     )
                 }
             }

@@ -33,10 +33,10 @@ struct DownloadDirectoryStore {
         return defaultDirectory()
     }
 
-    func chooseDirectory() -> URL? {
+    func chooseDirectory(language: AppLanguage) -> URL? {
         let panel = NSOpenPanel()
-        panel.title = "选择下载文件夹"
-        panel.prompt = "选择"
+        panel.title = language.text("选择下载文件夹", "Choose Download Folder")
+        panel.prompt = language.text("选择", "Choose")
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false

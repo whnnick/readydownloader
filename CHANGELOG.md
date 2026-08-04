@@ -6,7 +6,23 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
-## [0.1.1] - Unreleased
+## [0.1.2] - Unreleased
+
+### Added
+
+- Persistent, immediate Simplified Chinese and English switching for the main window, settings, commands, format table, status, and errors.
+
+### Fixed
+
+- Toolchain resolution now falls back from missing bundle resources to repository tools for SwiftPM development executables and stale local app copies.
+- Missing-component guidance now distinguishes an incomplete app copy from a current packaged release.
+
+### Verified
+
+- Added toolchain fallback and bilingual state-preservation tests.
+- Verified a real local DASH query in Chinese, switched to English with the parsed result still present, and confirmed all download controls and format columns updated.
+
+## [0.1.1] - Development baseline
 
 ### Changed
 

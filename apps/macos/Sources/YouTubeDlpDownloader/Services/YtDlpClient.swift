@@ -12,8 +12,12 @@ enum YtDlpClientError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .couldNotLaunch(let message): "无法启动 yt-dlp：\(message)"
-        case .failed(let code, let message): message.isEmpty ? "yt-dlp 已退出，错误代码：\(code)。" : message
+        case .couldNotLaunch(let message):
+            AppLanguage.current.text("无法启动 yt-dlp：\(message)", "Could not launch yt-dlp: \(message)")
+        case .failed(let code, let message):
+            message.isEmpty
+                ? AppLanguage.current.text("yt-dlp 已退出，错误代码：\(code)。", "yt-dlp exited with code \(code).")
+                : message
         }
     }
 }

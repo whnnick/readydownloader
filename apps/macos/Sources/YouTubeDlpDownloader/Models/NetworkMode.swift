@@ -7,11 +7,11 @@ enum NetworkMode: String, CaseIterable, Identifiable, Sendable {
 
     var id: Self { self }
 
-    var title: String {
+    func title(language: AppLanguage) -> String {
         switch self {
-        case .direct: "直接连接"
-        case .system: "跟随系统"
-        case .custom: "自定义代理"
+        case .direct: language.text("直接连接", "Direct")
+        case .system: language.text("跟随系统", "System Proxy")
+        case .custom: language.text("自定义代理", "Custom Proxy")
         }
     }
 }

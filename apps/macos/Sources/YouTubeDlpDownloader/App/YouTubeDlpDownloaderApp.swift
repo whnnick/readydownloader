@@ -3,25 +3,30 @@ import SwiftUI
 @main
 struct YouTubeDlpDownloaderApp: App {
     @State private var store = DownloadStore()
+    @AppStorage(AppLanguage.storageKey) private var languageRawValue = AppLanguage.simplifiedChinese.rawValue
+
+    private var language: AppLanguage {
+        AppLanguage(rawValue: languageRawValue) ?? .simplifiedChinese
+    }
 
     var body: some Scene {
-        WindowGroup("视频下载", id: "main") {
+        WindowGroup(language.text("视频下载", "Video Downloader"), id: "main") {
             ContentView(store: store)
                 .frame(minWidth: 860, minHeight: 680)
         }
         .defaultSize(width: 980, height: 820)
         .commands {
             CommandGroup(after: .newItem) {
-                Button("解析链接") { store.queryFormats() }
+                Button(language.text("解析链接", "Query URL")) { store.queryFormats() }
                     .keyboardShortcut(.return, modifiers: [.command])
                     .disabled(!store.canQuery)
-                Button("取消当前操作") { store.cancel() }
+                Button(language.text("取消当前操作", "Cancel Current Operation")) { store.cancel() }
                     .keyboardShortcut(.escape, modifiers: [])
                     .disabled(!store.isWorking)
-                Button("开始下载") { store.download() }
+                Button(language.text("开始下载", "Start Download")) { store.download() }
                     .keyboardShortcut("d", modifiers: [.command])
                     .disabled(!store.canDownload)
-                Button("在 Finder 中显示") { store.revealCompletedFile() }
+                Button(language.text("在 Finder 中显示", "Show in Finder")) { store.revealCompletedFile() }
                     .keyboardShortcut("r", modifiers: [.command, .shift])
                     .disabled(store.completedFile == nil)
             }
@@ -29,7 +34,7 @@ struct YouTubeDlpDownloaderApp: App {
 
         Settings {
             SettingsView()
-                .navigationTitle("设置")
+                .navigationTitle(language.text("设置", "Settings"))
         }
     }
 }

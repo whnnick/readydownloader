@@ -8,6 +8,26 @@ struct Toolchain: Sendable {
 }
 
 struct ToolchainResolver: Sendable {
+    private let overrideDirectory: String?
+    private let resourceURL: URL?
+    private let executableURL: URL?
+    private let currentDirectory: URL
+
+    init(
+        overrideDirectory: String? = ProcessInfo.processInfo.environment["YTDLP_DOWNLOADER_TOOLS_DIR"],
+        resourceURL: URL? = Bundle.main.resourceURL,
+        executableURL: URL? = Bundle.main.executableURL,
+        currentDirectory: URL = URL(
+            filePath: FileManager.default.currentDirectoryPath,
+            directoryHint: .isDirectory
+        )
+    ) {
+        self.overrideDirectory = overrideDirectory
+        self.resourceURL = resourceURL
+        self.executableURL = executableURL
+        self.currentDirectory = currentDirectory
+    }
+
     func resolve() -> Toolchain {
         let directory = toolsDirectory()
         return Toolchain(
@@ -28,14 +48,33 @@ struct ToolchainResolver: Sendable {
     }
 
     private func toolsDirectory() -> URL {
-        if let override = ProcessInfo.processInfo.environment["YTDLP_DOWNLOADER_TOOLS_DIR"], !override.isEmpty {
+        if let override = overrideDirectory, !override.isEmpty {
             return URL(filePath: override, directoryHint: .isDirectory)
         }
-        if let resourceURL = Bundle.main.resourceURL {
-            return resourceURL.appending(path: "tools", directoryHint: .isDirectory)
+
+        let bundledDirectory = resourceURL?.appending(path: "tools", directoryHint: .isDirectory)
+        if let bundledDirectory, hasQueryTools(in: bundledDirectory) {
+            return bundledDirectory
         }
-        return URL(filePath: FileManager.default.currentDirectoryPath, directoryHint: .isDirectory)
-            .appending(path: "tools/macos-arm64", directoryHint: .isDirectory)
+
+        for origin in [executableURL?.deletingLastPathComponent(), currentDirectory].compactMap({ $0 }) {
+            var directory = origin
+            for _ in 0..<8 {
+                let candidate = directory.appending(path: "tools/macos-arm64", directoryHint: .isDirectory)
+                if hasQueryTools(in: candidate) { return candidate }
+                let parent = directory.deletingLastPathComponent()
+                if parent == directory { break }
+                directory = parent
+            }
+        }
+
+        return bundledDirectory
+            ?? currentDirectory.appending(path: "tools/macos-arm64", directoryHint: .isDirectory)
+    }
+
+    private func hasQueryTools(in directory: URL) -> Bool {
+        isExecutable(directory.appending(path: "yt-dlp"))
+            && isExecutable(directory.appending(path: "deno"))
     }
 
     private func isExecutable(_ url: URL) -> Bool {
