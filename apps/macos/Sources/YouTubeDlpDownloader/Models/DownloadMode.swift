@@ -9,9 +9,17 @@ enum DownloadMode: String, CaseIterable, Identifiable, Sendable {
 
     var title: String {
         switch self {
-        case .bestQuality: "Best Quality"
-        case .compatibleMP4: "Compatible MP4"
-        case .selectedFormat: "Selected Format"
+        case .bestQuality: "最高画质"
+        case .compatibleMP4: "兼容 MP4"
+        case .selectedFormat: "指定格式"
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .bestQuality: "自动下载该视频可用的最高画质，并在需要时合并音频。"
+        case .compatibleMP4: "优先选择 H.264 视频和 M4A 音频，适合更多播放器。"
+        case .selectedFormat: "使用下方列表中选中的格式；纯视频格式会自动补充音频。"
         }
     }
 
@@ -34,7 +42,7 @@ enum DownloadRequestError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .missingSelectedFormat:
-            "Select a format before using Selected Format mode."
+            "使用指定格式时，请先在格式列表中选择一项。"
         }
     }
 }

@@ -14,7 +14,7 @@
 
 <p align="center">
   <img alt="Platforms" src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS-blue">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-green">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.1-green">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-lightgrey">
 </p>
 
@@ -86,11 +86,12 @@ swift test --package-path apps/macos --disable-sandbox
 ./script/build_and_run.sh
 ```
 
-Mac 应用已经实现格式查询、不限制分辨率的最佳画质下载、兼容 MP4、手动格式、实时进度、取消、持久保存目录选择、Finder 定位和主动开启的 yt-dlp 详细日志。Apple Silicon 工具版本锁定以及 APP/ZIP/DMG 本地打包已实现；签名和公证的公开产物仍需要 Apple 发布凭据。
+Mac 应用已提供与 ReadyType 统一的中文下载流程，并实现格式查询、不限制分辨率的最佳画质下载、兼容 MP4、手动格式、实时进度、取消、持久保存目录选择、Finder 定位和主动开启的 yt-dlp 详细日志。Apple Silicon 工具版本锁定以及 APP/ZIP/DMG 本地打包已实现；签名和公证的公开产物仍需要 Apple 发布凭据。
 
 ## 文档
 
-- [v0.1.0 版本概览](./docs/versions/0.1.0/README.zh-CN.md)
+- [v0.1.1 版本概览](./docs/versions/0.1.1/README.zh-CN.md)
+- [v0.1.1 黑盒功能检查](./docs/versions/0.1.1/BLACK_BOX_TESTS.zh-CN.md)
 - [产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)
 - [技术架构](./docs/versions/0.1.0/ARCHITECTURE.zh-CN.md)
 - [实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)

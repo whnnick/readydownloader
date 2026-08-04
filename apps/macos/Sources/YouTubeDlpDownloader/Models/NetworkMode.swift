@@ -9,9 +9,9 @@ enum NetworkMode: String, CaseIterable, Identifiable, Sendable {
 
     var title: String {
         switch self {
-        case .direct: "Direct"
-        case .system: "System Proxy"
-        case .custom: "Custom Proxy"
+        case .direct: "直接连接"
+        case .system: "跟随系统"
+        case .custom: "自定义代理"
         }
     }
 }

@@ -6,6 +6,21 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.1.1] - Unreleased
+
+### Changed
+
+- Reworked the macOS app into a Chinese, ReadyType-aligned single-task download workspace.
+- Replaced the oversized empty table workflow with guided URL, download-settings, format, and status panels.
+- Added inline URL validation, stale-result clearing, localized common-error guidance, and clearer loading, cancellation, success, and failure states.
+- Localized the macOS settings window, commands, format table, file chooser, download modes, and tool errors.
+
+### Verified
+
+- Added coverage for URL validation, localized authentication guidance, and stale-state clearing.
+- Verified the real app's invalid/valid URL states, mode switching, Chinese settings, and local DASH format query.
+- Re-verified the real yt-dlp best-quality download and FFmpeg audio/video merge path.
+
 ### Added
 
 - Open-source repository policies and bilingual project documentation.
@@ -29,6 +44,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Excluded cookies, downloaded media, tool binaries, IDE state, and build outputs from Git.
 
-## [0.1.0] - Unreleased
+## [0.1.0] - Development baseline
 
 - First planned public release with Windows x64 and macOS Apple Silicon support.

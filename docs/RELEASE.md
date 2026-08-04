@@ -79,7 +79,7 @@ The tag workflow requires these repository secrets:
 Before tagging:
 
 1. Complete the version black-box report.
-2. Change both `0.1.0` changelog headings from `Unreleased` to the release date.
+2. Change the current `VERSION` headings in both changelogs from `Unreleased` to the release date.
 3. Confirm `VERSION` and the intended tag agree.
 4. Commit and push a clean `main`.
 5. Create and push `v<version>`.

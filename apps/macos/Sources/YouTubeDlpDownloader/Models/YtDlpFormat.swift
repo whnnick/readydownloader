@@ -14,7 +14,7 @@ struct YtDlpFormat: Identifiable, Hashable, Sendable {
 
     var isVideoOnly: Bool { audioCodec.isEmpty || audioCodec == "none" }
     var displayFPS: String { fps.map(String.init) ?? "—" }
-    var displayAudioCodec: String { isVideoOnly ? "video only" : audioCodec }
+    var displayAudioCodec: String { isVideoOnly ? "仅视频" : audioCodec }
 
     var displayFileSize: String {
         guard let fileSize, fileSize > 0 else { return "—" }

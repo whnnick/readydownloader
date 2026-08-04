@@ -5,23 +5,23 @@ struct YouTubeDlpDownloaderApp: App {
     @State private var store = DownloadStore()
 
     var body: some Scene {
-        WindowGroup("YouTubeDlpDownloader", id: "main") {
+        WindowGroup("视频下载", id: "main") {
             ContentView(store: store)
-                .frame(minWidth: 980, minHeight: 640)
+                .frame(minWidth: 860, minHeight: 680)
         }
-        .defaultSize(width: 1180, height: 760)
+        .defaultSize(width: 980, height: 820)
         .commands {
             CommandGroup(after: .newItem) {
-                Button("Query Formats") { store.queryFormats() }
+                Button("解析链接") { store.queryFormats() }
                     .keyboardShortcut(.return, modifiers: [.command])
-                    .disabled(store.isWorking)
-                Button("Cancel Current Operation") { store.cancel() }
+                    .disabled(!store.canQuery)
+                Button("取消当前操作") { store.cancel() }
                     .keyboardShortcut(.escape, modifiers: [])
                     .disabled(!store.isWorking)
-                Button("Download") { store.download() }
+                Button("开始下载") { store.download() }
                     .keyboardShortcut("d", modifiers: [.command])
                     .disabled(!store.canDownload)
-                Button("Show Download in Finder") { store.revealCompletedFile() }
+                Button("在 Finder 中显示") { store.revealCompletedFile() }
                     .keyboardShortcut("r", modifiers: [.command, .shift])
                     .disabled(store.completedFile == nil)
             }
@@ -29,6 +29,7 @@ struct YouTubeDlpDownloaderApp: App {
 
         Settings {
             SettingsView()
+                .navigationTitle("设置")
         }
     }
 }
