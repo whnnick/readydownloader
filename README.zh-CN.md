@@ -14,7 +14,7 @@
 
 <p align="center">
   <img alt="Platforms" src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS-blue">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.2-green">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.3-green">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-lightgrey">
 </p>
 
@@ -25,7 +25,8 @@
 
 - 通过 yt-dlp JSON 输出读取视频信息和可用格式。
 - 显示分辨率、帧率、编码、预估大小和码率。
-- 默认下载视频可提供的最高画质，同时提供兼容 MP4 和手动格式模式。
+- 默认下载视频可提供的最高画质，同时提供 iPhone 兼容和手动格式模式。
+- 检查 iPhone 兼容下载的成品编码，将不兼容的 VP9/AV1 视频转为 H.264、已有音频转为 AAC，并统一为 yuv420p。
 - 当所选视频流没有音频时，通过 FFmpeg 合并最佳音频。
 - 支持直连、系统代理和自定义代理。
 - 可选导入 Netscape 格式 Cookie，用于需要登录会话的内容。
@@ -86,12 +87,12 @@ swift test --package-path apps/macos --disable-sandbox
 ./script/build_and_run.sh
 ```
 
-Mac 应用已提供与 ReadyType 统一、可在简体中文和 English 间即时切换的下载流程，并实现格式查询、不限制分辨率的最佳画质下载、兼容 MP4、手动格式、实时进度、取消、持久保存目录选择、Finder 定位和主动开启的 yt-dlp 详细日志。Apple Silicon 工具版本锁定以及 APP/ZIP/DMG 本地打包已实现；签名和公证的公开产物仍需要 Apple 发布凭据。
+Mac 应用已提供与 ReadyType 统一、可在简体中文和 English 间即时切换的下载流程，并实现格式查询、不限制分辨率的最佳画质下载、经过编码验证的 iPhone 兼容 H.264 MP4、手动格式、实时进度、取消、持久保存目录选择、Finder 定位和主动开启的 yt-dlp 详细日志。Apple Silicon 工具版本锁定以及 APP/ZIP/DMG 本地打包已实现；签名和公证的公开产物仍需要 Apple 发布凭据。
 
 ## 文档
 
-- [v0.1.2 版本概览](./docs/versions/0.1.2/README.zh-CN.md)
-- [v0.1.2 黑盒功能检查](./docs/versions/0.1.2/BLACK_BOX_TESTS.zh-CN.md)
+- [v0.1.3 版本概览](./docs/versions/0.1.3/README.zh-CN.md)
+- [v0.1.3 黑盒功能检查](./docs/versions/0.1.3/BLACK_BOX_TESTS.zh-CN.md)
 - [产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)
 - [技术架构](./docs/versions/0.1.0/ARCHITECTURE.zh-CN.md)
 - [实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)

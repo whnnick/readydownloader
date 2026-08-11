@@ -20,10 +20,11 @@ Mac 版本。
 ```
 
 第一个命令下载固定版本输入并逐项校验 SHA-256，然后从 FFmpeg 8.1.2 官方源码
-构建不启用 GPL 或非自由外部库的工具。未设置 `MACOS_SIGNING_IDENTITY` 时，
+构建不启用 GPL 或非自由外部库的工具，并明确启用 Apple 的 VideoToolbox H.264
+编码器，供 macOS 的 iPhone 兼容下载模式使用。未设置 `MACOS_SIGNING_IDENTITY` 时，
 第二个命令生成 ad-hoc 签名的开发验证包。打包前还会在本机提供生成的 DASH
-独立音视频流，使用固定版本 yt-dlp 的最佳画质选择器下载，并通过内嵌 FFprobe
-验证合并结果。
+独立音视频流，使用固定版本 yt-dlp 的最佳画质选择器下载，验证合并结果，再经
+VideoToolbox 转换并使用内嵌 FFprobe 确认成品为 H.264、AAC 和 yuv420p。
 
 构建流程会从仓库跟踪的 1024×1024 品牌主图生成 `AppIcon.icns`。发布包验证会
 同时检查图标资源和对应的 `CFBundleIconFile` 配置。

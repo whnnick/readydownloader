@@ -6,6 +6,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.1.3] - Unreleased
+
+### Changed
+
+- Renamed the macOS compatible mode to iPhone Compatible and clarified that MP4 containers alone do not guarantee playback compatibility.
+- Compatible downloads now inspect the finished file and preserve already-compatible H.264/AAC media without unnecessary transcoding.
+
+### Fixed
+
+- VP9, AV1, non-AAC audio, and non-4:2:0 video in MP4 downloads are now converted to H.264, AAC when audio is available, and yuv420p using Apple's VideoToolbox encoder.
+- Compatible conversion keeps the downloaded filename and reports a dedicated bilingual conversion status before completion.
+
+### Verified
+
+- Added compatibility probe, VP9 regression, transcode-argument, and bilingual conversion-state tests.
+- Verified the reported Instagram reel changed from VP9/yuv420p MP4 to H.264/yuv420p MP4; the source did not expose an audio stream.
+- Extended toolchain and release checks to require and exercise H.264 VideoToolbox encoding.
+
 ## [0.1.2] - Unreleased
 
 ### Added

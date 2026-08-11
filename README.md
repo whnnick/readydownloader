@@ -14,7 +14,7 @@
 
 <p align="center">
   <img alt="Platforms" src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS-blue">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.2-green">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.3-green">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-lightgrey">
 </p>
 
@@ -25,7 +25,8 @@
 
 - Queries video metadata and available formats through yt-dlp JSON output.
 - Shows resolution, frame rate, codecs, estimated size, and bitrate.
-- Downloads the highest available quality by default, with compatible MP4 and manual-format alternatives.
+- Downloads the highest available quality by default, with an iPhone-compatible mode and manual-format alternatives.
+- Inspects iPhone-compatible downloads and converts incompatible VP9/AV1 video to H.264, available audio to AAC, and pixel layout to yuv420p.
 - Merges the best audio with FFmpeg when the chosen video stream has no audio.
 - Supports direct, system-proxy, and custom-proxy network modes.
 - Supports optional Netscape-format cookie import for content that requires an authenticated session.
@@ -87,12 +88,12 @@ Build and launch the `.app` bundle:
 ./script/build_and_run.sh
 ```
 
-The Mac app provides a Chinese/English switchable, ReadyType-aligned workflow for format queries, unrestricted best-quality download, compatible MP4 mode, manual format selection, real-time progress, cancellation, persistent destination selection, Finder reveal, and opt-in detailed yt-dlp logs. Pinned Apple Silicon tools and local APP/ZIP/DMG packaging are available; signed and notarized public artifacts still require Apple release credentials.
+The Mac app provides a Chinese/English switchable, ReadyType-aligned workflow for format queries, unrestricted best-quality download, verified iPhone-compatible H.264 MP4 output, manual format selection, real-time progress, cancellation, persistent destination selection, Finder reveal, and opt-in detailed yt-dlp logs. Pinned Apple Silicon tools and local APP/ZIP/DMG packaging are available; signed and notarized public artifacts still require Apple release credentials.
 
 ## Documentation
 
-- [v0.1.2 release overview](./docs/versions/0.1.2/README.md)
-- [v0.1.2 black-box functional check](./docs/versions/0.1.2/BLACK_BOX_TESTS.md)
+- [v0.1.3 release overview](./docs/versions/0.1.3/README.md)
+- [v0.1.3 black-box functional check](./docs/versions/0.1.3/BLACK_BOX_TESTS.md)
 - [Requirements](./docs/versions/0.1.0/REQUIREMENTS.md)
 - [Architecture](./docs/versions/0.1.0/ARCHITECTURE.md)
 - [Implementation plan](./docs/versions/0.1.0/PLAN.md)
