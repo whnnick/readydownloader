@@ -1,11 +1,9 @@
 import Foundation
-import Testing
+import XCTest
 @testable import ReadyDownloader
 
-@Suite("Toolchain resolver")
-struct ToolchainResolverTests {
-    @Test("Prefers bundled tools when they are executable")
-    func prefersBundledTools() throws {
+final class ToolchainResolverTests: XCTestCase {
+    func testPrefersBundledTools() throws {
         let root = try temporaryDirectory()
         defer { try? FileManager.default.removeItem(at: root) }
         let resources = root.appending(path: "App.app/Contents/Resources", directoryHint: .isDirectory)
@@ -19,12 +17,11 @@ struct ToolchainResolverTests {
             currentDirectory: root
         ).resolve()
 
-        #expect(toolchain.ytDlp == bundledTools.appending(path: "yt-dlp"))
-        #expect(toolchain.deno == bundledTools.appending(path: "deno"))
+        XCTAssertEqual(toolchain.ytDlp, bundledTools.appending(path: "yt-dlp"))
+        XCTAssertEqual(toolchain.deno, bundledTools.appending(path: "deno"))
     }
 
-    @Test("Falls back to repository tools for a development executable")
-    func findsRepositoryTools() throws {
+    func testFindsRepositoryTools() throws {
         let root = try temporaryDirectory()
         defer { try? FileManager.default.removeItem(at: root) }
         let repositoryTools = root.appending(path: "tools/macos-arm64", directoryHint: .isDirectory)
@@ -38,8 +35,8 @@ struct ToolchainResolverTests {
             currentDirectory: root.appending(path: "apps/macos")
         ).resolve()
 
-        #expect(toolchain.ytDlp == repositoryTools.appending(path: "yt-dlp"))
-        #expect(toolchain.deno == repositoryTools.appending(path: "deno"))
+        XCTAssertEqual(toolchain.ytDlp, repositoryTools.appending(path: "yt-dlp"))
+        XCTAssertEqual(toolchain.deno, repositoryTools.appending(path: "deno"))
     }
 
     private func temporaryDirectory() throws -> URL {

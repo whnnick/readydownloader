@@ -1,24 +1,21 @@
 import Foundation
-import Testing
+import XCTest
 @testable import ReadyDownloader
 
-@Suite("Format parser")
-struct FormatParserTests {
-    @Test("Filters non-video and storyboard entries")
-    func filtersUnsupportedFormats() throws {
+final class FormatParserTests: XCTestCase {
+    func testFiltersUnsupportedFormats() throws {
         let formats = try FormatParser.parse(fixtureData())
-        #expect(formats.map(\.id) == ["315", "137", "22"])
-        #expect(formats[0].resolution == "3840x2160")
-        #expect(formats[0].isVideoOnly)
-        #expect(!formats[2].isVideoOnly)
+        XCTAssertEqual(formats.map(\.id), ["315", "137", "22"])
+        XCTAssertEqual(formats[0].resolution, "3840x2160")
+        XCTAssertTrue(formats[0].isVideoOnly)
+        XCTAssertFalse(formats[2].isVideoOnly)
     }
 
-    @Test("Uses approximate size when exact size is absent")
-    func approximateSizeFallback() throws {
+    func testApproximateSizeFallback() throws {
         let formats = try FormatParser.parse(fixtureData())
-        let format = try #require(formats.first { $0.id == "137" })
-        #expect(format.fileSize == 12_345_678)
-        #expect(format.displayBitrate == "4500k")
+        let format = try XCTUnwrap(formats.first { $0.id == "137" })
+        XCTAssertEqual(format.fileSize, 12_345_678)
+        XCTAssertEqual(format.displayBitrate, "4500k")
     }
 
     private func fixtureData() throws -> Data {

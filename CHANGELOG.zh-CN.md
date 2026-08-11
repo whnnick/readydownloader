@@ -13,6 +13,9 @@
 - 将产品、macOS APP、Swift Package、Windows 解决方案、可执行文件和发布产物统一更名为 ReadyDownloader。
 - 将 macOS Bundle ID 调整为 `com.readydownloader.app`，与 ReadySuite 产品命名规则保持一致。
 - 确定 `readydownloader` 为 GitHub 仓库 slug，`/readydownloader` 为未来 ReadySuite 网站路由。
+- 将 Mac 主产品线最低系统从 macOS 14 下调到 macOS 13，并将 Swift Package 工具版本从 Swift 6 下调到 Swift 5.10。
+- 使用 Combine 和兼容的 SwiftUI 实现替换 macOS 14 专属的 Observation 与空状态依赖。
+- 将全部 30 个测试从 Swift Testing 迁移为 XCTest，使其可在 Swift 5.10 工具链运行。
 
 ### 修复
 
@@ -21,6 +24,7 @@
 ### 验证
 
 - Swift 测试、构建脚本、GitHub Actions 发布产物、中英文文档和 Windows 工程元数据已同步重命名。
+- 已确认可执行文件的 Mach-O 最低系统版本为 macOS 13.0，并在本地重新执行全部 30 个 XCTest 测试。
 
 ## [0.1.3] - 未发布
 

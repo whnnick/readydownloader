@@ -1,14 +1,12 @@
 import Foundation
-import Testing
+import XCTest
 @testable import ReadyDownloader
 
-@Suite("Download directory store")
 @MainActor
-struct DownloadDirectoryStoreTests {
-    @Test("Restores a saved path when a development bookmark is invalid")
-    func restoresPathFallback() throws {
+final class DownloadDirectoryStoreTests: XCTestCase {
+    func testRestoresPathFallback() throws {
         let suiteName = "DownloadDirectoryStoreTests.\(UUID().uuidString)"
-        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
         defer { defaults.removePersistentDomain(forName: suiteName) }
 
         let directory = FileManager.default.temporaryDirectory
@@ -21,13 +19,12 @@ struct DownloadDirectoryStoreTests {
 
         let restored = DownloadDirectoryStore(defaults: defaults).currentDirectory()
 
-        #expect(restored.standardizedFileURL == directory.standardizedFileURL)
+        XCTAssertEqual(restored.standardizedFileURL, directory.standardizedFileURL)
     }
 
-    @Test("Ignores a saved path that no longer exists")
-    func ignoresMissingPathFallback() throws {
+    func testIgnoresMissingPathFallback() throws {
         let suiteName = "DownloadDirectoryStoreTests.\(UUID().uuidString)"
-        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
         defer { defaults.removePersistentDomain(forName: suiteName) }
 
         let missingDirectory = FileManager.default.temporaryDirectory
@@ -37,6 +34,6 @@ struct DownloadDirectoryStoreTests {
 
         let restored = DownloadDirectoryStore(defaults: defaults).currentDirectory()
 
-        #expect(restored.standardizedFileURL != missingDirectory.standardizedFileURL)
+        XCTAssertNotEqual(restored.standardizedFileURL, missingDirectory.standardizedFileURL)
     }
 }

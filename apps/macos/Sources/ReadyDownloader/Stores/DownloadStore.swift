@@ -1,21 +1,20 @@
+import Combine
 import Foundation
-import Observation
 
 @MainActor
-@Observable
-final class DownloadStore {
-    var urlText = ""
-    var formats: [YtDlpFormat] = []
-    var selectedFormatID: YtDlpFormat.ID?
-    var downloadMode = DownloadMode.bestQuality
-    var downloadDirectory: URL
-    var progress: DownloadProgress?
-    var completedFile: URL?
-    var language = AppLanguage.current
-    var statusState = DownloadStatusState.ready
-    var detailedLog = ""
-    var isWorking = false
-    private(set) var analyzedURL: String?
+final class DownloadStore: ObservableObject {
+    @Published var urlText = ""
+    @Published var formats: [YtDlpFormat] = []
+    @Published var selectedFormatID: YtDlpFormat.ID?
+    @Published var downloadMode = DownloadMode.bestQuality
+    @Published var downloadDirectory: URL
+    @Published var progress: DownloadProgress?
+    @Published var completedFile: URL?
+    @Published var language = AppLanguage.current
+    @Published var statusState = DownloadStatusState.ready
+    @Published var detailedLog = ""
+    @Published var isWorking = false
+    @Published private(set) var analyzedURL: String?
 
     private let client = YtDlpClient()
     private let resolver = ToolchainResolver()

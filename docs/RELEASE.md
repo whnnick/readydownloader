@@ -8,7 +8,7 @@ The canonical GitHub repository slug is `whnnick/readydownloader`.
 
 Requirements:
 
-- Apple Silicon Mac running macOS 14 or later;
+- Apple Silicon Mac running macOS 13 or later;
 - Xcode command-line tools;
 - Python 3, `curl`, `make`, `tar`, `ditto`, and `hdiutil`;
 - enough free space to build FFmpeg from source.

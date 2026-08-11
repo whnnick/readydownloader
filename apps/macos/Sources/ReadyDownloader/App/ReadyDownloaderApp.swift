@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct ReadyDownloaderApp: App {
-    @State private var store = DownloadStore()
+    @StateObject private var store = DownloadStore()
     @AppStorage(AppLanguage.storageKey) private var languageRawValue = AppLanguage.simplifiedChinese.rawValue
 
     private var language: AppLanguage {

@@ -5,8 +5,10 @@
 | macOS product name | Complete | The real app window, menu-bar app name, process, bundle, and executable are ReadyDownloader |
 | macOS bundle identity | Complete | Built and packaged apps report `CFBundleIdentifier` as `com.readydownloader.app` |
 | Swift package and tests | Complete | ReadyDownloader and ReadyDownloaderTests build; 30 tests in 7 suites pass |
+| macOS runtime compatibility | Partial | SwiftPM and the Mach-O executable target macOS 13.0; a real macOS 13 launch remains to be checked |
+| Swift toolchain compatibility | Partial | The package builds in Swift 5 language mode and all 30 tests run under XCTest; GitHub's Swift 5.10 runner remains to be checked |
 | Windows project metadata | Partial | Solution, project, namespace, target, window class, and executable names are updated; a Windows build still requires Windows |
-| GitHub Actions | Complete | Workflow names, release title, expected artifacts, security link, and canonical repository URLs use ReadyDownloader |
+| GitHub Actions | Partial | Workflow metadata uses ReadyDownloader; the Swift 5.10 compatibility push still needs a passing CI run |
 | ReadySuite handoff | Complete | Product key, route, repository, latest-release URL, and platform summary are documented |
 | Release package | Complete | ReadyDownloader 0.1.4 APP/ZIP/DMG, nested signing, checksums, DMG CRC, toolchain, and compatibility conversion checks pass |
 | Repository release hygiene | Complete | Version consistency, shell syntax, sensitive-information scan, legacy-name search, and Git diff checks pass |
@@ -15,6 +17,7 @@
 ## Verification evidence
 
 - `swift test --package-path apps/macos`: 30 tests in 7 suites passed.
+- `vtool -show-build ReadyDownloader`: the executable reports `minos 13.0`.
 - `./script/build_and_run.sh --verify`: the ReadyDownloader process launched successfully.
 - Real UI inspection confirmed the ReadyDownloader window title, header, application menu, and Chinese workflow.
 - `./script/package_macos.sh`: ReadyDownloader 0.1.4 signing, ZIP/DMG, checksums, package audit, and H.264 compatibility conversion passed.
@@ -24,4 +27,6 @@
 ## Verification remaining
 
 - A Windows x64 build on Windows 10 or later.
+- Launch and exercise the packaged app on a real macOS 13 Apple Silicon Mac.
+- Confirm the Swift 5.10 GitHub Actions run after publishing the compatibility update.
 - Confirm the first tag-triggered release workflow and public latest-release URL when 0.1.4 is released.

@@ -13,6 +13,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Renamed the product, macOS app, Swift package, Windows solution, executable, and release artifacts to ReadyDownloader.
 - Changed the macOS bundle identifier to `com.readydownloader.app`, matching the ReadySuite product naming convention.
 - Established `readydownloader` as the GitHub repository slug and `/readydownloader` as the future ReadySuite website route.
+- Lowered the primary Mac runtime target from macOS 14 to macOS 13 and the Swift Package tools version from Swift 6 to Swift 5.10.
+- Replaced macOS 14-only Observation and empty-state dependencies with Combine and compatible SwiftUI implementations.
+- Migrated all 30 tests from Swift Testing to XCTest so they run with the Swift 5.10 toolchain.
 
 ### Fixed
 
@@ -21,6 +24,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 ### Verified
 
 - Renamed Swift tests, build scripts, GitHub Actions release assets, bilingual documentation, and Windows project metadata together.
+- Verified the executable's Mach-O minimum system version is macOS 13.0 and reran all 30 XCTest cases locally.
 
 ## [0.1.3] - Unreleased
 

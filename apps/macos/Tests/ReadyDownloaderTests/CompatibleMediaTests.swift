@@ -1,11 +1,9 @@
 import Foundation
-import Testing
+import XCTest
 @testable import ReadyDownloader
 
-@Suite("iPhone-compatible media")
-struct CompatibleMediaTests {
-    @Test("Accepts H264, AAC, yuv420p MP4 without transcoding")
-    func acceptsCompatibleMP4() throws {
+final class CompatibleMediaTests: XCTestCase {
+    func testAcceptsCompatibleMP4() throws {
         let data = Data(
             """
             {
@@ -18,11 +16,10 @@ struct CompatibleMediaTests {
             """.utf8
         )
 
-        #expect(try CompatibleMedia.isIPhoneCompatible(probeData: data))
+        XCTAssertTrue(try CompatibleMedia.isIPhoneCompatible(probeData: data))
     }
 
-    @Test("Rejects VP9 video inside an MP4 container")
-    func rejectsVP9MP4() throws {
+    func testRejectsVP9MP4() throws {
         let data = Data(
             """
             {
@@ -35,11 +32,10 @@ struct CompatibleMediaTests {
             """.utf8
         )
 
-        #expect(!(try CompatibleMedia.isIPhoneCompatible(probeData: data)))
+        XCTAssertFalse(try CompatibleMedia.isIPhoneCompatible(probeData: data))
     }
 
-    @Test("Rejects non-AAC audio and non-420 pixel formats")
-    func rejectsIncompatibleStreams() throws {
+    func testRejectsIncompatibleStreams() throws {
         let nonAAC = Data(
             """
             {
@@ -62,20 +58,19 @@ struct CompatibleMediaTests {
             """.utf8
         )
 
-        #expect(!(try CompatibleMedia.isIPhoneCompatible(probeData: nonAAC)))
-        #expect(!(try CompatibleMedia.isIPhoneCompatible(probeData: non420)))
+        XCTAssertFalse(try CompatibleMedia.isIPhoneCompatible(probeData: nonAAC))
+        XCTAssertFalse(try CompatibleMedia.isIPhoneCompatible(probeData: non420))
     }
 
-    @Test("Transcode arguments force broadly compatible codecs and layout")
-    func transcodeArguments() {
+    func testTranscodeArguments() {
         let input = URL(filePath: "/tmp/source.mp4")
         let output = URL(filePath: "/tmp/output.mp4")
         let arguments = CompatibleMedia.transcodeArguments(input: input, output: output)
 
-        #expect(arguments.contains("h264_videotoolbox"))
-        #expect(arguments.contains("aac"))
-        #expect(arguments.contains("scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p"))
-        #expect(arguments.contains("+faststart"))
-        #expect(arguments.last == output.path)
+        XCTAssertTrue(arguments.contains("h264_videotoolbox"))
+        XCTAssertTrue(arguments.contains("aac"))
+        XCTAssertTrue(arguments.contains("scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p"))
+        XCTAssertTrue(arguments.contains("+faststart"))
+        XCTAssertEqual(arguments.last, output.path)
     }
 }

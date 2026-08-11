@@ -40,12 +40,17 @@ struct FormatTable: View {
                             .foregroundStyle(DownloaderTheme.muted)
                     }
                 } else {
-                    ContentUnavailableView(
-                        hasURL
-                            ? language.text("等待解析", "Ready to Query")
-                            : language.text("粘贴视频链接", "Paste a Video URL"),
-                        systemImage: hasURL ? "sparkle.magnifyingglass" : "link",
-                        description: Text(
+                    VStack(spacing: 10) {
+                        Image(systemName: hasURL ? "sparkle.magnifyingglass" : "link")
+                            .font(.system(size: 30, weight: .medium))
+                            .foregroundStyle(DownloaderTheme.muted)
+                        Text(
+                            hasURL
+                                ? language.text("等待解析", "Ready to Query")
+                                : language.text("粘贴视频链接", "Paste a Video URL")
+                        )
+                        .font(.headline)
+                        Text(
                             hasURL
                                 ? language.text("点击“解析链接”查看可用画质。", "Click Query URL to view available formats.")
                                 : language.text(
@@ -53,7 +58,11 @@ struct FormatTable: View {
                                     "Supports YouTube, Bilibili, Instagram, and other services handled by yt-dlp."
                                 )
                         )
-                    )
+                        .font(.footnote)
+                        .foregroundStyle(DownloaderTheme.muted)
+                    }
+                    .multilineTextAlignment(.center)
+                    .padding()
                 }
             }
         }

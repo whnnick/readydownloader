@@ -1,37 +1,33 @@
-import Testing
+import XCTest
 @testable import ReadyDownloader
 
-@Suite("Download mode")
-struct DownloadModeTests {
-    @Test("Best quality has no resolution cap")
-    func bestQualitySelector() throws {
-        #expect(try DownloadMode.bestQuality.formatSelector(selectedFormat: nil) == "bv*+ba/b")
+final class DownloadModeTests: XCTestCase {
+    func testBestQualitySelector() throws {
+        XCTAssertEqual(try DownloadMode.bestQuality.formatSelector(selectedFormat: nil), "bv*+ba/b")
     }
 
-    @Test("Compatible mode prefers H264 but keeps a best-quality fallback for transcoding")
-    func compatibleMP4Selector() throws {
-        #expect(
-            try DownloadMode.compatibleMP4.formatSelector(selectedFormat: nil)
-                == "bv[ext=mp4][vcodec^=avc1]+ba[ext=m4a]/b[ext=mp4][vcodec^=avc1]/bv*+ba/b"
+    func testCompatibleMP4Selector() throws {
+        XCTAssertEqual(
+            try DownloadMode.compatibleMP4.formatSelector(selectedFormat: nil),
+            "bv[ext=mp4][vcodec^=avc1]+ba[ext=m4a]/b[ext=mp4][vcodec^=avc1]/bv*+ba/b"
         )
     }
 
-    @Test("Manual video-only format adds best audio")
-    func selectedVideoOnlyFormat() throws {
+    func testSelectedVideoOnlyFormat() throws {
         let format = makeFormat(id: "315", audioCodec: "none")
-        #expect(try DownloadMode.selectedFormat.formatSelector(selectedFormat: format) == "315+ba")
+        XCTAssertEqual(try DownloadMode.selectedFormat.formatSelector(selectedFormat: format), "315+ba")
     }
 
-    @Test("Manual combined format is not given duplicate audio")
-    func selectedCombinedFormat() throws {
+    func testSelectedCombinedFormat() throws {
         let format = makeFormat(id: "22", audioCodec: "mp4a.40.2")
-        #expect(try DownloadMode.selectedFormat.formatSelector(selectedFormat: format) == "22")
+        XCTAssertEqual(try DownloadMode.selectedFormat.formatSelector(selectedFormat: format), "22")
     }
 
-    @Test("Manual mode requires a selected format")
-    func missingSelectedFormat() {
-        #expect(throws: DownloadRequestError.self) {
+    func testMissingSelectedFormat() {
+        XCTAssertThrowsError(
             try DownloadMode.selectedFormat.formatSelector(selectedFormat: nil)
+        ) { error in
+            XCTAssertTrue(error is DownloadRequestError)
         }
     }
 

@@ -8,7 +8,7 @@ Mac 版本。
 
 环境要求：
 
-- macOS 14 或更高版本的 Apple Silicon Mac；
+- macOS 13 或更高版本的 Apple Silicon Mac；
 - Xcode 命令行工具；
 - Python 3、`curl`、`make`、`tar`、`ditto` 和 `hdiutil`；
 - 足够的磁盘空间用于从源码构建 FFmpeg。

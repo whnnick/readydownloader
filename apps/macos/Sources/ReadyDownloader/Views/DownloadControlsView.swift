@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DownloadControlsView: View {
-    @Bindable var store: DownloadStore
+    @ObservedObject var store: DownloadStore
     @AppStorage(AppLanguage.storageKey) private var languageRawValue = AppLanguage.simplifiedChinese.rawValue
 
     private var language: AppLanguage {

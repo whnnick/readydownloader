@@ -31,7 +31,7 @@
 
 ## Quick Start
 
-Download the current macOS package from [GitHub Releases](https://github.com/whnnick/readydownloader/releases/latest), move `ReadyDownloader.app` to Applications, and open it. The current public package target is Apple Silicon on macOS 14 or later.
+Download the current macOS package from [GitHub Releases](https://github.com/whnnick/readydownloader/releases/latest), move `ReadyDownloader.app` to Applications, and open it. The current public package target is Apple Silicon on macOS 13 or later.
 
 ## What It Does
 
@@ -48,7 +48,7 @@ Download the current macOS package from [GitHub Releases](https://github.com/whn
 
 | Platform | Technology | Status |
 | --- | --- | --- |
-| macOS 14+ Apple Silicon | Swift 6 and SwiftUI | Primary platform; download MVP and reproducible packaging implemented |
+| macOS 13+ Apple Silicon | Swift 5.10+ and SwiftUI | Primary platform; download MVP and reproducible packaging implemented |
 | Windows x64 | C++17 and Win32 | Compatibility platform; prototype available |
 
 See the [v0.1.0 overview](./docs/versions/0.1.0/README.md), [requirements](./docs/versions/0.1.0/REQUIREMENTS.md), and [implementation plan](./docs/versions/0.1.0/PLAN.md).

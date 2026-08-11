@@ -31,7 +31,7 @@
 
 ## 快速开始
 
-从 [GitHub Releases](https://github.com/whnnick/readydownloader/releases/latest) 下载当前 macOS 安装包，将 `ReadyDownloader.app` 移入“应用程序”后打开。当前公开安装包目标为 macOS 14 及以上版本的 Apple Silicon Mac。
+从 [GitHub Releases](https://github.com/whnnick/readydownloader/releases/latest) 下载当前 macOS 安装包，将 `ReadyDownloader.app` 移入“应用程序”后打开。当前公开安装包目标为 macOS 13 及以上版本的 Apple Silicon Mac。
 
 ## 主要功能
 
@@ -48,7 +48,7 @@
 
 | 平台 | 技术 | 状态 |
 | --- | --- | --- |
-| macOS 14+ Apple Silicon | Swift 6 与 SwiftUI | 主平台；下载 MVP 与可复现打包已实现 |
+| macOS 13+ Apple Silicon | Swift 5.10+ 与 SwiftUI | 主平台；下载 MVP 与可复现打包已实现 |
 | Windows x64 | C++17 与 Win32 | 兼容平台；已有原型 |
 
 详细内容见 [v0.1.0 概览](./docs/versions/0.1.0/README.zh-CN.md)、[产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)和[实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)。

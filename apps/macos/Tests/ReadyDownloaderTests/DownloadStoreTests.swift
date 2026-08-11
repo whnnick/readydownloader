@@ -1,11 +1,9 @@
-import Testing
+import XCTest
 @testable import ReadyDownloader
 
-@Suite("Download store")
 @MainActor
-struct DownloadStoreTests {
-    @Test("Hides raw tool output when detailed logs are disabled")
-    func hidesRawToolOutput() {
+final class DownloadStoreTests: XCTestCase {
+    func testHidesRawToolOutput() {
         let store = DownloadStore()
         store.language = .simplifiedChinese
 
@@ -14,11 +12,10 @@ struct DownloadStoreTests {
             includeDetailedLogs: false
         )
 
-        #expect(store.detailedLog.isEmpty)
+        XCTAssertTrue(store.detailedLog.isEmpty)
     }
 
-    @Test("Shows raw tool output when detailed logs are enabled")
-    func showsRawToolOutput() {
+    func testShowsRawToolOutput() {
         let store = DownloadStore()
         store.language = .simplifiedChinese
 
@@ -27,11 +24,10 @@ struct DownloadStoreTests {
             includeDetailedLogs: true
         )
 
-        #expect(store.detailedLog == "WARNING: raw yt-dlp diagnostic")
+        XCTAssertEqual(store.detailedLog, "WARNING: raw yt-dlp diagnostic")
     }
 
-    @Test("Progress remains visible when detailed logs are disabled")
-    func keepsProgressVisible() {
+    func testKeepsProgressVisible() {
         let store = DownloadStore()
         store.language = .simplifiedChinese
 
@@ -40,15 +36,14 @@ struct DownloadStoreTests {
             includeDetailedLogs: false
         )
 
-        #expect(store.progress?.fractionCompleted == 0.5)
-        #expect(store.status == "正在下载 50.0%")
-        #expect(store.statusDetail == "速度 1.0MiB/s · 预计剩余 00:05")
-        #expect(store.statusKind == .progress)
-        #expect(store.detailedLog.isEmpty)
+        XCTAssertEqual(store.progress?.fractionCompleted, 0.5)
+        XCTAssertEqual(store.status, "正在下载 50.0%")
+        XCTAssertEqual(store.statusDetail, "速度 1.0MiB/s · 预计剩余 00:05")
+        XCTAssertEqual(store.statusKind, .progress)
+        XCTAssertTrue(store.detailedLog.isEmpty)
     }
 
-    @Test("Hides raw failure details when detailed logs are disabled")
-    func hidesRawFailureDetails() {
+    func testHidesRawFailureDetails() {
         let store = DownloadStore()
         store.language = .simplifiedChinese
 
@@ -58,13 +53,12 @@ struct DownloadStoreTests {
             includeDetailedLogs: false
         )
 
-        #expect(store.status == "下载失败")
-        #expect(store.statusKind == .failure)
-        #expect(store.detailedLog.isEmpty)
+        XCTAssertEqual(store.status, "下载失败")
+        XCTAssertEqual(store.statusKind, .failure)
+        XCTAssertTrue(store.detailedLog.isEmpty)
     }
 
-    @Test("Shows raw failure details when detailed logs are enabled")
-    func showsRawFailureDetails() {
+    func testShowsRawFailureDetails() {
         let store = DownloadStore()
         store.language = .simplifiedChinese
 
@@ -74,57 +68,52 @@ struct DownloadStoreTests {
             includeDetailedLogs: true
         )
 
-        #expect(store.status == "下载失败")
-        #expect(store.detailedLog == "raw yt-dlp failure")
+        XCTAssertEqual(store.status, "下载失败")
+        XCTAssertEqual(store.detailedLog, "raw yt-dlp failure")
     }
 
-    @Test("只接受完整的 HTTP 或 HTTPS 链接")
-    func validatesMediaURL() {
-        #expect(DownloadStore.isValidMediaURL("https://www.instagram.com/reel/example/"))
-        #expect(DownloadStore.isValidMediaURL("http://example.com/video"))
-        #expect(!DownloadStore.isValidMediaURL("www.instagram.com/reel/example"))
-        #expect(!DownloadStore.isValidMediaURL("file:///tmp/video.mp4"))
-        #expect(!DownloadStore.isValidMediaURL(""))
+    func testValidatesMediaURL() {
+        XCTAssertTrue(DownloadStore.isValidMediaURL("https://www.instagram.com/reel/example/"))
+        XCTAssertTrue(DownloadStore.isValidMediaURL("http://example.com/video"))
+        XCTAssertFalse(DownloadStore.isValidMediaURL("www.instagram.com/reel/example"))
+        XCTAssertFalse(DownloadStore.isValidMediaURL("file:///tmp/video.mp4"))
+        XCTAssertFalse(DownloadStore.isValidMediaURL(""))
     }
 
-    @Test("登录限制会显示可操作的中文提示")
-    func mapsAuthenticationFailure() {
+    func testMapsAuthenticationFailure() {
         let message = DownloadStore.friendlyErrorMessage(
             for: "Login required. Use --cookies to authenticate"
         )
 
-        #expect(message.contains("Cookie"))
-        #expect(message.contains("设置"))
+        XCTAssertTrue(message.contains("Cookie"))
+        XCTAssertTrue(message.contains("设置"))
     }
 
-    @Test("链接变化会清理旧的下载状态")
-    func resetsStateForChangedURL() {
+    func testResetsStateForChangedURL() {
         let store = DownloadStore()
         store.language = .simplifiedChinese
         store.urlText = "https://example.com/video"
         store.urlDidChange()
 
-        #expect(store.status == "等待解析")
-        #expect(store.statusDetail.contains("解析链接"))
-        #expect(!store.canDownload)
+        XCTAssertEqual(store.status, "等待解析")
+        XCTAssertTrue(store.statusDetail.contains("解析链接"))
+        XCTAssertFalse(store.canDownload)
     }
 
-    @Test("切换语言会保留状态并即时更新文案")
-    func switchesLanguageWithoutLosingState() {
+    func testSwitchesLanguageWithoutLosingState() {
         let store = DownloadStore()
         store.statusState = .queryComplete(3)
         store.language = .simplifiedChinese
-        #expect(store.status == "视频解析完成")
-        #expect(store.statusDetail.contains("3 个"))
+        XCTAssertEqual(store.status, "视频解析完成")
+        XCTAssertTrue(store.statusDetail.contains("3 个"))
 
         store.language = .english
-        #expect(store.status == "Video Ready")
-        #expect(store.statusDetail.contains("3 video"))
-        #expect(store.statusState == .queryComplete(3))
+        XCTAssertEqual(store.status, "Video Ready")
+        XCTAssertTrue(store.statusDetail.contains("3 video"))
+        XCTAssertEqual(store.statusState, .queryComplete(3))
     }
 
-    @Test("下载完成详情会跟随语言切换")
-    func localizesCompletedDownload() {
+    func testLocalizesCompletedDownload() {
         let store = DownloadStore()
         store.statusState = .downloadComplete(
             fileName: "example.mp4",
@@ -132,30 +121,28 @@ struct DownloadStoreTests {
         )
 
         store.language = .simplifiedChinese
-        #expect(store.statusDetail == "已保存：example.mp4")
+        XCTAssertEqual(store.statusDetail, "已保存：example.mp4")
         store.language = .english
-        #expect(store.statusDetail == "Saved: example.mp4")
+        XCTAssertEqual(store.statusDetail, "Saved: example.mp4")
     }
 
-    @Test("兼容转码状态支持中英文切换")
-    func localizesCompatibilityConversion() {
+    func testLocalizesCompatibilityConversion() {
         let store = DownloadStore()
         store.statusState = .makingIPhoneCompatible
 
         store.language = .simplifiedChinese
-        #expect(store.status == "正在优化 iPhone 兼容性")
-        #expect(store.statusDetail.contains("H.264"))
+        XCTAssertEqual(store.status, "正在优化 iPhone 兼容性")
+        XCTAssertTrue(store.statusDetail.contains("H.264"))
 
         store.language = .english
-        #expect(store.status == "Optimizing for iPhone")
-        #expect(store.statusDetail.contains("H.264"))
+        XCTAssertEqual(store.status, "Optimizing for iPhone")
+        XCTAssertTrue(store.statusDetail.contains("H.264"))
     }
 
-    @Test("缺少工具提示会指导用户使用完整发布包")
-    func explainsMissingTools() {
+    func testExplainsMissingTools() {
         let state = DownloadStatusState.missingTools(["yt-dlp", "deno"])
 
-        #expect(state.detail(language: .simplifiedChinese).contains("DMG 或 ZIP"))
-        #expect(state.detail(language: .english).contains("DMG or ZIP"))
+        XCTAssertTrue(state.detail(language: .simplifiedChinese).contains("DMG 或 ZIP"))
+        XCTAssertTrue(state.detail(language: .english).contains("DMG or ZIP"))
     }
 }

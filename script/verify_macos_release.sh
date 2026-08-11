@@ -48,7 +48,10 @@ bundle_identifier="$(plutil -extract CFBundleIdentifier raw "$ZIP_APP/Contents/I
 [[ "$bundle_identifier" == "com.readydownloader.app" ]]
 bundle_name="$(plutil -extract CFBundleDisplayName raw "$ZIP_APP/Contents/Info.plist")"
 [[ "$bundle_name" == "$APP_NAME" ]]
+minimum_system_version="$(plutil -extract LSMinimumSystemVersion raw "$ZIP_APP/Contents/Info.plist")"
+[[ "$minimum_system_version" == "13.0" ]]
 [[ -x "$ZIP_APP/Contents/MacOS/$APP_NAME" ]]
+vtool -show-build "$ZIP_APP/Contents/MacOS/$APP_NAME" | grep -Eq 'minos[[:space:]]+13\.0'
 bundle_icon="$(plutil -extract CFBundleIconFile raw "$ZIP_APP/Contents/Info.plist")"
 [[ "$bundle_icon" == "AppIcon" ]]
 [[ -s "$ZIP_APP/Contents/Resources/AppIcon.icns" ]]

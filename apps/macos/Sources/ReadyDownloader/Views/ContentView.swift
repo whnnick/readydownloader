@@ -2,7 +2,7 @@ import AppKit
 import SwiftUI
 
 struct ContentView: View {
-    @Bindable var store: DownloadStore
+    @ObservedObject var store: DownloadStore
     @AppStorage(AppLanguage.storageKey) private var languageRawValue = AppLanguage.simplifiedChinese.rawValue
 
     private var language: AppLanguage {
@@ -24,8 +24,8 @@ struct ContentView: View {
         .tint(DownloaderTheme.accent)
         .navigationTitle("ReadyDownloader")
         .onAppear { store.language = language }
-        .onChange(of: languageRawValue) { _, _ in store.language = language }
-        .onChange(of: store.urlText) { _, _ in
+        .onChange(of: languageRawValue) { _ in store.language = language }
+        .onChange(of: store.urlText) { _ in
             store.urlDidChange()
         }
         .toolbar {
@@ -39,7 +39,15 @@ struct ContentView: View {
                     Label(language.text("在 Finder 中显示", "Show in Finder"), systemImage: "folder")
                 }
                 .disabled(store.completedFile == nil)
-                SettingsLink { Label(language.text("设置", "Settings"), systemImage: "gearshape") }
+                if #available(macOS 14.0, *) {
+                    SettingsLink { Label(language.text("设置", "Settings"), systemImage: "gearshape") }
+                } else {
+                    Button {
+                        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+                    } label: {
+                        Label(language.text("设置", "Settings"), systemImage: "gearshape")
+                    }
+                }
             }
         }
     }
