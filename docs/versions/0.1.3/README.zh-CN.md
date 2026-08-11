@@ -1,4 +1,4 @@
-# YouTubeDlpDownloader 0.1.3
+# ReadyDownloader 0.1.3
 
 `0.1.3` 让 macOS 的“iPhone 兼容”模式执行明确的媒体编码约束，不再只依赖 `.mp4` 文件扩展名判断兼容性。
 

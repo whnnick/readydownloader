@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-YouTubeDlpDownloader invokes external tools that are maintained and licensed independently:
+ReadyDownloader invokes external tools that are maintained and licensed independently:
 
 - yt-dlp
 - FFmpeg and ffprobe

@@ -1,4 +1,4 @@
-# YouTubeDlpDownloader 0.1.2
+# ReadyDownloader 0.1.2
 
 Version `0.1.2` fixes missing runtime components in incomplete macOS builds and adds complete, immediate Simplified Chinese / English switching.
 

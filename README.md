@@ -3,23 +3,35 @@
 </p>
 
 <p align="center">
-  <img src="./assets/branding/AppIcon.png" width="128" alt="YouTubeDlpDownloader app icon">
+  <img src="./assets/branding/AppIcon.png" width="128" alt="ReadyDownloader app icon">
 </p>
 
-<h1 align="center">YouTubeDlpDownloader</h1>
+<h1 align="center">ReadyDownloader</h1>
 
 <p align="center">
-  A native Windows and macOS desktop interface for downloading media with yt-dlp.
+  A ReadySuite desktop app for downloading media with yt-dlp on macOS and Windows.
 </p>
 
 <p align="center">
   <img alt="Platforms" src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS-blue">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.3-green">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.1.4-green">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-lightgrey">
+  <a href="https://github.com/whnnick/readydownloader/actions/workflows/macos-ci.yml"><img alt="macOS CI" src="https://github.com/whnnick/readydownloader/actions/workflows/macos-ci.yml/badge.svg"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/whnnick/readydownloader">Source</a> ·
+  <a href="https://github.com/whnnick/readydownloader/releases/latest">Latest Release</a> ·
+  <a href="https://github.com/whnnick/readydownloader/issues">Issues</a> ·
+  <a href="https://readysuite.vercel.app/">ReadySuite</a>
 </p>
 
 > [!IMPORTANT]
 > macOS is the primary product line. The Windows client remains available as a compatibility implementation and will follow the shared behavior contract without blocking Mac releases.
+
+## Quick Start
+
+Download the current macOS package from [GitHub Releases](https://github.com/whnnick/readydownloader/releases/latest), move `ReadyDownloader.app` to Applications, and open it. The current public package target is Apple Silicon on macOS 14 or later.
 
 ## What It Does
 
@@ -55,12 +67,12 @@ Requirements:
 - Visual Studio 2022 with the Desktop development with C++ workload
 - Windows 10 SDK
 
-Open `YouTubeDlpDownloader.sln`, select `Release | x64`, and build the solution.
+Open `ReadyDownloader.sln`, select `Release | x64`, and build the solution.
 
 The current runtime expects this local layout:
 
 ```text
-YouTubeDlpDownloader.exe
+ReadyDownloader.exe
 tools/
 ├── yt-dlp.exe
 ├── deno.exe
@@ -90,10 +102,14 @@ Build and launch the `.app` bundle:
 
 The Mac app provides a Chinese/English switchable, ReadyType-aligned workflow for format queries, unrestricted best-quality download, verified iPhone-compatible H.264 MP4 output, manual format selection, real-time progress, cancellation, persistent destination selection, Finder reveal, and opt-in detailed yt-dlp logs. Pinned Apple Silicon tools and local APP/ZIP/DMG packaging are available; signed and notarized public artifacts still require Apple release credentials.
 
+## ReadySuite Integration
+
+The canonical product key is `readydownloader`, the planned ReadySuite route is `/readydownloader`, and downloads should point to `https://github.com/whnnick/readydownloader/releases/latest`. ReadySuite remains a separate website repository and release process.
+
 ## Documentation
 
-- [v0.1.3 release overview](./docs/versions/0.1.3/README.md)
-- [v0.1.3 black-box functional check](./docs/versions/0.1.3/BLACK_BOX_TESTS.md)
+- [v0.1.4 release overview](./docs/versions/0.1.4/README.md)
+- [v0.1.4 black-box functional check](./docs/versions/0.1.4/BLACK_BOX_TESTS.md)
 - [Requirements](./docs/versions/0.1.0/REQUIREMENTS.md)
 - [Architecture](./docs/versions/0.1.0/ARCHITECTURE.md)
 - [Implementation plan](./docs/versions/0.1.0/PLAN.md)

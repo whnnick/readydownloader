@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for reporting a problem. Remove cookies, account tokens, private URLs, local usernames, and personal media details before submitting.
+        Thank you for helping improve ReadyDownloader. Remove cookies, account tokens, private URLs, local usernames, and personal media details before submitting.
   - type: dropdown
     id: platform
     attributes:
@@ -22,7 +22,7 @@ body:
     id: version
     attributes:
       label: Application version
-      placeholder: 0.1.0
+      placeholder: 0.1.4
     validations:
       required: true
   - type: textarea

@@ -42,7 +42,7 @@ Both clients consume the same sanitized fixture expectations for filtering and p
 
 ## macOS Components
 
-- `YouTubeDlpDownloaderApp`: `WindowGroup` entry point plus a `Settings` scene.
+- `ReadyDownloaderApp`: `WindowGroup` entry point plus a `Settings` scene.
 - `DownloadStore`: main-actor state for URL, formats, selection, progress, and errors.
 - `YtDlpClient`: actor responsible for process lifetime and cancellation.
 - `FormatParser`: decodes and filters yt-dlp JSON.

@@ -1,4 +1,4 @@
-# YouTubeDlpDownloader 0.1.2
+# ReadyDownloader 0.1.2
 
 `0.1.2` 修复 macOS APP 在不完整构建中找不到运行组件的问题，并加入完整的简体中文 / English 即时切换。
 

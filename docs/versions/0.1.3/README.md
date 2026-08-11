@@ -1,4 +1,4 @@
-# YouTubeDlpDownloader 0.1.3
+# ReadyDownloader 0.1.3
 
 Version `0.1.3` makes the macOS iPhone Compatible mode enforce a media-codec contract instead of relying on the `.mp4` filename alone.
 

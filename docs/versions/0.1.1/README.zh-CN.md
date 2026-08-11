@@ -1,4 +1,4 @@
-# YouTubeDlpDownloader 0.1.1
+# ReadyDownloader 0.1.1
 
 `0.1.1` 聚焦 macOS 中文界面与核心下载交互，Windows 仍作为兼容原型维护。
 

@@ -1,4 +1,4 @@
-name: macOS Release
+name: ReadyDownloader macOS Release
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
   release:
     runs-on: macos-14
     env:
-      NOTARY_PROFILE: YouTubeDlpDownloader-notary
+      NOTARY_PROFILE: ReadyDownloader-notary
       KEYCHAIN_PASSWORD: temporary-ci-keychain-password
     steps:
       - uses: actions/checkout@v7
@@ -106,7 +106,7 @@ jobs:
         run: |
           gh release create "$GITHUB_REF_NAME" \
             dist/release/* \
-            --title "YouTubeDlpDownloader $GITHUB_REF_NAME" \
+            --title "ReadyDownloader $GITHUB_REF_NAME" \
             --generate-notes \
             --verify-tag
 
@@ -119,6 +119,6 @@ jobs:
           test "$LATEST_TAG" = "$GITHUB_REF_NAME"
           gh release download "$GITHUB_REF_NAME" --dir "$RUNNER_TEMP/release-check"
           cd "$RUNNER_TEMP/release-check"
-          test -s "YouTubeDlpDownloader-$VERSION-macos-arm64.zip"
-          test -s "YouTubeDlpDownloader-$VERSION-macos-arm64.dmg"
+          test -s "ReadyDownloader-$VERSION-macos-arm64.zip"
+          test -s "ReadyDownloader-$VERSION-macos-arm64.dmg"
           shasum -a 256 -c SHA256SUMS.txt

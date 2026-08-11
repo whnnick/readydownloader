@@ -2,6 +2,7 @@
 
 macOS 是主发布线。除非版本明确宣传为双平台发布，否则 Windows 兼容工作不会阻塞
 Mac 版本。
+规范 GitHub 仓库 slug 为 `whnnick/readydownloader`。
 
 ## 本地发布验证
 
@@ -33,8 +34,8 @@ VideoToolbox 转换并使用内嵌 FFprobe 确认成品为 H.264、AAC 和 yuv42
 
 ```text
 dist/release/
-├── YouTubeDlpDownloader-<version>-macos-arm64.dmg
-├── YouTubeDlpDownloader-<version>-macos-arm64.zip
+├── ReadyDownloader-<version>-macos-arm64.dmg
+├── ReadyDownloader-<version>-macos-arm64.zip
 └── SHA256SUMS.txt
 ```
 
@@ -45,14 +46,14 @@ dist/release/
 先将公证凭据保存到登录钥匙串：
 
 ```bash
-xcrun notarytool store-credentials YouTubeDlpDownloader-notary
+xcrun notarytool store-credentials ReadyDownloader-notary
 ```
 
 然后执行：
 
 ```bash
 MACOS_SIGNING_IDENTITY="Developer ID Application: Example (TEAMID)" \
-MACOS_NOTARY_PROFILE="YouTubeDlpDownloader-notary" \
+MACOS_NOTARY_PROFILE="ReadyDownloader-notary" \
 REQUIRE_GATEKEEPER=1 \
 ./script/package_macos.sh
 ```
@@ -62,6 +63,10 @@ Hardened Runtime 签名 App、提交并装订 App、公证并装订 DMG、验证
 Gatekeeper，最后生成校验文件。
 
 ## GitHub Release
+
+GitHub Release 由 `https://github.com/whnnick/readydownloader` 发布。
+ReadySuite 产品下载入口应使用
+`https://github.com/whnnick/readydownloader/releases/latest`。
 
 Tag 发布工作流需要配置以下仓库 Secrets：
 

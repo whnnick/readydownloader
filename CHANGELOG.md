@@ -6,6 +6,22 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.1.4] - Unreleased
+
+### Changed
+
+- Renamed the product, macOS app, Swift package, Windows solution, executable, and release artifacts to ReadyDownloader.
+- Changed the macOS bundle identifier to `com.readydownloader.app`, matching the ReadySuite product naming convention.
+- Established `readydownloader` as the GitHub repository slug and `/readydownloader` as the future ReadySuite website route.
+
+### Fixed
+
+- Release verification now rejects packages with the wrong application name, executable, or bundle identifier.
+
+### Verified
+
+- Renamed Swift tests, build scripts, GitHub Actions release assets, bilingual documentation, and Windows project metadata together.
+
 ## [0.1.3] - Unreleased
 
 ### Changed

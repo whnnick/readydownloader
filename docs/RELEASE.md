@@ -2,6 +2,7 @@
 
 macOS is the primary release line. Windows compatibility work does not block a
 Mac release unless the release is explicitly advertised as dual-platform.
+The canonical GitHub repository slug is `whnnick/readydownloader`.
 
 ## Local Release Validation
 
@@ -37,8 +38,8 @@ Expected files:
 
 ```text
 dist/release/
-├── YouTubeDlpDownloader-<version>-macos-arm64.dmg
-├── YouTubeDlpDownloader-<version>-macos-arm64.zip
+├── ReadyDownloader-<version>-macos-arm64.dmg
+├── ReadyDownloader-<version>-macos-arm64.zip
 └── SHA256SUMS.txt
 ```
 
@@ -50,14 +51,14 @@ those three current-version files.
 Store notarization credentials in the login keychain:
 
 ```bash
-xcrun notarytool store-credentials YouTubeDlpDownloader-notary
+xcrun notarytool store-credentials ReadyDownloader-notary
 ```
 
 Then run:
 
 ```bash
 MACOS_SIGNING_IDENTITY="Developer ID Application: Example (TEAMID)" \
-MACOS_NOTARY_PROFILE="YouTubeDlpDownloader-notary" \
+MACOS_NOTARY_PROFILE="ReadyDownloader-notary" \
 REQUIRE_GATEKEEPER=1 \
 ./script/package_macos.sh
 ```
@@ -68,6 +69,11 @@ staples the app, creates ZIP and DMG artifacts, notarizes and staples the DMG,
 verifies Gatekeeper, and generates checksums.
 
 ## GitHub Release
+
+GitHub Releases are published from
+`https://github.com/whnnick/readydownloader`. ReadySuite should use
+`https://github.com/whnnick/readydownloader/releases/latest` as the product
+download target.
 
 The tag workflow requires these repository secrets:
 

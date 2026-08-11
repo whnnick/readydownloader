@@ -1,4 +1,4 @@
-# YouTubeDlpDownloader 0.1.0
+# ReadyDownloader 0.1.0
 
 `0.1.0` 是计划中的首个公开双平台版本。
 

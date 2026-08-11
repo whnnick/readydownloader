@@ -1,4 +1,4 @@
-# YouTubeDlpDownloader 0.1.0
+# ReadyDownloader 0.1.0
 
 Version 0.1.0 is the first planned public cross-platform release.
 

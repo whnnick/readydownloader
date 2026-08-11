@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for helping improve YouTubeDlpDownloader.
+Thank you for helping improve ReadyDownloader.
 
 ## Before You Start
 

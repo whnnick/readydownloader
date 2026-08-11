@@ -6,6 +6,22 @@
 
 ## [未发布]
 
+## [0.1.4] - 未发布
+
+### 变更
+
+- 将产品、macOS APP、Swift Package、Windows 解决方案、可执行文件和发布产物统一更名为 ReadyDownloader。
+- 将 macOS Bundle ID 调整为 `com.readydownloader.app`，与 ReadySuite 产品命名规则保持一致。
+- 确定 `readydownloader` 为 GitHub 仓库 slug，`/readydownloader` 为未来 ReadySuite 网站路由。
+
+### 修复
+
+- 发布验证现在会拒绝应用名称、可执行文件或 Bundle ID 不正确的安装包。
+
+### 验证
+
+- Swift 测试、构建脚本、GitHub Actions 发布产物、中英文文档和 Windows 工程元数据已同步重命名。
+
 ## [0.1.3] - 未发布
 
 ### 变更

@@ -40,7 +40,7 @@ cancel(operation)
 
 ## macOS 组件
 
-- `YouTubeDlpDownloaderApp`：`WindowGroup` 主入口和独立 `Settings` 场景。
+- `ReadyDownloaderApp`：`WindowGroup` 主入口和独立 `Settings` 场景。
 - `DownloadStore`：在主线程管理链接、格式、选择、进度和错误状态。
 - `YtDlpClient`：使用 actor 管理子进程生命周期和取消。
 - `FormatParser`：解码和过滤 yt-dlp JSON。

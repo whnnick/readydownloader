@@ -1,4 +1,4 @@
-# YouTubeDlpDownloader 0.1.1
+# ReadyDownloader 0.1.1
 
 Version `0.1.1` focuses on the Chinese macOS interface and core download interaction. Windows remains a compatibility prototype.
 
