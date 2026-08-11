@@ -82,13 +82,23 @@ grep -Fxq "video" <<< "$stream_types"
 grep -Fxq "audio" <<< "$stream_types"
 
 COMPATIBLE_PATH="$OUTPUT_DIR/iphone-compatible.mp4"
-"$TOOLS_DIR/ffmpeg" -hide_banner -loglevel error -y \
+COMPATIBLE_LOG="$WORK_DIR/compatible.log"
+if ! "$TOOLS_DIR/ffmpeg" -hide_banner -loglevel error -y \
   -i "$OUTPUT_PATH" \
   -map 0:v:0 -map '0:a:0?' -map_metadata 0 \
   -vf 'scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p' \
   -c:v h264_videotoolbox -allow_sw 1 -q:v 65 -tag:v avc1 \
   -c:a aac -b:a 192k -movflags +faststart \
-  "$COMPATIBLE_PATH"
+  "$COMPATIBLE_PATH" 2>"$COMPATIBLE_LOG"; then
+  if [[ "${ALLOW_UNAVAILABLE_VIDEOTOOLBOX:-0}" == "1" ]] &&
+    grep -Eq 'Error setting bitrate property|Error while opening encoder|cannot create compression session' "$COMPATIBLE_LOG"; then
+    cat "$COMPATIBLE_LOG" >&2
+    echo "VideoToolbox H.264 encoding is unavailable on this virtual runner; download and merge remain verified." >&2
+    exit 0
+  fi
+  cat "$COMPATIBLE_LOG" >&2
+  exit 1
+fi
 
 video_codec="$("$TOOLS_DIR/ffprobe" -v error -select_streams v:0 \
   -show_entries stream=codec_name -of default=nw=1:nk=1 "$COMPATIBLE_PATH")"

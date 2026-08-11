@@ -52,5 +52,9 @@ jobs:
       - name: Prepare pinned macOS tools
         run: ./script/prepare_macos_tools.sh
 
-      - name: Verify best-quality download and audio merge
+      - name: Verify best-quality download and compatibility conversion
+        env:
+          # GitHub's macOS VM may expose the encoder name without providing a
+          # usable VideoToolbox compression session. Real Macs remain strict.
+          ALLOW_UNAVAILABLE_VIDEOTOOLBOX: "1"
         run: ./script/test_macos_download_integration.sh
