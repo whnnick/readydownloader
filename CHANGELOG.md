@@ -25,6 +25,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Renamed Swift tests, build scripts, GitHub Actions release assets, bilingual documentation, and Windows project metadata together.
 - Verified the executable's Mach-O minimum system version is macOS 13.0 and reran all 30 XCTest cases locally.
+- Passed the GitHub macOS 14 / Swift 5.10 workflow, including repository checks and the real local download-and-merge integration path.
 
 ## [0.1.3] - Unreleased
 
