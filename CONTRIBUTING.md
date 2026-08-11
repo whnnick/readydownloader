@@ -19,6 +19,14 @@ Thank you for helping improve ReadyDownloader.
 6. Run the platform-specific verification commands and the sensitive-information scan.
 7. Submit a pull request describing behavior, verification evidence, and remaining real-environment checks.
 
+## Release Synchronization
+
+Finalizing a version requires one continuous release operation: push the clean
+release commit, push `v<version>`, publish the matching GitHub Release with the
+ZIP, DMG, and checksum file, and verify the public `latest` endpoint. A version
+must remain `Unreleased` if its GitHub Release is not successfully published
+and verified.
+
 ## Commit Style
 
 Prefer small commits with a clear scope, for example:

@@ -75,7 +75,8 @@ GitHub Releases are published from
 `https://github.com/whnnick/readydownloader/releases/latest` as the product
 download target.
 
-The tag workflow requires these repository secrets:
+For a Developer ID signed and notarized release, configure all of these
+repository secrets:
 
 - `MACOS_CERTIFICATE_P12_BASE64`
 - `MACOS_CERTIFICATE_PASSWORD`
@@ -92,9 +93,20 @@ Before tagging:
 4. Commit and push a clean `main`.
 5. Create and push `v<version>`.
 
-The workflow refuses an unreleased changelog entry or missing Apple
-credentials. After publishing, it downloads the public assets, verifies their
-checksums, and verifies that the tag is GitHub's latest release.
+The workflow refuses an unreleased changelog entry or partially configured
+Apple credentials. With all six credentials it publishes a Developer ID signed
+and notarized package. With none of them it publishes an explicitly labelled,
+ad-hoc-signed and unnotarized package. After publishing, it downloads the public
+assets, verifies their checksums, requires exactly three assets, and verifies
+that the tag is GitHub's latest release.
+
+### Release synchronization invariant
+
+A release-ready version must not stop after pushing `main`. The same release
+operation must push `v<version>`, publish the matching GitHub Release, upload
+the ZIP, DMG, and `SHA256SUMS.txt`, and verify the public `latest` endpoint.
+If any of these steps cannot complete, keep the changelog entry marked
+`Unreleased` and do not advertise that version as available.
 
 ## Third-Party Components
 

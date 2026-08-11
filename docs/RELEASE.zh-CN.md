@@ -68,7 +68,8 @@ GitHub Release 由 `https://github.com/whnnick/readydownloader` 发布。
 ReadySuite 产品下载入口应使用
 `https://github.com/whnnick/readydownloader/releases/latest`。
 
-Tag 发布工作流需要配置以下仓库 Secrets：
+如需发布 Developer ID 签名并完成 Apple 公证的版本，必须完整配置以下仓库
+Secrets：
 
 - `MACOS_CERTIFICATE_P12_BASE64`
 - `MACOS_CERTIFICATE_PASSWORD`
@@ -85,8 +86,17 @@ Tag 发布工作流需要配置以下仓库 Secrets：
 4. 提交并推送干净的 `main`。
 5. 创建并推送 `v<version>`。
 
-如果更新日志仍标记为未发布，或缺少 Apple 凭据，工作流会主动失败。发布后，
-工作流会重新下载公开产物、校验 SHA-256，并确认该 Tag 是 GitHub 最新版本。
+如果更新日志仍标记为未发布，或 Apple 凭据只配置了一部分，工作流会主动失败。
+六项凭据完整时发布 Developer ID 签名并公证的安装包；六项均未配置时，发布明确
+标注的 ad-hoc 签名、未公证安装包。发布后，工作流会重新下载公开产物、校验
+SHA-256、要求恰好包含三个产物，并确认该 Tag 是 GitHub 最新版本。
+
+### Release 同步约束
+
+准备发布的版本不能只停留在推送 `main`。同一次发布操作必须推送 `v<version>`、
+创建对应 GitHub Release、上传 ZIP、DMG 与 `SHA256SUMS.txt`，并验证公开的
+`latest` 地址。任一步骤无法完成时，更新日志必须继续标记为“未发布”，且不得将
+该版本宣传为可下载版本。
 
 ## 第三方组件
 

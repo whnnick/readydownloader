@@ -97,19 +97,33 @@ merged_streams="$("$ZIP_APP/Contents/Resources/tools/ffprobe" -v error \
 grep -Fq "video" <<< "$merged_streams"
 grep -Fq "audio" <<< "$merged_streams"
 
-"$ZIP_APP/Contents/Resources/tools/ffmpeg" -hide_banner -loglevel error -y \
+COMPATIBLE_LOG="$WORK_DIR/compatible.log"
+videotoolbox_available=1
+if ! "$ZIP_APP/Contents/Resources/tools/ffmpeg" -hide_banner -loglevel error -y \
   -i "$MEDIA_DIR/merged.mp4" \
   -map 0:v:0 -map '0:a:0?' \
   -vf 'scale=trunc(iw/2)*2:trunc(ih/2)*2,format=yuv420p' \
   -c:v h264_videotoolbox -allow_sw 1 -q:v 65 -tag:v avc1 \
   -c:a aac -b:a 192k -movflags +faststart \
-  "$MEDIA_DIR/iphone-compatible.mp4"
-compatible_codecs="$("$ZIP_APP/Contents/Resources/tools/ffprobe" -v error \
-  -show_entries stream=codec_type,codec_name,pix_fmt -of csv=p=0 \
-  "$MEDIA_DIR/iphone-compatible.mp4")"
-grep -Fq "h264" <<< "$compatible_codecs"
-grep -Fq "yuv420p" <<< "$compatible_codecs"
-grep -Fq "aac" <<< "$compatible_codecs"
+  "$MEDIA_DIR/iphone-compatible.mp4" 2>"$COMPATIBLE_LOG"; then
+  if [[ "${ALLOW_UNAVAILABLE_VIDEOTOOLBOX:-0}" == "1" ]] &&
+    grep -Eq 'Error setting bitrate property|Error while opening encoder|cannot create compression session' "$COMPATIBLE_LOG"; then
+    cat "$COMPATIBLE_LOG" >&2
+    echo "VideoToolbox H.264 encoding is unavailable on this virtual runner; packaged tools and merge remain verified." >&2
+    videotoolbox_available=0
+  else
+    cat "$COMPATIBLE_LOG" >&2
+    exit 1
+  fi
+fi
+if [[ "$videotoolbox_available" == "1" ]]; then
+  compatible_codecs="$("$ZIP_APP/Contents/Resources/tools/ffprobe" -v error \
+    -show_entries stream=codec_type,codec_name,pix_fmt -of csv=p=0 \
+    "$MEDIA_DIR/iphone-compatible.mp4")"
+  grep -Fq "h264" <<< "$compatible_codecs"
+  grep -Fq "yuv420p" <<< "$compatible_codecs"
+  grep -Fq "aac" <<< "$compatible_codecs"
+fi
 
 if [[ "${REQUIRE_GATEKEEPER:-0}" == "1" ]]; then
   codesign -dvv "$ZIP_APP" 2>&1 | grep -Eq "flags=.*runtime"

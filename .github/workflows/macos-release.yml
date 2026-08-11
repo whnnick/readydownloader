@@ -25,7 +25,7 @@ jobs:
       - name: Scan repository
         run: ./script/scan_repository.sh
 
-      - name: Require Apple release credentials
+      - name: Select release trust mode
         env:
           CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
           CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
@@ -34,6 +34,7 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
         run: |
+          configured=0
           for value in \
             "$CERTIFICATE" \
             "$CERTIFICATE_PASSWORD" \
@@ -41,8 +42,18 @@ jobs:
             "$APPLE_ID" \
             "$APPLE_TEAM_ID" \
             "$APPLE_APP_PASSWORD"; do
-            test -n "$value"
+            if test -n "$value"; then
+              configured=$((configured + 1))
+            fi
           done
+          if test "$configured" -eq 0; then
+            echo "RELEASE_TRUST_MODE=adhoc" >> "$GITHUB_ENV"
+          elif test "$configured" -eq 6; then
+            echo "RELEASE_TRUST_MODE=developer-id" >> "$GITHUB_ENV"
+          else
+            echo "Apple release credentials are only partially configured." >&2
+            exit 1
+          fi
 
       - name: Run Swift tests
         env:
@@ -59,6 +70,7 @@ jobs:
             --disable-sandbox
 
       - name: Import Developer ID certificate
+        if: env.RELEASE_TRUST_MODE == 'developer-id'
         env:
           CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE_P12_BASE64 }}
           CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
@@ -83,6 +95,7 @@ jobs:
           security list-keychains -d user -s "$KEYCHAIN_PATH"
 
       - name: Configure Apple notarization
+        if: env.RELEASE_TRUST_MODE == 'developer-id'
         env:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
@@ -94,19 +107,37 @@ jobs:
             --password "$APPLE_APP_PASSWORD"
 
       - name: Build, sign, notarize, and package
+        if: env.RELEASE_TRUST_MODE == 'developer-id'
         env:
           MACOS_SIGNING_IDENTITY: ${{ secrets.MACOS_SIGNING_IDENTITY }}
           MACOS_NOTARY_PROFILE: ${{ env.NOTARY_PROFILE }}
           REQUIRE_GATEKEEPER: "1"
+          ALLOW_UNAVAILABLE_VIDEOTOOLBOX: "1"
+        run: ./script/package_macos.sh
+
+      - name: Build and package ad-hoc signed release
+        if: env.RELEASE_TRUST_MODE == 'adhoc'
+        env:
+          ALLOW_UNAVAILABLE_VIDEOTOOLBOX: "1"
         run: ./script/package_macos.sh
 
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          if test "$RELEASE_TRUST_MODE" = "developer-id"; then
+            TRUST_NOTE="> [!NOTE]
+          > This macOS package is Developer ID signed and Apple-notarized.
+          > 此 macOS 安装包已完成 Developer ID 签名和 Apple 公证。"
+          else
+            TRUST_NOTE="> [!WARNING]
+          > This macOS package is ad-hoc signed and not Apple-notarized. macOS may require manual approval on first launch.
+          > 此 macOS 安装包采用 ad-hoc 签名且未经 Apple 公证，首次启动时可能需要手动允许。"
+          fi
           gh release create "$GITHUB_REF_NAME" \
             dist/release/* \
             --title "ReadyDownloader $GITHUB_REF_NAME" \
+            --notes "$TRUST_NOTE" \
             --generate-notes \
             --verify-tag
 
@@ -117,6 +148,9 @@ jobs:
           VERSION="$(tr -d '[:space:]' < VERSION)"
           LATEST_TAG="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name)"
           test "$LATEST_TAG" = "$GITHUB_REF_NAME"
+          test "$(gh release view "$GITHUB_REF_NAME" --json isDraft --jq .isDraft)" = "false"
+          test "$(gh release view "$GITHUB_REF_NAME" --json isPrerelease --jq .isPrerelease)" = "false"
+          test "$(gh release view "$GITHUB_REF_NAME" --json assets --jq '.assets | length')" -eq 3
           gh release download "$GITHUB_REF_NAME" --dir "$RUNNER_TEMP/release-check"
           cd "$RUNNER_TEMP/release-check"
           test -s "ReadyDownloader-$VERSION-macos-arm64.zip"
