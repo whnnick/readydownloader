@@ -13,6 +13,7 @@ enum DownloadStatusState: Equatable, Sendable {
     case formatRequired
     case preparingDownload(String)
     case downloading(DownloadProgress)
+    case makingIPhoneCompatible
     case downloadComplete(fileName: String?, directoryPath: String)
     case downloadCancelled
     case downloadFailed(String)
@@ -20,7 +21,7 @@ enum DownloadStatusState: Equatable, Sendable {
 
     var kind: DownloadStatusKind {
         switch self {
-        case .checkingTools, .querying, .preparingDownload, .downloading:
+        case .checkingTools, .querying, .preparingDownload, .downloading, .makingIPhoneCompatible:
             .progress
         case .queryComplete, .downloadComplete:
             .success
@@ -49,6 +50,8 @@ enum DownloadStatusState: Equatable, Sendable {
         case .preparingDownload: language.text("正在准备下载", "Preparing Download")
         case .downloading(let progress):
             language.text("正在下载 \(progress.percentText)", "Downloading \(progress.percentText)")
+        case .makingIPhoneCompatible:
+            language.text("正在优化 iPhone 兼容性", "Optimizing for iPhone")
         case .downloadComplete: language.text("下载完成", "Download Complete")
         case .downloadCancelled: language.text("下载已取消", "Download Cancelled")
         case .downloadFailed: language.text("下载失败", "Download Failed")
@@ -93,6 +96,11 @@ enum DownloadStatusState: Equatable, Sendable {
             return language.text(
                 "速度 \(progress.speed) · 预计剩余 \(progress.eta)",
                 "Speed \(progress.speed) · ETA \(progress.eta)"
+            )
+        case .makingIPhoneCompatible:
+            return language.text(
+                "正在将视频转为 H.264；已有音频会转为 AAC。完成前请勿退出应用。",
+                "Converting video to H.264 and any available audio to AAC. Keep the app open until it finishes."
             )
         case .downloadComplete(let fileName, let directoryPath):
             if let fileName {

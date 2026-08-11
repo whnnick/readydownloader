@@ -85,7 +85,7 @@ struct DownloadControlsView: View {
     private var downloadButtonTitle: String {
         switch store.downloadMode {
         case .bestQuality: language.text("下载最高画质", "Download Best Quality")
-        case .compatibleMP4: language.text("下载兼容 MP4", "Download Compatible MP4")
+        case .compatibleMP4: language.text("下载 iPhone 兼容视频", "Download for iPhone")
         case .selectedFormat: language.text("下载所选格式", "Download Selected Format")
         }
     }

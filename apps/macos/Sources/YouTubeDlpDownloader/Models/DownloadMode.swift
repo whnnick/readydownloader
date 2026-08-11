@@ -10,7 +10,7 @@ enum DownloadMode: String, CaseIterable, Identifiable, Sendable {
     func title(language: AppLanguage) -> String {
         switch self {
         case .bestQuality: language.text("最高画质", "Best Quality")
-        case .compatibleMP4: language.text("兼容 MP4", "Compatible MP4")
+        case .compatibleMP4: language.text("iPhone 兼容", "iPhone Compatible")
         case .selectedFormat: language.text("指定格式", "Selected Format")
         }
     }
@@ -24,8 +24,8 @@ enum DownloadMode: String, CaseIterable, Identifiable, Sendable {
             )
         case .compatibleMP4:
             language.text(
-                "优先选择 H.264 视频和 M4A 音频，适合更多播放器。",
-                "Prefers H.264 video and M4A audio for broader compatibility."
+                "下载后自动检查编码；需要时将视频转为 H.264，已有音频转为 AAC。",
+                "Checks the finished file and converts video to H.264 and any available audio to AAC when needed."
             )
         case .selectedFormat:
             language.text(
@@ -40,7 +40,7 @@ enum DownloadMode: String, CaseIterable, Identifiable, Sendable {
         case .bestQuality:
             return "bv*+ba/b"
         case .compatibleMP4:
-            return "bv*[ext=mp4][vcodec^=avc1]+ba[ext=m4a]/b[ext=mp4]/b"
+            return "bv[ext=mp4][vcodec^=avc1]+ba[ext=m4a]/b[ext=mp4][vcodec^=avc1]/bv*+ba/b"
         case .selectedFormat:
             guard let selectedFormat else { throw DownloadRequestError.missingSelectedFormat }
             return selectedFormat.isVideoOnly ? "\(selectedFormat.id)+ba" : selectedFormat.id

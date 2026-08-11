@@ -61,5 +61,7 @@ ffprobe_version="$("$TOOLS_DIR/ffprobe" -version 2>&1)"
 grep -Fq "deno $DENO_VERSION" <<< "$deno_version"
 grep -Fq "ffmpeg version $FFMPEG_VERSION" <<< "$ffmpeg_version"
 grep -Fq "ffprobe version $FFMPEG_VERSION" <<< "$ffprobe_version"
+"$TOOLS_DIR/ffmpeg" -hide_banner -encoders 2>&1 | grep -Fq "h264_videotoolbox"
+"$TOOLS_DIR/ffmpeg" -hide_banner -encoders 2>&1 | grep -Eq "[[:space:]]aac[[:space:]]"
 
 echo "macOS arm64 toolchain verified."

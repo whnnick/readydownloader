@@ -87,7 +87,9 @@ MACOS_SDK="$(xcrun --sdk macosx --show-sdk-path)"
     --disable-gpl \
     --disable-nonfree \
     --disable-shared \
-    --enable-static
+    --enable-static \
+    --enable-videotoolbox \
+    --enable-encoder=h264_videotoolbox
   make -s -j "$(sysctl -n hw.logicalcpu)"
   make -s install
 )

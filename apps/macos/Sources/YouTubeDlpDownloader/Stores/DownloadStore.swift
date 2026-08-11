@@ -172,6 +172,15 @@ final class DownloadStore {
                                 includeDetailedLogs: settings.detailedLogsEnabled
                             )
                         }
+                    },
+                    onStage: { [weak self] stage in
+                        Task { @MainActor in
+                            switch stage {
+                            case .makingIPhoneCompatible:
+                                self?.progress = nil
+                                self?.statusState = .makingIPhoneCompatible
+                            }
+                        }
                     }
                 )
                 guard !Task.isCancelled else { return }

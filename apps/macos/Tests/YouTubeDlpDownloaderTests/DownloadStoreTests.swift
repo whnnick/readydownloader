@@ -137,6 +137,20 @@ struct DownloadStoreTests {
         #expect(store.statusDetail == "Saved: example.mp4")
     }
 
+    @Test("兼容转码状态支持中英文切换")
+    func localizesCompatibilityConversion() {
+        let store = DownloadStore()
+        store.statusState = .makingIPhoneCompatible
+
+        store.language = .simplifiedChinese
+        #expect(store.status == "正在优化 iPhone 兼容性")
+        #expect(store.statusDetail.contains("H.264"))
+
+        store.language = .english
+        #expect(store.status == "Optimizing for iPhone")
+        #expect(store.statusDetail.contains("H.264"))
+    }
+
     @Test("缺少工具提示会指导用户使用完整发布包")
     func explainsMissingTools() {
         let state = DownloadStatusState.missingTools(["yt-dlp", "deno"])

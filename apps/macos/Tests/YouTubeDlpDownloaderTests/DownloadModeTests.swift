@@ -8,11 +8,11 @@ struct DownloadModeTests {
         #expect(try DownloadMode.bestQuality.formatSelector(selectedFormat: nil) == "bv*+ba/b")
     }
 
-    @Test("Compatible mode prefers H264 MP4 and M4A")
+    @Test("Compatible mode prefers H264 but keeps a best-quality fallback for transcoding")
     func compatibleMP4Selector() throws {
         #expect(
             try DownloadMode.compatibleMP4.formatSelector(selectedFormat: nil)
-                == "bv*[ext=mp4][vcodec^=avc1]+ba[ext=m4a]/b[ext=mp4]/b"
+                == "bv[ext=mp4][vcodec^=avc1]+ba[ext=m4a]/b[ext=mp4][vcodec^=avc1]/bv*+ba/b"
         )
     }
 

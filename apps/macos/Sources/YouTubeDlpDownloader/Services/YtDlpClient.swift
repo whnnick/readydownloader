@@ -7,19 +7,37 @@ struct ToolProcessResult: Sendable {
 }
 
 enum YtDlpClientError: LocalizedError {
-    case couldNotLaunch(String)
+    case couldNotLaunch(String, String)
     case failed(Int32, String)
+    case missingDownloadedFile
+    case compatibilityConversionFailed(Int32, String)
 
     var errorDescription: String? {
         switch self {
-        case .couldNotLaunch(let message):
-            AppLanguage.current.text("无法启动 yt-dlp：\(message)", "Could not launch yt-dlp: \(message)")
+        case .couldNotLaunch(let tool, let message):
+            AppLanguage.current.text("无法启动 \(tool)：\(message)", "Could not launch \(tool): \(message)")
         case .failed(let code, let message):
             message.isEmpty
                 ? AppLanguage.current.text("yt-dlp 已退出，错误代码：\(code)。", "yt-dlp exited with code \(code).")
                 : message
+        case .missingDownloadedFile:
+            AppLanguage.current.text(
+                "下载完成，但没有找到输出文件路径。",
+                "The download finished, but the output file path was not found."
+            )
+        case .compatibilityConversionFailed(let code, let message):
+            message.isEmpty
+                ? AppLanguage.current.text(
+                    "兼容性转换失败，错误代码：\(code)。",
+                    "Compatibility conversion failed with code \(code)."
+                )
+                : message
         }
     }
+}
+
+enum DownloadStage: Sendable {
+    case makingIPhoneCompatible
 }
 
 actor YtDlpClient {
@@ -39,7 +57,7 @@ actor YtDlpClient {
             cookiePath: cookiePath
         )
         arguments.append(contentsOf: ["--no-playlist", "-J", url])
-        let result = try await run(executable: toolchain.ytDlp, arguments: arguments)
+        let result = try await run(toolName: "yt-dlp", executable: toolchain.ytDlp, arguments: arguments)
         guard result.exitCode == 0 else {
             throw YtDlpClientError.failed(
                 result.exitCode,
@@ -58,7 +76,8 @@ actor YtDlpClient {
         networkMode: NetworkMode,
         proxyURL: String,
         cookiePath: String,
-        onOutput: @escaping @Sendable (String) -> Void
+        onOutput: @escaping @Sendable (String) -> Void,
+        onStage: @escaping @Sendable (DownloadStage) -> Void
     ) async throws -> URL? {
         var arguments = commonArguments(
             toolchain: toolchain,
@@ -80,6 +99,7 @@ actor YtDlpClient {
         arguments.append(contentsOf: ["-P", destination.path, url])
 
         let result = try await run(
+            toolName: "yt-dlp",
             executable: toolchain.ytDlp,
             arguments: arguments,
             onStandardOutput: onOutput,
@@ -90,7 +110,16 @@ actor YtDlpClient {
             let stdout = String(decoding: result.stdout, as: UTF8.self)
             throw YtDlpClientError.failed(result.exitCode, stderr.isEmpty ? stdout : stderr)
         }
-        return Self.downloadedFile(from: result.stdout)
+        guard let downloadedFile = Self.downloadedFile(from: result.stdout) else {
+            throw YtDlpClientError.missingDownloadedFile
+        }
+        guard mode == .compatibleMP4 else { return downloadedFile }
+        return try await makeIPhoneCompatible(
+            downloadedFile,
+            toolchain: toolchain,
+            onOutput: onOutput,
+            onStage: onStage
+        )
     }
 
     func cancel() {
@@ -127,7 +156,68 @@ actor YtDlpClient {
         return arguments
     }
 
+    private func makeIPhoneCompatible(
+        _ file: URL,
+        toolchain: Toolchain,
+        onOutput: @escaping @Sendable (String) -> Void,
+        onStage: @escaping @Sendable (DownloadStage) -> Void
+    ) async throws -> URL {
+        let probe = try await run(
+            toolName: "ffprobe",
+            executable: toolchain.ffprobe,
+            arguments: CompatibleMedia.probeArguments(file: file)
+        )
+        guard probe.exitCode == 0 else {
+            throw YtDlpClientError.compatibilityConversionFailed(
+                probe.exitCode,
+                String(decoding: probe.stderr, as: UTF8.self)
+            )
+        }
+        guard try !CompatibleMedia.isIPhoneCompatible(probeData: probe.stdout) else {
+            return file
+        }
+
+        onStage(.makingIPhoneCompatible)
+        let temporary = file.deletingLastPathComponent().appending(
+            path: ".\(file.deletingPathExtension().lastPathComponent).iphone-\(UUID().uuidString).mp4"
+        )
+        defer { try? FileManager.default.removeItem(at: temporary) }
+
+        let conversion = try await run(
+            toolName: "ffmpeg",
+            executable: toolchain.ffmpeg,
+            arguments: CompatibleMedia.transcodeArguments(input: file, output: temporary),
+            onStandardOutput: onOutput,
+            onStandardError: onOutput
+        )
+        guard conversion.exitCode == 0 else {
+            throw YtDlpClientError.compatibilityConversionFailed(
+                conversion.exitCode,
+                String(decoding: conversion.stderr, as: UTF8.self)
+            )
+        }
+
+        try replaceOriginal(file, with: temporary)
+        return file
+    }
+
+    private func replaceOriginal(_ original: URL, with replacement: URL) throws {
+        let fileManager = FileManager.default
+        let backup = original.deletingLastPathComponent().appending(
+            path: ".\(original.lastPathComponent).backup-\(UUID().uuidString)"
+        )
+        try fileManager.moveItem(at: original, to: backup)
+        do {
+            try fileManager.moveItem(at: replacement, to: original)
+            try? fileManager.removeItem(at: backup)
+        } catch {
+            try? fileManager.moveItem(at: backup, to: original)
+            throw error
+        }
+    }
+
     private func run(
+        toolName: String,
         executable: URL,
         arguments: [String],
         onStandardOutput: (@Sendable (String) -> Void)? = nil,
@@ -146,7 +236,7 @@ actor YtDlpClient {
             try process.run()
         } catch {
             currentProcess = nil
-            throw YtDlpClientError.couldNotLaunch(error.localizedDescription)
+            throw YtDlpClientError.couldNotLaunch(toolName, error.localizedDescription)
         }
 
         async let stdout = Self.readLines(outputPipe.fileHandleForReading, onLine: onStandardOutput)
