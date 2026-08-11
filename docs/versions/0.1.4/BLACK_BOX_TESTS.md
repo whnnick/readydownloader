@@ -10,7 +10,7 @@
 | ReadySuite handoff | Complete | Product key, route, repository, latest-release URL, and platform summary are documented |
 | Release package | Complete | ReadyDownloader 0.1.4 APP/ZIP/DMG, nested signing, checksums, DMG CRC, toolchain, and compatibility conversion checks pass |
 | Repository release hygiene | Complete | Version consistency, shell syntax, sensitive-information scan, legacy-name search, and Git diff checks pass |
-| GitHub remote | Blocked | `whnnick/readydownloader` does not yet exist; creating or publishing it is a separate external action |
+| GitHub remote | Complete | Public repository `whnnick/readydownloader` exists, `main` is the default tracked branch, and the local history has been pushed |
 
 ## Verification evidence
 
@@ -24,4 +24,4 @@
 ## Verification remaining
 
 - A Windows x64 build on Windows 10 or later.
-- Create the GitHub repository, push `main`, then confirm Actions and the public latest-release URL.
+- Confirm the first tag-triggered release workflow and public latest-release URL when 0.1.4 is released.

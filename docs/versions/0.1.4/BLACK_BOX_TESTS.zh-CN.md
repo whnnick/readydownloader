@@ -10,7 +10,7 @@
 | ReadySuite 交接 | 已完成 | 产品标识、路由、仓库、最新版下载 URL 和平台摘要已经记录 |
 | 发布包 | 已完成 | ReadyDownloader 0.1.4 APP/ZIP/DMG、内嵌签名、校验和、DMG CRC、工具链和兼容转换检查通过 |
 | 仓库发布卫生 | 已完成 | 版本一致性、Shell 语法、敏感信息扫描、旧名称检索和 Git Diff 检查通过 |
-| GitHub 远端 | 阻塞 | `whnnick/readydownloader` 尚不存在；创建或公开发布属于单独的外部操作 |
+| GitHub 远端 | 已完成 | 公开仓库 `whnnick/readydownloader` 已创建，`main` 已成为本地跟踪分支，完整提交历史已推送 |
 
 ## 验证证据
 
@@ -24,4 +24,4 @@
 ## 待验证内容
 
 - 在 Windows 10 或更高版本完成 Windows x64 编译。
-- 创建 GitHub 仓库、推送 `main`，再确认 Actions 和公开 latest Release 地址。
+- 发布 0.1.4 时确认首个 Tag Release workflow 和公开 latest Release 地址。
