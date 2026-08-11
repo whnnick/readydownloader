@@ -33,6 +33,10 @@
 
 Download the current macOS package from [GitHub Releases](https://github.com/whnnick/readydownloader/releases/latest), move `ReadyDownloader.app` to Applications, and open it. The current public package target is Apple Silicon on macOS 13 or later.
 
+The current package is ad-hoc signed and not Apple-notarized. If macOS blocks
+the first launch, Control-click the app in Finder, choose **Open**, and confirm
+once. Do not disable Gatekeeper globally.
+
 ## What It Does
 
 - Queries video metadata and available formats through yt-dlp JSON output.

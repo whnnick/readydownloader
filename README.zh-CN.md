@@ -33,6 +33,9 @@
 
 从 [GitHub Releases](https://github.com/whnnick/readydownloader/releases/latest) 下载当前 macOS 安装包，将 `ReadyDownloader.app` 移入“应用程序”后打开。当前公开安装包目标为 macOS 13 及以上版本的 Apple Silicon Mac。
 
+当前安装包采用 ad-hoc 签名且未经 Apple 公证。如果 macOS 首次启动时拦截，请在
+Finder 中按住 Control 点击应用，选择“打开”并确认一次；不要全局关闭 Gatekeeper。
+
 ## 主要功能
 
 - 通过 yt-dlp JSON 输出读取视频信息和可用格式。
