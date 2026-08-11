@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import YouTubeDlpDownloader
+@testable import ReadyDownloader
 
 @Suite("iPhone-compatible media")
 struct CompatibleMediaTests {

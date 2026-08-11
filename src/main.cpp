@@ -713,7 +713,7 @@ std::wstring GetAppDataDirectory() {
     PWSTR localAppData = nullptr;
     std::wstring base = GetExecutableDirectory();
     if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_LocalAppData, 0, nullptr, &localAppData))) {
-        base = std::wstring(localAppData) + L"\\YouTubeDlpDownloader";
+        base = std::wstring(localAppData) + L"\\ReadyDownloader";
         CoTaskMemFree(localAppData);
     }
     CreateDirectoryW(base.c_str(), nullptr);
@@ -1680,7 +1680,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow) {
     SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 
-    const wchar_t* className = L"YouTubeDlpDownloaderWindow";
+    const wchar_t* className = L"ReadyDownloaderWindow";
     WNDCLASSW wc{};
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
@@ -1697,7 +1697,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR, int nCmdShow) {
     HWND hwnd = CreateWindowExW(
         0,
         className,
-        L"YouTube yt-dlp 视频下载器",
+        L"ReadyDownloader",
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT,
         CW_USEDEFAULT,

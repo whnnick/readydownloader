@@ -3,8 +3,8 @@ set -euo pipefail
 
 MODE="${1:-run}"
 BUILD_CONFIGURATION="${BUILD_CONFIGURATION:-debug}"
-APP_NAME="YouTubeDlpDownloader"
-BUNDLE_ID="com.github.YouTubeDlpDownloader"
+APP_NAME="ReadyDownloader"
+BUNDLE_ID="com.readydownloader.app"
 MIN_SYSTEM_VERSION="14.0"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PACKAGE_DIR="$ROOT_DIR/apps/macos"
@@ -71,6 +71,7 @@ cat >"$INFO_PLIST" <<PLIST
   <key>CFBundleExecutable</key><string>$APP_NAME</string>
   <key>CFBundleIdentifier</key><string>$BUNDLE_ID</string>
   <key>CFBundleName</key><string>$APP_NAME</string>
+  <key>CFBundleDisplayName</key><string>$APP_NAME</string>
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>CFBundleIconFile</key><string>AppIcon</string>
   <key>CFBundleShortVersionString</key><string>$VERSION</string>

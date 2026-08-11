@@ -3,13 +3,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "YouTubeDlpDownloader",
+    name: "ReadyDownloader",
     platforms: [.macOS(.v14)],
     products: [
-        .executable(name: "YouTubeDlpDownloader", targets: ["YouTubeDlpDownloader"])
+        .executable(name: "ReadyDownloader", targets: ["ReadyDownloader"])
     ],
     targets: [
-        .executableTarget(name: "YouTubeDlpDownloader"),
-        .testTarget(name: "YouTubeDlpDownloaderTests", dependencies: ["YouTubeDlpDownloader"])
+        .executableTarget(name: "ReadyDownloader"),
+        .testTarget(name: "ReadyDownloaderTests", dependencies: ["ReadyDownloader"])
     ]
 )

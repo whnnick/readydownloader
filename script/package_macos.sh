@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-APP_NAME="YouTubeDlpDownloader"
+APP_NAME="ReadyDownloader"
 VERSION="$(tr -d '[:space:]' < "$ROOT_DIR/VERSION")"
 DIST_DIR="$ROOT_DIR/dist"
 RELEASE_DIR="$DIST_DIR/release"
@@ -10,7 +10,7 @@ BUILT_APP_BUNDLE="$DIST_DIR/$APP_NAME.app"
 ZIP_PATH="$RELEASE_DIR/$APP_NAME-$VERSION-macos-arm64.zip"
 DMG_PATH="$RELEASE_DIR/$APP_NAME-$VERSION-macos-arm64.dmg"
 SIGNING_IDENTITY="${MACOS_SIGNING_IDENTITY:--}"
-ENTITLEMENTS="$ROOT_DIR/packaging/macos/YouTubeDlpDownloader.entitlements"
+ENTITLEMENTS="$ROOT_DIR/packaging/macos/ReadyDownloader.entitlements"
 DENO_ENTITLEMENTS="$ROOT_DIR/packaging/macos/Deno.entitlements"
 PACKAGE_WORK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/ytdlp-package.XXXXXX")"
 APP_BUNDLE="$PACKAGE_WORK_DIR/$APP_NAME.app"
@@ -27,7 +27,7 @@ ditto --norsrc --noextattr "$BUILT_APP_BUNDLE" "$APP_BUNDLE"
 rm -rf "$BUILT_APP_BUNDLE"
 
 mkdir -p "$APP_BUNDLE/Contents/Resources/licenses/project"
-cp "$ROOT_DIR/LICENSE" "$APP_BUNDLE/Contents/Resources/licenses/project/YouTubeDlpDownloader-MIT.txt"
+cp "$ROOT_DIR/LICENSE" "$APP_BUNDLE/Contents/Resources/licenses/project/ReadyDownloader-MIT.txt"
 cp "$ROOT_DIR/THIRD_PARTY_NOTICES.md" "$APP_BUNDLE/Contents/Resources/licenses/THIRD_PARTY_NOTICES.md"
 xattr -cr "$APP_BUNDLE"
 

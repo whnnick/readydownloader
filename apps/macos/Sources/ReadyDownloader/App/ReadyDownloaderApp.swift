@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct YouTubeDlpDownloaderApp: App {
+struct ReadyDownloaderApp: App {
     @State private var store = DownloadStore()
     @AppStorage(AppLanguage.storageKey) private var languageRawValue = AppLanguage.simplifiedChinese.rawValue
 
@@ -10,7 +10,7 @@ struct YouTubeDlpDownloaderApp: App {
     }
 
     var body: some Scene {
-        WindowGroup(language.text("视频下载", "Video Downloader"), id: "main") {
+        WindowGroup("ReadyDownloader", id: "main") {
             ContentView(store: store)
                 .frame(minWidth: 860, minHeight: 680)
         }

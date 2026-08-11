@@ -22,7 +22,7 @@ struct ContentView: View {
         }
         .background(DownloaderTheme.canvas)
         .tint(DownloaderTheme.accent)
-        .navigationTitle(language.text("视频下载", "Video Downloader"))
+        .navigationTitle("ReadyDownloader")
         .onAppear { store.language = language }
         .onChange(of: languageRawValue) { _, _ in store.language = language }
         .onChange(of: store.urlText) { _, _ in
@@ -48,7 +48,7 @@ struct ContentView: View {
         HStack(alignment: .center, spacing: 14) {
             DownloaderMark()
             VStack(alignment: .leading, spacing: 4) {
-                Text(language.text("视频下载", "Video Downloader"))
+                Text("ReadyDownloader")
                     .font(.title2.weight(.semibold))
                     .foregroundStyle(DownloaderTheme.ink)
                 Text(language.text(

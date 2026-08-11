@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-APP_NAME="YouTubeDlpDownloader"
+APP_NAME="ReadyDownloader"
 VERSION="$(tr -d '[:space:]' < "$ROOT_DIR/VERSION")"
 RELEASE_DIR="$ROOT_DIR/dist/release"
 ZIP_PATH="$RELEASE_DIR/$APP_NAME-$VERSION-macos-arm64.zip"
@@ -44,6 +44,11 @@ mounted=1
 
 bundle_version="$(plutil -extract CFBundleShortVersionString raw "$ZIP_APP/Contents/Info.plist")"
 [[ "$bundle_version" == "$VERSION" ]]
+bundle_identifier="$(plutil -extract CFBundleIdentifier raw "$ZIP_APP/Contents/Info.plist")"
+[[ "$bundle_identifier" == "com.readydownloader.app" ]]
+bundle_name="$(plutil -extract CFBundleDisplayName raw "$ZIP_APP/Contents/Info.plist")"
+[[ "$bundle_name" == "$APP_NAME" ]]
+[[ -x "$ZIP_APP/Contents/MacOS/$APP_NAME" ]]
 bundle_icon="$(plutil -extract CFBundleIconFile raw "$ZIP_APP/Contents/Info.plist")"
 [[ "$bundle_icon" == "AppIcon" ]]
 [[ -s "$ZIP_APP/Contents/Resources/AppIcon.icns" ]]

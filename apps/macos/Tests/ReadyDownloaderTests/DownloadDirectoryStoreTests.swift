@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import YouTubeDlpDownloader
+@testable import ReadyDownloader
 
 @Suite("Download directory store")
 @MainActor
