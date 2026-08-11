@@ -151,6 +151,7 @@ final class DownloadStore: ObservableObject {
 
         operation = Task { [weak self] in
             guard let self else { return }
+            let callbackStore = self
             defer {
                 if accessedSecurityScope { destination.stopAccessingSecurityScopedResource() }
             }
@@ -164,20 +165,20 @@ final class DownloadStore: ObservableObject {
                     networkMode: settings.networkMode,
                     proxyURL: settings.proxyURL,
                     cookiePath: settings.cookiePath,
-                    onOutput: { [weak self] line in
-                        Task { @MainActor in
-                            self?.handleDownloadOutput(
+                    onOutput: { [callbackStore] line in
+                        Task { @MainActor [callbackStore] in
+                            callbackStore.handleDownloadOutput(
                                 line,
                                 includeDetailedLogs: settings.detailedLogsEnabled
                             )
                         }
                     },
-                    onStage: { [weak self] stage in
-                        Task { @MainActor in
+                    onStage: { [callbackStore] stage in
+                        Task { @MainActor [callbackStore] in
                             switch stage {
                             case .makingIPhoneCompatible:
-                                self?.progress = nil
-                                self?.statusState = .makingIPhoneCompatible
+                                callbackStore.progress = nil
+                                callbackStore.statusState = .makingIPhoneCompatible
                             }
                         }
                     }
