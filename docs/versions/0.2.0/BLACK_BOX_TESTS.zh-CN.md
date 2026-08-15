@@ -14,6 +14,8 @@
 | 网络安全 | 已完成 | 本地和私有网络地址被拦截，仅接受批准的公共来源域名 |
 | 自动检查 | 已完成 | 本地 27 个 Vitest 测试、TypeScript 检查和 Next.js 生产构建通过 |
 | macOS 回归与安装包 | 已完成 | 30 个 XCTest 通过；0.2.0 APP/ZIP/DMG、签名、校验和、DMG CRC、工具链、合并与兼容转换检查通过 |
+| GitHub Actions | 已完成 | Web CI 运行 31859279049、macOS CI 运行 31859279065 和 Release 运行 31859428814 均通过 |
+| GitHub Release | 已完成 | 公开 `v0.2.0` 已是 latest、非草稿、非预发布，并包含 DMG、ZIP 与校验文件 |
 | 浏览器控制台 | 已完成 | 生产桌面与移动会话均为零错误、零警告 |
 
 ## 已知边界
@@ -24,6 +26,6 @@
 - 是否可用仍取决于具体 URL、地区和提取器状态。
 - 除非配置 Apple 发布凭据，macOS 公开产物仍为 ad-hoc 签名且未经 Apple 公证。
 
-## 发布门槛
+## 发布结果
 
-只有远端 `main`、`v0.2.0`、对应 GitHub Release、三个 macOS 产物、校验和、GitHub latest 和 Vercel 生产地址均完成公开验证后，才能宣布该版本完整发布。
+已通过。远端 `main` 与展开后的 `v0.2.0` Tag 均指向提交 `048ee72530ec26b9bcc75e1481dab6f1fca49bbe`。[v0.2.0 GitHub Release](https://github.com/whnnick/readydownloader/releases/tag/v0.2.0) 已公开并成为 latest，恰好包含三个产物；独立下载后通过 `SHA256SUMS.txt` 校验。Vercel 部署 `dpl_CtyJpy9PQbvUNKiPV29GuVxrxgQw` 状态为 READY，并已绑定规范生产地址。

@@ -14,6 +14,8 @@ Date: 2026-08-15
 | Network safety | Complete | Local/private URLs are blocked; only approved public source domains are accepted |
 | Automated checks | Complete | 27 Vitest tests, TypeScript check, and Next.js production build pass locally |
 | macOS regression and package | Complete | 30 XCTest cases pass; 0.2.0 APP/ZIP/DMG, signing, checksums, DMG CRC, toolchain, merge, and compatibility conversion checks pass |
+| GitHub Actions | Complete | Web CI run 31859279049, macOS CI run 31859279065, and Release run 31859428814 pass |
+| GitHub Release | Complete | Public `v0.2.0` is latest, non-draft, non-prerelease, and contains the DMG, ZIP, and checksum file |
 | Browser console | Complete | Production desktop/mobile session reported zero errors and zero warnings |
 
 ## Known Boundaries
@@ -24,6 +26,6 @@ Date: 2026-08-15
 - Site availability remains URL-, region-, and extractor-dependent.
 - macOS public artifacts remain ad-hoc signed and not Apple-notarized unless release credentials are configured.
 
-## Release Gate
+## Release Outcome
 
-Source `main`, `v0.2.0`, the matching GitHub Release, its three macOS assets, checksums, GitHub latest, and the Vercel production URL must all be publicly verified before this version is declared fully released.
+Passed. Remote `main` and the peeled `v0.2.0` tag both point to commit `048ee72530ec26b9bcc75e1481dab6f1fca49bbe`. The [v0.2.0 GitHub Release](https://github.com/whnnick/readydownloader/releases/tag/v0.2.0) is public and latest with exactly three assets; independent downloads passed `SHA256SUMS.txt`. Vercel deployment `dpl_CtyJpy9PQbvUNKiPV29GuVxrxgQw` is READY and aliased to the canonical production URL.
