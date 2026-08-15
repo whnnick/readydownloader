@@ -6,6 +6,24 @@
 
 ## [未发布]
 
+## [0.2.1] - 2026-08-15
+
+### 新增
+
+- 接入与 ReadySuite 相同的 Vercel Web Analytics，包括页面访问，以及针对解析、下载、语言、保存文件和 GitHub 交互的隐私安全埋点。
+- 接入 Vercel Speed Insights 代码，使团队套餐有可用名额后即可开始采集性能数据。
+- 新增统计载荷自动化测试，将自定义事件限制为最多两个字段：语言，以及下载模式或汇总格式数量。
+
+### 验证
+
+- 已在生产 Vercel 项目启用 Web Analytics。
+- 30 个 Web 测试、TypeScript 检查与 Next.js 生产构建通过。
+
+### 已知限制
+
+- ReadySuite 当前 Hobby 团队仅允许一个项目启用 Speed Insights。ReadyDownloader 已包含接入代码，但若不迁移现有名额或升级团队，生产性能采集暂时无法启用。
+- Vercel 自定义事件仅支持 Pro 或 Enterprise。当前 Hobby 套餐会采集页面访问，但产品漏斗埋点不会出现在统计面板中。
+
 ## [0.2.0] - 2026-08-15
 
 ### 新增

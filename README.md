@@ -14,7 +14,7 @@
 
 <p align="center">
   <img alt="Platforms" src="https://img.shields.io/badge/platform-Web%20%7C%20macOS%20%7C%20Windows-blue">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.2.0-green">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.2.1-green">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-lightgrey">
   <a href="https://github.com/whnnick/readydownloader/actions/workflows/macos-ci.yml"><img alt="macOS CI" src="https://github.com/whnnick/readydownloader/actions/workflows/macos-ci.yml/badge.svg"></a>
 </p>
@@ -60,6 +60,8 @@ once. Do not disable Gatekeeper globally.
 | Windows x64 | C++17 and Win32 | Compatibility platform; prototype available |
 
 The Web app aligns the client’s format inspection and three download modes. Browser and service security intentionally exclude Cookie import, private/login media, custom proxies, arbitrary local folders, and DRM-protected content. Downloads are capped at 500 MB, stored privately, exposed through an expiring signed URL, and scheduled for deletion after 24 hours.
+
+The production Web app uses the same Vercel Web Analytics integration as ReadySuite. Instrumented events contain only coarse product context and never include media URLs, titles, filenames, access tokens, signed download URLs, or raw errors. Custom-event dashboards require a supported Vercel plan; see the [analytics and privacy boundary](./docs/versions/0.2.1/ANALYTICS.md).
 
 See the [v0.1.0 overview](./docs/versions/0.1.0/README.md), [requirements](./docs/versions/0.1.0/REQUIREMENTS.md), and [implementation plan](./docs/versions/0.1.0/PLAN.md).
 
@@ -131,8 +133,9 @@ The canonical product key is `readydownloader`, the production Web app is `https
 
 ## Documentation
 
-- [v0.2.0 release overview](./docs/versions/0.2.0/README.md)
-- [v0.2.0 black-box functional check](./docs/versions/0.2.0/BLACK_BOX_TESTS.md)
+- [v0.2.1 release overview](./docs/versions/0.2.1/README.md)
+- [v0.2.1 black-box functional check](./docs/versions/0.2.1/BLACK_BOX_TESTS.md)
+- [Analytics and privacy boundary](./docs/versions/0.2.1/ANALYTICS.md)
 - [Web deployment guide](./docs/versions/0.2.0/WEB_DEPLOYMENT.md)
 - [Requirements](./docs/versions/0.1.0/REQUIREMENTS.md)
 - [Architecture](./docs/versions/0.1.0/ARCHITECTURE.md)

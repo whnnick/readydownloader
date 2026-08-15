@@ -6,6 +6,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-08-15
+
+### Added
+
+- Added the same Vercel Web Analytics integration used by ReadySuite, including page views and privacy-safe instrumentation for analysis, download, language, save-file, and GitHub interactions.
+- Added Vercel Speed Insights instrumentation so performance collection can start when the team plan has capacity.
+- Added automated analytics payload tests that restrict custom events to at most two fields: language plus download mode or aggregate format count.
+
+### Verified
+
+- Enabled Web Analytics on the production Vercel project.
+- Passed 30 Web tests, TypeScript checks, and a Next.js production build.
+
+### Known limitations
+
+- The ReadySuite Hobby team currently permits Speed Insights on only one project. ReadyDownloader includes the integration code, but production collection cannot be enabled without moving the existing slot or upgrading the team.
+- Vercel custom events require Pro or Enterprise. On the current Hobby plan, page views are collected but the instrumented product-funnel events are not available in the dashboard.
+
 ## [0.2.0] - 2026-08-15
 
 ### Added

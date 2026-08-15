@@ -14,7 +14,7 @@
 
 <p align="center">
   <img alt="Platforms" src="https://img.shields.io/badge/platform-Web%20%7C%20macOS%20%7C%20Windows-blue">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.2.0-green">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.2.1-green">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-lightgrey">
   <a href="https://github.com/whnnick/readydownloader/actions/workflows/macos-ci.yml"><img alt="macOS CI" src="https://github.com/whnnick/readydownloader/actions/workflows/macos-ci.yml/badge.svg"></a>
 </p>
@@ -59,6 +59,8 @@ Finder 中按住 Control 点击应用，选择“打开”并确认一次；不�
 | Windows x64 | C++17 与 Win32 | 兼容平台；已有原型 |
 
 Web 版与客户端对齐格式解析和三种下载模式。受浏览器与服务端安全边界限制，Web 版有意不接收 Cookie、不访问私密或登录内容、不提供自定义代理和任意本地目录选择，也不处理 DRM 内容。成品上限为 500 MB，存入私有空间，通过限时签名链接提供，并计划在 24 小时后删除。
+
+生产 Web 版使用与 ReadySuite 相同的 Vercel Web Analytics。埋点只包含粗粒度产品上下文，不会发送视频链接、标题、文件名、访问令牌、签名下载地址或原始错误；自定义事件面板需要 Vercel 支持该能力的套餐。详见[统计与隐私边界](./docs/versions/0.2.1/ANALYTICS.zh-CN.md)。
 
 详细内容见 [v0.1.0 概览](./docs/versions/0.1.0/README.zh-CN.md)、[产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)和[实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)。
 
@@ -129,8 +131,9 @@ Vercel Blob、环境变量、保留时间和生产验收要求见 [Web 部署指
 
 ## 文档
 
-- [v0.2.0 版本概览](./docs/versions/0.2.0/README.zh-CN.md)
-- [v0.2.0 黑盒功能检查](./docs/versions/0.2.0/BLACK_BOX_TESTS.zh-CN.md)
+- [v0.2.1 版本概览](./docs/versions/0.2.1/README.zh-CN.md)
+- [v0.2.1 黑盒功能检查](./docs/versions/0.2.1/BLACK_BOX_TESTS.zh-CN.md)
+- [统计与隐私边界](./docs/versions/0.2.1/ANALYTICS.zh-CN.md)
 - [Web 部署指南](./docs/versions/0.2.0/WEB_DEPLOYMENT.zh-CN.md)
 - [产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)
 - [技术架构](./docs/versions/0.1.0/ARCHITECTURE.zh-CN.md)

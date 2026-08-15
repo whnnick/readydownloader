@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { trackProductEvent } from "@/lib/analytics";
 import type { AppLanguage, DownloadEvent, DownloadMode, MediaFormat, MediaInfo } from "@/lib/contracts";
 
 type Status = {
@@ -51,6 +52,7 @@ export function DownloaderApp() {
 
   async function analyze() {
     if (!canAnalyze) return;
+    trackProductEvent("analyze_click", { language });
     const controller = new AbortController();
     abortRef.current = controller;
     setWorking(true);
@@ -75,8 +77,12 @@ export function DownloaderApp() {
         code: "analyzed",
         count: (payload as MediaInfo).formats.length
       });
+      trackProductEvent("analyze_complete", { language, formatCount: (payload as MediaInfo).formats.length });
     } catch (error) {
-      if ((error as Error).name !== "AbortError") setStatus(errorStatus(error));
+      if ((error as Error).name !== "AbortError") {
+        setStatus(errorStatus(error));
+        trackProductEvent("analyze_error", { language });
+      }
     } finally {
       setWorking(false);
       abortRef.current = null;
@@ -85,6 +91,7 @@ export function DownloaderApp() {
 
   async function download() {
     if (!canDownload || !media) return;
+    trackProductEvent("download_click", { language, mode });
     const controller = new AbortController();
     abortRef.current = controller;
     setWorking(true);
@@ -111,7 +118,10 @@ export function DownloaderApp() {
         if (done) break;
       }
     } catch (error) {
-      if ((error as Error).name !== "AbortError") setStatus(errorStatus(error));
+      if ((error as Error).name !== "AbortError") {
+        setStatus(errorStatus(error));
+        trackProductEvent("download_error", { language, mode });
+      }
     } finally {
       setWorking(false);
       abortRef.current = null;
@@ -132,10 +142,12 @@ export function DownloaderApp() {
       setStatus({ kind: "progress", code: stages[event.stage] });
     } else if (event.type === "error") {
       setStatus(errorStatus(new Error(event.code)));
+      trackProductEvent("download_error", { language, mode });
     } else {
       setResult(event);
       setProgress(100);
       setStatus({ kind: "success", code: "completed", filename: event.filename });
+      trackProductEvent("download_complete", { language, mode });
     }
   }
 
@@ -167,6 +179,13 @@ export function DownloaderApp() {
     }
   }
 
+  function changeLanguage(nextLanguage: AppLanguage) {
+    if (nextLanguage !== language) {
+      trackProductEvent("language_change", { language: nextLanguage });
+      setLanguage(nextLanguage);
+    }
+  }
+
   return (
     <main className="app-shell">
       <header className="topbar">
@@ -177,10 +196,10 @@ export function DownloaderApp() {
         <div className="topbar-actions">
           <span className="platform-badge">Web Beta</span>
           <div className="language-switch" aria-label={copy.language}>
-            <button className={language === "zh-CN" ? "active" : ""} onClick={() => setLanguage("zh-CN")}>中文</button>
-            <button className={language === "en" ? "active" : ""} onClick={() => setLanguage("en")}>EN</button>
+            <button className={language === "zh-CN" ? "active" : ""} onClick={() => changeLanguage("zh-CN")}>中文</button>
+            <button className={language === "en" ? "active" : ""} onClick={() => changeLanguage("en")}>EN</button>
           </div>
-          <a className="icon-link" href="https://github.com/whnnick/readydownloader" target="_blank" rel="noreferrer" aria-label="GitHub"><GithubIcon /></a>
+          <a className="icon-link" href="https://github.com/whnnick/readydownloader" target="_blank" rel="noreferrer" aria-label="GitHub" onClick={() => trackProductEvent("github_click", { language })}><GithubIcon /></a>
         </div>
       </header>
 
@@ -276,7 +295,7 @@ export function DownloaderApp() {
           <div className={`status-card ${status.kind}`}>
             {working ? <span className="spinner" /> : <span className="status-dot" />}
             <div><strong>{statusText(status, copy).title}</strong><p>{statusText(status, copy).detail}</p></div>
-            {result && <a className="result-button" href={result.url} target="_blank" rel="noreferrer" download={result.filename}>{copy.saveFile}</a>}
+            {result && <a className="result-button" href={result.url} target="_blank" rel="noreferrer" download={result.filename} onClick={() => trackProductEvent("file_save_click", { language, mode })}>{copy.saveFile}</a>}
           </div>
           {progress !== null && <div className="progress-track"><span style={{ width: `${Math.max(0, Math.min(100, progress))}%` }} /></div>}
           {working && <button className="cancel-button" onClick={cancel}>{copy.cancel}</button>}
