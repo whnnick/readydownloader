@@ -18,6 +18,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 - Enabled Web Analytics on the production Vercel project.
 - Passed 30 Web tests, TypeScript checks, and a Next.js production build.
+- Verified production analytics script loading, page-view delivery, and a language custom-event request with HTTP 200 responses and no browser console errors.
 
 ### Known limitations
 
