@@ -13,6 +13,14 @@ fi
 grep -Fq "## [$VERSION] - " "$ROOT_DIR/CHANGELOG.md"
 grep -Fq "## [$VERSION] - " "$ROOT_DIR/CHANGELOG.zh-CN.md"
 
+if [[ -f "$ROOT_DIR/apps/web/package.json" ]]; then
+  WEB_VERSION="$(node -p "require('$ROOT_DIR/apps/web/package.json').version")"
+  [[ "$WEB_VERSION" == "$VERSION" ]] || {
+    echo "Web package version $WEB_VERSION does not match VERSION $VERSION." >&2
+    exit 1
+  }
+fi
+
 if [[ -n "$EXPECTED_TAG" ]]; then
   [[ "$EXPECTED_TAG" == "v$VERSION" ]] || {
     echo "Tag $EXPECTED_TAG does not match VERSION $VERSION." >&2

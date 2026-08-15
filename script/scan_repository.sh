@@ -5,8 +5,9 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 FILES="$(git ls-files --cached --others --exclude-standard)"
+DENIED_FILE_CANDIDATES="$(grep -Ev '(^|/)\.env\.example$' <<< "$FILES" || true)"
 
-if grep -Ei '(^|/)(\.codex|\.agents|\.vs|tools|dist|x64|Downloads)(/|$)|(^|/)\.env($|\.)|yt_cookies\.txt$|\.(pdb|obj|ipch|tlog|part)$' <<< "$FILES"; then
+if grep -Ei '(^|/)(\.codex|\.agents|\.vs|tools|dist|x64|Downloads)(/|$)|(^|/)\.env($|\.)|yt_cookies\.txt$|\.(pdb|obj|ipch|tlog|part)$' <<< "$DENIED_FILE_CANDIDATES"; then
   echo "Repository contains a denied tracked or unignored file." >&2
   exit 1
 fi

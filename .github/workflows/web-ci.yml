@@ -1,0 +1,48 @@
+name: ReadyDownloader Web CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/web/**"
+      - ".github/workflows/web-ci.yml"
+      - "VERSION"
+      - "CHANGELOG.md"
+      - "CHANGELOG.zh-CN.md"
+  pull_request:
+    paths:
+      - "apps/web/**"
+      - ".github/workflows/web-ci.yml"
+      - "VERSION"
+      - "CHANGELOG.md"
+      - "CHANGELOG.zh-CN.md"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install pinned dependencies and tools
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Check TypeScript
+        run: npm run check
+
+      - name: Build production app
+        run: npm run build

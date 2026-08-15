@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.vercel/
+.tools/
+coverage/
+.playwright-cli/
+*.tsbuildinfo
+.env*
+!.env.example

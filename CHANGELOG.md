@@ -6,6 +6,27 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-08-15
+
+### Added
+
+- Added the production bilingual Web app at `https://readydownloader.vercel.app` with format inspection, Best Quality, iPhone Compatible, and Selected Format modes.
+- Added private temporary Blob storage, 24-hour signed download URLs, scheduled cleanup, public-source allowlisting, SSRF protection, request limits, cancellation, and a 500 MB output cap.
+- Added pinned and checksum-verified yt-dlp builds for Linux deployment and macOS development, plus static FFmpeg and FFprobe runtime tracing.
+- Added Web unit tests, TypeScript checks, production builds, CI, and bilingual deployment and black-box documentation.
+
+### Fixed
+
+- Web iPhone-compatible downloads now inspect the final media and convert incompatible video/audio to MP4, H.264, AAC when available, and yuv420p.
+- Language switching now updates active status text and the page title without discarding parsed formats.
+- Fixed mobile horizontal overflow and local macOS development tool selection.
+
+### Verified
+
+- Parsed the reported Instagram Reel into eight formats through both local and production APIs.
+- Completed the production download, conversion, private upload, and expiring signed-link flow; FFprobe confirmed MP4, H.264, AAC, and yuv420p output.
+- Verified `readydownloader.vercel.app` on desktop and mobile with no browser console warnings or errors, then removed all smoke-test media.
+
 ## [0.1.4] - 2026-08-11
 
 ### Changed
