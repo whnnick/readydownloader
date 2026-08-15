@@ -9,18 +9,19 @@
 <h1 align="center">ReadyDownloader</h1>
 
 <p align="center">
-  ReadySuite 旗下基于 yt-dlp 的 macOS 与 Windows 原生桌面下载工具。
+  ReadySuite 旗下覆盖 Web、macOS 与 Windows 的视频下载工具。
 </p>
 
 <p align="center">
-  <img alt="Platforms" src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS-blue">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.4-green">
+  <img alt="Platforms" src="https://img.shields.io/badge/platform-Web%20%7C%20macOS%20%7C%20Windows-blue">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.2.0-green">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-lightgrey">
   <a href="https://github.com/whnnick/readydownloader/actions/workflows/macos-ci.yml"><img alt="macOS CI" src="https://github.com/whnnick/readydownloader/actions/workflows/macos-ci.yml/badge.svg"></a>
 </p>
 
 <p align="center">
   <a href="https://github.com/whnnick/readydownloader">源码</a> ·
+  <a href="https://readydownloader.vercel.app/">Web 版</a> ·
   <a href="https://github.com/whnnick/readydownloader/releases/latest">最新版本</a> ·
   <a href="https://github.com/whnnick/readydownloader/issues">问题反馈</a> ·
   <a href="https://readysuite.vercel.app/">ReadySuite</a>
@@ -30,6 +31,8 @@
 > macOS 是项目的主产品线。Windows 客户端作为兼容实现继续维护，并按共享行为契约跟进，但不会阻塞 Mac 发布。
 
 ## 快速开始
+
+打开 [readydownloader.vercel.app](https://readydownloader.vercel.app/) 即可免安装使用中英文 Web 版。粘贴受支持的公开视频链接，解析画质后选择最高画质、iPhone 兼容或指定格式。
 
 从 [GitHub Releases](https://github.com/whnnick/readydownloader/releases/latest) 下载当前 macOS 安装包，将 `ReadyDownloader.app` 移入“应用程序”后打开。当前公开安装包目标为 macOS 13 及以上版本的 Apple Silicon Mac。
 
@@ -51,8 +54,11 @@ Finder 中按住 Control 点击应用，选择“打开”并确认一次；不�
 
 | 平台 | 技术 | 状态 |
 | --- | --- | --- |
+| Web | Next.js 16、Vercel Functions、私有 Vercel Blob | 已在 `readydownloader.vercel.app` 上线；已实现公开视频核心流程 |
 | macOS 13+ Apple Silicon | Swift 5.10+ 与 SwiftUI | 主平台；下载 MVP 与可复现打包已实现 |
 | Windows x64 | C++17 与 Win32 | 兼容平台；已有原型 |
+
+Web 版与客户端对齐格式解析和三种下载模式。受浏览器与服务端安全边界限制，Web 版有意不接收 Cookie、不访问私密或登录内容、不提供自定义代理和任意本地目录选择，也不处理 DRM 内容。成品上限为 500 MB，存入私有空间，通过限时签名链接提供，并计划在 24 小时后删除。
 
 详细内容见 [v0.1.0 概览](./docs/versions/0.1.0/README.zh-CN.md)、[产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)和[实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)。
 
@@ -104,14 +110,28 @@ swift test --package-path apps/macos --disable-sandbox
 
 Mac 应用已提供与 ReadyType 统一、可在简体中文和 English 间即时切换的下载流程，并实现格式查询、不限制分辨率的最佳画质下载、经过编码验证的 iPhone 兼容 H.264 MP4、手动格式、实时进度、取消、持久保存目录选择、Finder 定位和主动开启的 yt-dlp 详细日志。Apple Silicon 工具版本锁定以及 APP/ZIP/DMG 本地打包已实现；签名和公证的公开产物仍需要 Apple 发布凭据。
 
+## 构建 Web 版
+
+```bash
+cd apps/web
+npm ci
+npm test
+npm run check
+npm run build
+npm run dev
+```
+
+Vercel Blob、环境变量、保留时间和生产验收要求见 [Web 部署指南](./docs/versions/0.2.0/WEB_DEPLOYMENT.zh-CN.md)。
+
 ## ReadySuite 集成
 
-产品唯一标识为 `readydownloader`，计划使用的 ReadySuite 路由为 `/readydownloader`，下载入口应指向 `https://github.com/whnnick/readydownloader/releases/latest`。ReadySuite 网站继续使用独立仓库和发布流程。
+产品唯一标识为 `readydownloader`，Web 生产地址为 `https://readydownloader.vercel.app`，计划使用的 ReadySuite 产品目录路由为 `/readydownloader`。桌面端下载入口应指向 `https://github.com/whnnick/readydownloader/releases/latest`。ReadySuite 网站继续使用独立仓库和发布流程。
 
 ## 文档
 
-- [v0.1.4 版本概览](./docs/versions/0.1.4/README.zh-CN.md)
-- [v0.1.4 黑盒功能检查](./docs/versions/0.1.4/BLACK_BOX_TESTS.zh-CN.md)
+- [v0.2.0 版本概览](./docs/versions/0.2.0/README.zh-CN.md)
+- [v0.2.0 黑盒功能检查](./docs/versions/0.2.0/BLACK_BOX_TESTS.zh-CN.md)
+- [Web 部署指南](./docs/versions/0.2.0/WEB_DEPLOYMENT.zh-CN.md)
 - [产品需求](./docs/versions/0.1.0/REQUIREMENTS.zh-CN.md)
 - [技术架构](./docs/versions/0.1.0/ARCHITECTURE.zh-CN.md)
 - [实施计划](./docs/versions/0.1.0/PLAN.zh-CN.md)

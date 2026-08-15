@@ -3,6 +3,7 @@
 macOS is the primary release line. Windows compatibility work does not block a
 Mac release unless the release is explicitly advertised as dual-platform.
 The canonical GitHub repository slug is `whnnick/readydownloader`.
+The canonical Web production URL is `https://readydownloader.vercel.app`.
 
 ## Local Release Validation
 
@@ -68,6 +69,16 @@ exception required by Deno, signs the app with Hardened Runtime, submits and
 staples the app, creates ZIP and DMG artifacts, notarizes and staples the DMG,
 verifies Gatekeeper, and generates checksums.
 
+## Web Production Validation
+
+When a release changes Web behavior, deploy `apps/web` to the linked
+`ready-suite/readydownloader` Vercel project before tagging. Run its unit tests,
+TypeScript check, and production build, then verify the canonical domain,
+security rejection, one real format analysis, one real download, the private
+signed Blob link, and iPhone-compatible codecs. Remove smoke-test media after
+verification. Details are in the current version's Web deployment and
+black-box documents.
+
 ## GitHub Release
 
 GitHub Releases are published from
@@ -87,7 +98,7 @@ repository secrets:
 
 Before tagging:
 
-1. Complete the version black-box report.
+1. Complete the version black-box report, including the production Web gate when applicable.
 2. Change the current `VERSION` headings in both changelogs from `Unreleased` to the release date.
 3. Confirm `VERSION` and the intended tag agree.
 4. Commit and push a clean `main`.
@@ -103,10 +114,11 @@ that the tag is GitHub's latest release.
 ### Release synchronization invariant
 
 A release-ready version must not stop after pushing `main`. The same release
-operation must push `v<version>`, publish the matching GitHub Release, upload
-the ZIP, DMG, and `SHA256SUMS.txt`, and verify the public `latest` endpoint.
-If any of these steps cannot complete, keep the changelog entry marked
-`Unreleased` and do not advertise that version as available.
+operation must verify the production Web URL when applicable, push
+`v<version>`, publish the matching GitHub Release, upload the ZIP, DMG, and
+`SHA256SUMS.txt`, and verify the public `latest` endpoint. If any of these steps
+cannot complete, keep the changelog entry marked `Unreleased` and do not
+advertise that version as available.
 
 ## Third-Party Components
 

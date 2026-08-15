@@ -9,18 +9,19 @@
 <h1 align="center">ReadyDownloader</h1>
 
 <p align="center">
-  A ReadySuite desktop app for downloading media with yt-dlp on macOS and Windows.
+  A ReadySuite video downloader for the Web, macOS, and Windows.
 </p>
 
 <p align="center">
-  <img alt="Platforms" src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS-blue">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.4-green">
+  <img alt="Platforms" src="https://img.shields.io/badge/platform-Web%20%7C%20macOS%20%7C%20Windows-blue">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.2.0-green">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-lightgrey">
   <a href="https://github.com/whnnick/readydownloader/actions/workflows/macos-ci.yml"><img alt="macOS CI" src="https://github.com/whnnick/readydownloader/actions/workflows/macos-ci.yml/badge.svg"></a>
 </p>
 
 <p align="center">
   <a href="https://github.com/whnnick/readydownloader">Source</a> ·
+  <a href="https://readydownloader.vercel.app/">Web App</a> ·
   <a href="https://github.com/whnnick/readydownloader/releases/latest">Latest Release</a> ·
   <a href="https://github.com/whnnick/readydownloader/issues">Issues</a> ·
   <a href="https://readysuite.vercel.app/">ReadySuite</a>
@@ -30,6 +31,8 @@
 > macOS is the primary product line. The Windows client remains available as a compatibility implementation and will follow the shared behavior contract without blocking Mac releases.
 
 ## Quick Start
+
+Open [readydownloader.vercel.app](https://readydownloader.vercel.app/) to use the bilingual Web app without installation. Paste a supported public media URL, inspect formats, then choose Best Quality, iPhone Compatible, or a specific format.
 
 Download the current macOS package from [GitHub Releases](https://github.com/whnnick/readydownloader/releases/latest), move `ReadyDownloader.app` to Applications, and open it. The current public package target is Apple Silicon on macOS 13 or later.
 
@@ -52,8 +55,11 @@ once. Do not disable Gatekeeper globally.
 
 | Platform | Technology | Status |
 | --- | --- | --- |
+| Web | Next.js 16, Vercel Functions, private Vercel Blob | Production at `readydownloader.vercel.app`; public-media core workflow implemented |
 | macOS 13+ Apple Silicon | Swift 5.10+ and SwiftUI | Primary platform; download MVP and reproducible packaging implemented |
 | Windows x64 | C++17 and Win32 | Compatibility platform; prototype available |
+
+The Web app aligns the client’s format inspection and three download modes. Browser and service security intentionally exclude Cookie import, private/login media, custom proxies, arbitrary local folders, and DRM-protected content. Downloads are capped at 500 MB, stored privately, exposed through an expiring signed URL, and scheduled for deletion after 24 hours.
 
 See the [v0.1.0 overview](./docs/versions/0.1.0/README.md), [requirements](./docs/versions/0.1.0/REQUIREMENTS.md), and [implementation plan](./docs/versions/0.1.0/PLAN.md).
 
@@ -106,14 +112,28 @@ Build and launch the `.app` bundle:
 
 The Mac app provides a Chinese/English switchable, ReadyType-aligned workflow for format queries, unrestricted best-quality download, verified iPhone-compatible H.264 MP4 output, manual format selection, real-time progress, cancellation, persistent destination selection, Finder reveal, and opt-in detailed yt-dlp logs. Pinned Apple Silicon tools and local APP/ZIP/DMG packaging are available; signed and notarized public artifacts still require Apple release credentials.
 
+## Build the Web App
+
+```bash
+cd apps/web
+npm ci
+npm test
+npm run check
+npm run build
+npm run dev
+```
+
+See the [Web deployment guide](./docs/versions/0.2.0/WEB_DEPLOYMENT.md) for Vercel Blob, environment, retention, and production verification requirements.
+
 ## ReadySuite Integration
 
-The canonical product key is `readydownloader`, the planned ReadySuite route is `/readydownloader`, and downloads should point to `https://github.com/whnnick/readydownloader/releases/latest`. ReadySuite remains a separate website repository and release process.
+The canonical product key is `readydownloader`, the production Web app is `https://readydownloader.vercel.app`, and the planned ReadySuite catalog route is `/readydownloader`. Desktop downloads should point to `https://github.com/whnnick/readydownloader/releases/latest`. ReadySuite remains a separate website repository and release process.
 
 ## Documentation
 
-- [v0.1.4 release overview](./docs/versions/0.1.4/README.md)
-- [v0.1.4 black-box functional check](./docs/versions/0.1.4/BLACK_BOX_TESTS.md)
+- [v0.2.0 release overview](./docs/versions/0.2.0/README.md)
+- [v0.2.0 black-box functional check](./docs/versions/0.2.0/BLACK_BOX_TESTS.md)
+- [Web deployment guide](./docs/versions/0.2.0/WEB_DEPLOYMENT.md)
 - [Requirements](./docs/versions/0.1.0/REQUIREMENTS.md)
 - [Architecture](./docs/versions/0.1.0/ARCHITECTURE.md)
 - [Implementation plan](./docs/versions/0.1.0/PLAN.md)

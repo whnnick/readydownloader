@@ -29,3 +29,12 @@ The current macOS manifest pins:
 The yt-dlp standalone executable contains third-party GPLv3+ components. The
 distribution includes yt-dlp's generated `THIRD_PARTY_LICENSES.txt`, and the
 license terms listed there continue to apply to that component.
+
+The Web application declares its exact JavaScript dependency versions in
+`apps/web/package-lock.json`. Its principal runtime dependencies are Next.js,
+React, `@vercel/blob`, `ffmpeg-static`, and `ffprobe-static`; each remains under
+its upstream license. The Web build downloads the official yt-dlp 2026.07.04
+Linux or macOS standalone asset, verifies its SHA-256, and does not commit that
+binary or `node_modules` to this repository. The server-side FFmpeg build used
+for H.264 conversion may include GPL components such as libx264; its upstream
+license applies to that deployed component.

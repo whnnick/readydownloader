@@ -3,6 +3,7 @@
 macOS 是主发布线。除非版本明确宣传为双平台发布，否则 Windows 兼容工作不会阻塞
 Mac 版本。
 规范 GitHub 仓库 slug 为 `whnnick/readydownloader`。
+Web 规范生产地址为 `https://readydownloader.vercel.app`。
 
 ## 本地发布验证
 
@@ -62,6 +63,14 @@ REQUIRE_GATEKEEPER=1 \
 Hardened Runtime 签名 App、提交并装订 App、公证并装订 DMG、验证
 Gatekeeper，最后生成校验文件。
 
+## Web 生产验收
+
+如果版本修改了 Web 行为，创建 Tag 前必须先将 `apps/web` 部署到已连接的
+`ready-suite/readydownloader` Vercel 项目。依次运行单元测试、TypeScript 检查和
+生产构建，然后验证规范域名、安全拒绝、一次真实格式解析、一次真实下载、私有
+Blob 签名链接和 iPhone 兼容编码，并在验收后删除冒烟媒体。详细要求见当前版本的
+Web 部署与黑盒检查文档。
+
 ## GitHub Release
 
 GitHub Release 由 `https://github.com/whnnick/readydownloader` 发布。
@@ -80,7 +89,7 @@ Secrets：
 
 创建 Tag 前：
 
-1. 完成当前版本黑盒检查报告。
+1. 完成当前版本黑盒检查报告；如涉及 Web，必须包含生产环境门槛。
 2. 将中英文更新日志中当前 `VERSION` 对应条目的“未发布”改为发布日期。
 3. 确认 `VERSION` 与计划创建的 Tag 一致。
 4. 提交并推送干净的 `main`。
@@ -93,10 +102,10 @@ SHA-256、要求恰好包含三个产物，并确认该 Tag 是 GitHub 最新版
 
 ### Release 同步约束
 
-准备发布的版本不能只停留在推送 `main`。同一次发布操作必须推送 `v<version>`、
-创建对应 GitHub Release、上传 ZIP、DMG 与 `SHA256SUMS.txt`，并验证公开的
-`latest` 地址。任一步骤无法完成时，更新日志必须继续标记为“未发布”，且不得将
-该版本宣传为可下载版本。
+准备发布的版本不能只停留在推送 `main`。同一次发布操作必须在适用时验证 Web
+生产地址、推送 `v<version>`、创建对应 GitHub Release、上传 ZIP、DMG 与
+`SHA256SUMS.txt`，并验证公开的 `latest` 地址。任一步骤无法完成时，更新日志必须
+继续标记为“未发布”，且不得将该版本宣传为可下载版本。
 
 ## 第三方组件
 

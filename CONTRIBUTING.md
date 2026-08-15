@@ -5,7 +5,7 @@ Thank you for helping improve ReadyDownloader.
 ## Before You Start
 
 - Read the current version requirements and implementation plan under `docs/versions/`.
-- Keep Windows and macOS user-visible behavior aligned with the shared requirements.
+- Keep the Web, macOS, and Windows user-visible core behavior aligned with the shared requirements and document intentional platform boundaries.
 - Do not add unrelated refactors or generated binaries to a feature change.
 - Never commit cookies, tokens, downloaded media, tool binaries, private paths, or account information.
 
@@ -19,13 +19,15 @@ Thank you for helping improve ReadyDownloader.
 6. Run the platform-specific verification commands and the sensitive-information scan.
 7. Submit a pull request describing behavior, verification evidence, and remaining real-environment checks.
 
+For Web changes, run `npm test`, `npm run check`, and `npm run build` from `apps/web`. Public deployment also requires a real supported-page analysis, an end-to-end download, codec inspection for iPhone-compatible output, and removal of smoke-test media.
+
 ## Release Synchronization
 
-Finalizing a version requires one continuous release operation: push the clean
-release commit, push `v<version>`, publish the matching GitHub Release with the
-ZIP, DMG, and checksum file, and verify the public `latest` endpoint. A version
-must remain `Unreleased` if its GitHub Release is not successfully published
-and verified.
+Finalizing a version requires one continuous release operation: verify the
+production Web URL when Web behavior changed, push the clean release commit,
+push `v<version>`, publish the matching GitHub Release with the ZIP, DMG, and
+checksum file, and verify the public `latest` endpoint. A version must remain
+`Unreleased` if any required surface is not successfully published and verified.
 
 ## Commit Style
 
